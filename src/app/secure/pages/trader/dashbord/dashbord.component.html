@@ -1,0 +1,55 @@
+    <div class="w-full px-6 py-6 mx-auto">  
+        <div class="flex w-1/2 colorTraderPorfil">
+
+            <label for="countries" class=" w-1/3 colorTraderPorfil block mb-2 text-sm font-medium  ">Séance du : 28/04/2024</label>
+            <select id="countries" class="ml-4 w-2/3 bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+              <option selected></option>
+              <option value="US">Ouverte</option>
+              <option value="CA">Fermee</option>
+          
+            </select>
+          </div>
+
+          <div class="flex w-1/2 colorTraderPorfil mt-4" style="margin-left: 20%;">
+            <label for="countries" class=" w-1/3 colorTraderPorfil block mb-2 text-sm font-medium  ">Tendances des Transaction du</label>
+            <input type="date" class="ml-2 border border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:ring focus:ring-blue-200" />  
+          </div>
+          <!-- row 2  Graphes-->
+        <div class="flex mt-12 " >
+          
+              <div class=" w-1/2 px-3 mt-0 lg:flex-none" >
+                <div class="border-black/12.5 shadow-soft-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
+                  <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid bg-white p-6 pb-0">
+                    <h6>OAT</h6>
+                    <p class="text-sm leading-normal">
+                      <i class="fa fa-arrow-up text-lime-500"></i>
+                      <span class="font-semibold">4% more</span> in 2021
+                    </p>
+                  </div>
+                  <div class="flex-auto p-4">
+                    <div>
+                      <canvas height="300"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="w-1/2 px-3 mt-0  lg:flex-none" >
+                <div class="border-black/12.5 shadow-soft-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
+                  <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid bg-white p-6 pb-0">
+                    <h6>BAT</h6>
+                    <p class="text-sm leading-normal">
+                      <i class="fa fa-arrow-up text-lime-500"></i>
+                      <span class="font-semibold">4% more</span> in 2021
+                    </p>
+                  </div>
+                  <div class="flex-auto p-4">
+                    <div>
+                      <canvas  height="300"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+          
+        </div>
+    </div>

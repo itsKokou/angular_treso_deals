@@ -1,0 +1,182 @@
+<!-- row 1  en tete Menu Profil-->
+<div class="w-full px-6 py-6 mx-auto">  
+  <div class="flex space-between w-full" >
+    <div class="w-1/2 bg-white rounded-md px-4 py-3 shadow"> 
+      <div  class="inline-flex mt-1 w-full justify-center">
+        <div style="width: 38%; margin-right:80px;" class="text-sm px-4 py-2 border border-gray-300 rounded-md">
+            <label for="select-classe-niveau" class="block mb-2 font-medium text-gray-900">Nature :</label>
+            <select id="select-classe-niveau" style="width:80%;" class="bg-gray-50  border border-gray-300 focus:ring-0 focus:border-gray-300 text-gray-900 rounded  block py-1.5 px-2">
+              <option selected>Tout</option>
+              <option value="OAT">OAT</option>
+              <option value="BAT">BAT</option>
+            </select>
+        </div>
+        <div style="width: 38%;" class="text-sm px-4 py-2 border border-gray-300 rounded-md">
+          <label for="select-classe-filiere" class="block mb-2 font-medium text-gray-900 ">Sens Transaction :</label>
+          <select  id="select-classe-filiere" style="width:80%;" class="bg-gray-50  border border-gray-300 text-gray-900 rounded focus:ring-0 focus:border-gray-300 block py-1.5 px-2 ">
+            <option selected>Tout</option>
+            <option value="US">VENTE</option>
+            <option value="CA">ACHAT</option>
+          </select>
+        </div>
+      </div>
+    </div>
+            
+    <div class="flex space-between w-1/2 p-2" >
+
+          <!-- Modal toggle -->
+        
+          <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" class="w-1/2  font-bold py-2 px-4 rounded-xl md:px-8 colorbtn">  
+            Rechercher
+          </button>
+
+          <!-- Main modal -->
+        
+
+        <button class=" w-1/2 ml-2 font-bold py-2 px-4 rounded-xl colorbtn md:px-8" >   
+        Mes Transactions
+      </button>
+    </div>
+  </div>
+  <!-- Main modal -->
+  <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center  md:inset-0 h-[calc(100%-1rem)] max-h-full" style="width: 100%;">
+      <div class="relative p-4 w-full max-w-md max-h-full">
+          <!-- Modal content -->
+          <div class="relative bg-white w-full rounded-lg shadow dark:bg-gray-700">
+              <!-- Modal header -->
+              <div class="flex items-center  justify-between p-4 md:p-5 border-b rounded-t ">
+                  <h3 class="text-lg  w-full flex items-center justify-center font-semibold text-gray-900 dark:text-white">
+                      Rechercher offre
+                  </h3>
+                  
+              </div>
+              <!-- Modal body -->
+              <form class="p-4 md:p-5 ">
+                  <div class="grid gap-4 mb-4 grid-cols-2">
+                      <div class="col-span-2 flex items-center justify-between">
+                          <label for="name" class="w-1/2 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">N° transaction</label>
+                          <input type="text" name="name" id="name" class="w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="N° transaction" required="">
+                      </div>
+                      <div class="col-span-2 flex items-center justify-between">
+                        <label for="name" class="w-1/2 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">Date transaction</label>
+                        <input type="date" name="name" id="name" class="w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Du ... au ..." required="">
+                      </div>
+                      <div class="col-span-2 flex items-center justify-between">
+                        <label for="name" class="w-1/2 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">Emetteur</label>
+                        <select  class="w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                          <option selected="">Indiquez Pays </option>
+                          <option value="TV">0028</option>
+                          <option value="PC">00221</option>
+                          <option value="GA">00229</option>
+                        </select>                             
+                      </div>
+                      <div class="col-span-2 flex items-center justify-between">
+                        <label for="name" class="w-1/2 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">Nature </label>
+                        <select  class="w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                          <option selected="">Indiquez Nature instrument </option>
+                          <option value="TV">OAT</option>
+                          <option value="PC">BAT</option>
+                        </select>                             
+                      </div>
+                      <div class="col-span-2 flex items-center justify-between">
+                        <label for="name" class="w-1/2 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">Code ISIN</label>
+                        <input type="text" name="name" id="name" class="w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Indiquer le ISIN recherché" required="">
+                    </div>
+                    <div class="col-span-2 flex items-center justify-between">
+                      <label for="name" class="w-1/2 mr-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">Taux d'intérêt</label>
+                      <input type="date" name="name" id="name" class="w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block  p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Taux fixe ou entre ...% et ...%" required="">
+                    </div>
+                    <div class="col-span-2 ">
+                      <div class=" justify-between flex float-right">
+                        <button  data-modal-toggle="crud-modal" class=" mr-2 font-bold py-2 px-4 rounded-xl md:px-8 colorbtn">  
+                          Annuler
+                        </button>
+                        <button   data-modal-toggle="crud-modal" class=" font-bold py-2 px-4 rounded-xl md:px-8 colorbtn">  
+                            Envoyer
+                        </button>
+                      </div>
+                    </div>
+                    
+                </div>
+              
+            </form>
+        </div>
+    </div>
+  </div> 
+  <!-- row 2  Tables-->
+         
+    <div class="flex-none w-full max-w-full mt-4">
+      <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-lg bg-clip-border">
+        <div class="py-4 px-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
+          <h6 class="font-bold text-lg">Transactions en cours</h6>
+        </div>
+        <div class="flex-auto px-0 pt-0 pb-2">
+          <div class="p-0 overflow-x-auto">
+            <table class="items-center justify-center w-full mb-3 align-top border-gray-200 text-slate-500">
+              <thead class="align-middle">
+                <tr class="uppercase bg-transparent font-bold align-middle">
+                  <th class="px-4 py-3 text-left border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400 opacity-100">ID</th>
+                  <th class="px-4 py-3 text-left border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400 opacity-100">Date Offre</th>
+                  <th class="px-4 py-3 text-left border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400 opacity-100">Emetteur</th>
+                  <th class="px-4 py-3 text-left border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400 opacity-100">Nature</th>
+                  <th class="px-4 py-3 text-center border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Code ISIN</th>
+                  <th class="px-4 py-3 text-center border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Taux  / Coupon</th>
+                  <th class="px-4 py-3 text-center border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Date d’échéance</th>
+                  <th class="px-4 py-3 text-center border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Sens Transaction</th>
+                  <th class="px-4 py-3 text-center border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Quantité</th>
+                  <th class="px-4 py-3 text-left border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Prix /  Taux de transaction</th>
+                  <th class="px-4 py-3 text-left border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Intérêt courus</th>
+                  <th class="px-4 py-3 text-left border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Valeur totale </th>
+                  <th class="px-4 py-3 text-center border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="text-gray-700">
+                  <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
+                    <p class="mb-0 text-sm leading-normal">1</p>
+                  </td>
+                  <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
+                    <p class="mb-0 text-sm leading-normal">14/08/2024</p>
+                  </td>
+                  <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
+                    <p class="mb-0 text-sm leading-normal">Senegal</p>
+                  </td>
+                  <td class="px-4 align-middle text-center bg-transparent border-b whitespace-nowrap">
+                    <p class="mb-0 text-sm leading-normal">OAT</p>
+                  </td>
+                  <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
+                    <p class="mb-0 text-sm leading-normal">BJ0000000121</p>
+                  </td>
+                  <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
+                    <p class="mb-0 text-sm leading-normal">6,32%</p>
+                  </td>
+                  <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
+                    <p class="mb-0 text-sm leading-normal">18/08/2024</p>
+                  </td>
+                  <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
+                    <p class="mb-0 text-sm leading-normal">Achat</p>
+                  </td>
+                  <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
+                    <p class="mb-0 text-sm leading-normal">456</p>
+                  </td>
+                  <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
+                    <p class="mb-0 text-sm leading-normal">100000,00</p>
+                  </td>
+                  <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
+                    <p class="mb-0 text-sm leading-normal">24 000 000</p>
+                  </td>
+                  <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
+                    <p class="mb-0 text-sm leading-normal">240 000 000</p>
+                  </td>
+                  <td class="px-4 flex leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap">
+                    <span class="cursor-pointer bg-red-600 px-2.5 text-xs rounded-lg py-1 my-0.5 inline-block whitespace-nowrap text-center align-middle font-semibold leading-none text-white">Faire <br> Proposition</span>
+                    <span class="cursor-pointer bg-blue-700 ml-2 px-2.5 text-xs rounded-lg py-1 my-0.5 inline-block whitespace-nowrap text-center align-middle font-semibold leading-none text-white">Voir <br> Detail</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
