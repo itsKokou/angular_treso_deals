@@ -1,0 +1,31 @@
+<div class="w-full h-screen px-8 py-4 flex justify-center items-center">
+    <div class="flex w-full h-full justify-between items-center max-w-screen-2xl">
+        <div class="w-1/2 h-fit flex justify-center">
+            <img class="w-3/4" src="assets/img/auth.png" alt="">
+        </div>
+        <div class="w-1/2">
+            <form [formGroup]="form" (submit)="onSubmit(val1.value,val2.value,val3.value,val4.value,val5.value)" class=" max-w-lg w-full px-6 py-6 mx-auto bg-white rounded shadow-md">
+                <div class="w-full mb-7 flex justify-center">
+                    <svg class="w-20 h-20" style="color: rgb(0, 228, 0);" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z"/>
+                    </svg>
+                </div>
+                <p class="text-center text-lg">Veuillez saisir le code de validation à 4 chiffres reçu par mail.</p>
+                <div class="w-full flex justify-between mt-7">
+                    <input type="text" [required]="1" [maxLength]="1" #val1 (input)="onKeyUp(val1, val1, val2)" class="w-20 border-t-0 border-l-0 border-r-0 text-center text-gray-900 text-2xl font-medium focus:ring-0 focus:border-b-blue-700 p-2 placeholder:text-gray-600 placeholder:text-2xl" placeholder="*">
+                    <input type="text" [required]="1" [maxLength]="1" #val2 (input)="onKeyUp(val2, val1, val3)" class="w-20 border-t-0 border-l-0 border-r-0 text-center text-gray-900 text-2xl font-medium focus:ring-0 focus:border-b-blue-700 p-2 placeholder:text-gray-600 placeholder:text-2xl" placeholder="*">
+                    <input type="text" [required]="1" [maxLength]="1" #val3 (input)="onKeyUp(val3, val2, val4)" class="w-20 border-t-0 border-l-0 border-r-0 text-center text-gray-900 text-2xl font-medium focus:ring-0 focus:border-b-blue-700 p-2 placeholder:text-gray-600 placeholder:text-2xl" placeholder="*">
+                    <input type="text" [required]="1" [maxLength]="1" #val4 (input)="onKeyUp(val4, val3, val5)" class="w-20 border-t-0 border-l-0 border-r-0 text-center text-gray-900 text-2xl font-medium focus:ring-0 focus:border-b-blue-700 p-2 placeholder:text-gray-600 placeholder:text-2xl" placeholder="*">
+                    <input type="text" [required]="1" [maxLength]="1" #val5 (input)="onKeyUp(val5, val4, val5)" class="w-20 border-t-0 border-l-0 border-r-0 text-center text-gray-900 text-2xl font-medium focus:ring-0 focus:border-b-blue-700 p-2 placeholder:text-gray-600 placeholder:text-2xl" placeholder="*">
+                </div>
+                <p class="text-center text-sm mt-2" style="color: red;" *ngIf="error != ''">{{error}}</p>
+                <p class="text-center text-base mt-5">Vous n'avez pas reçu de code ? <button type="button" class="text-purple-700 font-semibold text-sm">Cliquez pour renvoyer</button></p>
+                
+                <div class="w-full mt-10 mb-5">
+                    <button type="submit" class="bg-purple-800 text-white font-semibold rounded py-2 w-full hover:bg-purple-950">Valider</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
