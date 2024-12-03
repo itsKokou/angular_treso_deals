@@ -1,4 +1,7 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
+import { SecurityServiceImpl } from './core/services/impl/security.service.impl';
+import { AuthenticationGuard } from './core/guards/authentication.guard';
 
 export const routes: Routes = [
     {
@@ -7,18 +10,22 @@ export const routes: Routes = [
     },
     {
         path: 'admin',
-        loadChildren : ()=>import("./secure/pages/super-admin/super-admin.module").then(mod=>mod.SuperAdminModule)
+        loadChildren : ()=>import("./secure/pages/super-admin/super-admin.module").then(mod=>mod.SuperAdminModule),
+        // canMatch:[AuthenticationGuard]
     },
     {
         path: 'gestion',
-        loadChildren : ()=>import("./secure/pages/admin-gestion/admin-gestion.module").then(mod=>mod.AdminGestionModule)
+        loadChildren : ()=>import("./secure/pages/admin-gestion/admin-gestion.module").then(mod=>mod.AdminGestionModule),
+        // canMatch:[AuthenticationGuard]
     },
     {
         path: 'trader',
-        loadChildren : ()=>import("./secure/pages/trader/trader.module").then(mod=>mod.TraderModule)
+        loadChildren : ()=>import("./secure/pages/trader/trader.module").then(mod=>mod.TraderModule),
+        // canMatch:[AuthenticationGuard]
     },
     {
         path: 'validateur',
-        loadChildren : ()=>import("./secure/pages/validateur/validateur.module").then(mod=>mod.ValidateurModule)
+        loadChildren : ()=>import("./secure/pages/validateur/validateur.module").then(mod=>mod.ValidateurModule),
+        // canMatch:[AuthenticationGuard]
     },
 ];

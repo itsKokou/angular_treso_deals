@@ -6,18 +6,19 @@ import { SecurityServiceImpl } from '../../../core/services/impl/security.servic
 import { ResponseVerificationResponseDto } from '../../../core/models/validation/response-verification-response-dto';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-validation-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressBarModule],
   templateUrl: './validation-page.component.html',
   styleUrl: './validation-page.component.css'
 })
 export class ValidationPageComponent {
   error : string = ""
-  form : FormGroup = this.fb.group({
-  });
+  form : FormGroup = this.fb.group({});
+  isLoading: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -39,13 +40,12 @@ export class ValidationPageComponent {
   }
 
   onSubmit(val1: string,val2: string,val3: string,val4: string,val5: string) {
+    this.isLoading = true;
     let requesId = localStorage.getItem("requesId")!;
     let code = val1+val2+val3+val4+val5
-    console.log(code);
     
     this.securityService.validation(requesId,code).subscribe((res: ResponseVerificationResponseDto)=>{
-      console.log(res.statusCode);
-      
+      this.isLoading = false;
       if (res.statusCode==200){
         this.error = "";
         let profil = res.data?.user?.profile;
