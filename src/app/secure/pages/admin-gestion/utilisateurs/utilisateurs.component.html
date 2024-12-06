@@ -28,7 +28,7 @@
             </tr>
           </thead>
           <tbody>
-          @for (item of datas; track $index) {
+          @for (item of datasPaginated; track $index) {
             <tr>
               <td class="px-4 border-b text-left">
                 <p class="text-sm leading-normal">{{item.firstName + " "+ item.lastName}}</p>
@@ -70,10 +70,12 @@
           <mat-progress-bar class="text-purple-800" mode="indeterminate"></mat-progress-bar>
       </div>
       <div>
-        <mat-paginator [length]="100"
+        <mat-paginator showFirstLastButtons
+              [length] ="totalElements"
               [pageSize]="10"
-              [pageSizeOptions]="[5, 10, 25, 100]"
-              aria-label="Select page">
+              [pageSizeOptions]="[5, 10, 25]"
+              aria-label="Select page"
+              (page)="onPageChange($event)">
         </mat-paginator>
       </div>
       <!--<table class="police" mat-table [dataSource]="dataSource">

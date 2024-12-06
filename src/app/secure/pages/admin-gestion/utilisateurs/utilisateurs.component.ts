@@ -8,76 +8,54 @@ import { SecurityServiceImpl } from '../../../../core/services/impl/security.ser
 import { ResponseInstituteUserDTO } from '../../../../core/models/institution/response-institute-user-dto';
 import { CommonModule } from '@angular/common';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import {MatPaginator, MatPaginatorIntl, MatPaginatorModule} from '@angular/material/paginator';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {MatPaginatorIntl, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-utilisateurs',
   standalone: true,
-  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule, MatTableModule],
+  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule],
   templateUrl: './utilisateurs.component.html',
   styleUrl: './utilisateurs.component.css'
 })
 export class UtilisateursComponent implements AfterViewInit {
+  totalElements: number = 0;  
+
   isLoading: boolean = false;
-  datas: InstituteUserDTO[] = []; 
+  allDatas: InstituteUserDTO[] = []; 
+  datasPaginated: InstituteUserDTO[] = []; 
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
-
-  displayedColumns: string[] = ['Nom', 'Identifiant', 'Date d’adhesion', 'Profil', 'Institution', 'Contact', 'Etat', 'Actions'];
-  dataSource = new MatTableDataSource<InstituteUserDTO>();
-
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator!;
-    this.matPaginatorIntl.itemsPerPageLabel="Utilisateurs par page";
-    
-  }
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
     private userService: UserServiceImpl,
   ){}
 
+
+  ngAfterViewInit() {
+    this.matPaginatorIntl.itemsPerPageLabel="Utilisateurs par page";
+    this.matPaginatorIntl.firstPageLabel = "Première page";
+    this.matPaginatorIntl.lastPageLabel = "Dernière page";
+    this.matPaginatorIntl.nextPageLabel = "Page suivante";
+    this.matPaginatorIntl.previousPageLabel = "Page précédente";
+  }
+
   ngOnInit(): void {
     initFlowbite();
     this.isLoading = true;
-    this.userService.getUserByInstitutionId(this.connectedUser.institutionId!).subscribe((res: ResponseInstituteUserDTO)=>{
+    // this.userService.getUserByInstitutionId(this.connectedUser.institutionId!).subscribe((res: ResponseInstituteUserDTO)=>{
+    this.userService.getUserByInstitutionId(1001).subscribe((res: ResponseInstituteUserDTO)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {
-        this.datas = res.data!;
-        this.dataSource.data = res.data!;
+        this.allDatas = res.data!;
+        this.totalElements = this.allDatas.length;
       }
     });
   }
-}
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
+  
+  onPageChange(event: PageEvent) {
+    console.log('Page change event:', event);
+    this.datasPaginated = this.allDatas.slice(event.pageIndex*event.pageSize, (event.pageIndex + 1)*event.pageSize)
+  }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-  {position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na'},
-  {position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg'},
-  {position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al'},
-  {position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si'},
-  {position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P'},
-  {position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S'},
-  {position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl'},
-  {position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar'},
-  {position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K'},
-  {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca'},
-];
+}
