@@ -1,14 +1,16 @@
 import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { AssetResponse } from '../../../../core/models/carnet-ordre/asset-response';
 import { UserDto } from '../../../../core/models/user/user-dto';
 import { SecurityServiceImpl } from '../../../../core/services/impl/security.service.impl';
 import { MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { CarnetOrdreServiceImpl } from '../../../../core/services/impl/carnet-ordre.service.impl';
+import { TransactionServiceImpl } from '../../../../core/services/impl/transaction.service.impl';
 import { ResponseAssetResponse } from '../../../../core/models/carnet-ordre/response-asset-response';
 import { CommonModule } from '@angular/common';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { ProposalResponse } from '../../../../core/models/carnet-ordre/proposal-response';
+import { PropositionServiceImpl } from '../../../../core/services/impl/proposition.service.impl';
 
 @Component({
   selector: 'app-carnet-ordre',
@@ -19,18 +21,21 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 })
 export class CarnetOrdreComponent implements AfterViewInit {
   totalElements: number = 0; 
-  selectedCarnet: AssetResponse|null = null; 
-
+  selectedCarnet: AssetResponse = {}; 
+  selectedNature: String = "TOUT";
+  selectedSens: String = "TOUT";
   isLoading: boolean = false;
   allDatas: AssetResponse[] = []; 
+  allDatasFiltered: AssetResponse[] = []; 
+  allProposals: ProposalResponse[] = []; 
   datasPaginated: AssetResponse[] = []; 
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
-    private carnetOrdreService: CarnetOrdreServiceImpl,
+    private transactionService: TransactionServiceImpl,
+    private propositionService: PropositionServiceImpl
   ){}
-
 
   ngAfterViewInit() {
      initFlowbite();
@@ -44,12 +49,13 @@ export class CarnetOrdreComponent implements AfterViewInit {
   ngOnInit(): void {
     this.isLoading = true;
     // this.userService.getUserByInstitutionId(this.connectedUser.institutionId!).subscribe((res: ResponseInstituteUserDTO)=>{
-    this.carnetOrdreService.getAllCarnetOrdre().subscribe((res: ResponseAssetResponse)=>{
+    this.transactionService.getAllCarnetOrdre().subscribe((res: ResponseAssetResponse)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {
         this.allDatas = res.data!;
-        this.datasPaginated = this.allDatas.slice(0*5, (0 + 1)*5)
-        this.totalElements = this.allDatas.length;
+        this.allDatasFiltered = this.allDatas;
+        this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
+        this.totalElements = this.allDatasFiltered.length;
       }
     });
   }
@@ -57,17 +63,50 @@ export class CarnetOrdreComponent implements AfterViewInit {
   
   onPageChange(event: PageEvent) {
     console.log('Page change event:', event);
-    this.datasPaginated = this.allDatas.slice(event.pageIndex*event.pageSize, (event.pageIndex + 1)*event.pageSize)
+    this.datasPaginated = this.allDatasFiltered.slice(event.pageIndex*event.pageSize, (event.pageIndex + 1)*event.pageSize)
   }
 
   voirDetail(btnDetail: HTMLButtonElement,carnet: AssetResponse) {
     //charger les données de item sur le modal
+    this.allProposals = [];
     this.selectedCarnet = carnet;
+    this.propositionService.getAllProposalsByAssetId(carnet.id!).subscribe((res)=>{
+      this.allProposals = res.data!;
+    });
     btnDetail.click();
   }
+
   supprimerCarnet(btnSupprimer: HTMLButtonElement,carnet: AssetResponse) {
     this.selectedCarnet = carnet;
     btnSupprimer.click();
+  }
+
+  filter() {
+    if (this.selectedNature == "TOUT"){
+      if(this.selectedSens == "TOUT"){
+        this.allDatasFiltered = this.allDatas;
+      }else{
+        this.allDatasFiltered = this.allDatas.filter(item => item.operationSens == this.selectedSens);
+      }
+    }else{
+      if(this.selectedSens == "TOUT"){
+        this.allDatasFiltered = this.allDatas.filter(item => item.nature == this.selectedNature);
+      }else{
+        this.allDatasFiltered = this.allDatas.filter(item => item.operationSens == this.selectedSens && item.nature == this.selectedNature);
+      }
+    }
+    this.totalElements = this.allDatasFiltered.length;
+    this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
+  }
+
+  filterBySensTransaction(sens: string) {
+    this.selectedSens = sens;
+    this.filter();
+  }
+
+  filterByNature(nature: string) {
+    this.selectedNature = nature;
+    this.filter();
   }
 
 }

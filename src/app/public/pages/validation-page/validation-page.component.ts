@@ -41,11 +41,14 @@ export class ValidationPageComponent {
 
   onSubmit(val1: string,val2: string,val3: string,val4: string,val5: string) {
     this.isLoading = true;
+    this.error = "";
     let requesId = localStorage.getItem("requesId")!;
     let code = val1+val2+val3+val4+val5
     
     this.securityService.validation(requesId,code).subscribe((res: ResponseVerificationResponseDto)=>{
       this.isLoading = false;
+      console.log(res);
+      
       if (res.statusCode==200){
         this.error = "";
         let profil = res.data?.user?.profile;
@@ -62,6 +65,9 @@ export class ValidationPageComponent {
         this.error = "Le code de vérification est invalide";
       }
     });
+    //EN cas d'erreur
+    this.isLoading = false;
+    this.error = "Le code de vérification est invalide";
   }
 
 }

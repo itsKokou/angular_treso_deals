@@ -56,6 +56,8 @@ export class LoginPageComponent {
     this.securityService.login(data).subscribe((res: ResponseLoginResponseDTO) => {
       
       this.isLoading = false;
+      console.log(res.data);
+      
       if (res.statusCode==200) {
         this.error=""
         this.loginReponse = res.data;
