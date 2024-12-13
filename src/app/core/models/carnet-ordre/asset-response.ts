@@ -16,6 +16,7 @@ export interface AssetResponse {
     price?: number;
     transactionRate?: number;
     interet?: number;
+    issuerCountry?: string;
 }
 
 
