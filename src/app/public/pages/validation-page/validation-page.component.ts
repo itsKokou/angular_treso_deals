@@ -66,8 +66,8 @@ export class ValidationPageComponent {
       }
     });
     //EN cas d'erreur
-    this.isLoading = false;
-    this.error = "Le code de vérification est invalide";
+    // this.isLoading = false;
+    // this.error = "Le code de vérification est invalide";
   }
 
 }
