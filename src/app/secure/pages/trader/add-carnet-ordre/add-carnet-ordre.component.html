@@ -1,5 +1,5 @@
 <div class="w-full px-6 py-6 mx-auto">      
-  <form class="bg-white rounded-xl shadow mt-4">
+  <form [formGroup]="form" (submit)="onSubmit()" class="bg-white rounded-xl shadow mt-4">
     <div class="!bg-blue-800 flex rounded-t-xl py-1.5 justify-center items-center">
       <h3 class="text-xl font-semibold text-white">
         Formulaire de transaction (Achat / Vente de Titres)
@@ -12,87 +12,170 @@
 
     <div class="flex max-w-full justify-between mb-4 px-4">
       <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 31%;">
-        <div class="mb-5 flex w-full items-center">
+        <!--<div class="mb-5 flex w-full items-center">
           <label for="date_offre" class="w-1/2 text-sm font-medium text-gray-900">Date offre :</label>
           <input type="date" id="date_offre" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-        </div>
-        <div class="mb-5 flex w-full items-center">
+        </div>-->
+        <div class="flex w-full items-center">
           <label for="countries" class="w-1/2 text-sm font-medium text-gray-900">Emetteur :</label>
-          <select id="countries" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-            <option>United States</option>
-            <option>Canada</option>
-            <option>France</option>
-            <option>Germany</option>
-          </select>                    
+          <select formControlName="issuerCountry" id="countries" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+            <option disabled [selected]="true">Indiquez le pays </option>
+            <option value="SENEGAL">SENEGAL</option>
+            <option value="CAMEROUN">CAMEROUN</option>
+            <option value="GHANA">GHANA</option>
+          </select>             
         </div>
-        <div class="mb-5 flex w-full items-center">
+        @if(issuerCountry.errors && (issuerCountry.dirty || issuerCountry.touched)){
+          @if(issuerCountry.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Emmeteur est requis</p>
+            </div>
+          }
+        }    
+        <div class="mt-5 flex w-full items-center">
           <label for="date_echeance" class="w-1/2 text-sm font-medium text-gray-900">Date d'échéance :</label>
-          <input type="date" id="date_echeance" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input formControlName="echeanceDate" type="date" id="date_echeance" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
-        <div class="mb-5 flex w-full items-center">
+        @if(echeanceDate.errors && (echeanceDate.dirty || echeanceDate.touched)){
+          @if(echeanceDate.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Date d'échéance est requise</p>
+            </div>
+          }
+        } 
+        <!--<div class="mb-5 mt-5 flex w-full items-center">
           <label for="duree" class="w-1/2 text-sm font-medium text-gray-900">Durée résiduelle (an) :</label>
           <input type="number" id="duree" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
         <div class="flex w-full items-center">
           <label for="valeur" class="w-1/2 text-sm font-medium text-gray-900">Valeur transaction :</label>
           <input type="number" id="valeur" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-        </div>
+        </div>-->
       </div>
       <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 31%;">
-        <div class="mb-5 flex w-full items-center">
-          <label for="sens" class="w-1/2 text-sm font-medium text-gray-900">Sens :</label>
-          <select id="sens" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-            <option>ACHAT</option>
-            <option>VENTE</option>
+        <div class="flex w-full items-center">
+          <label for="sens" class="w-1/2 text-sm font-medium text-gray-900">Sens Transaction :</label>
+          <select formControlName="operationSens" id="sens" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+            <option disabled [selected]="true">Indiquez le sens </option>
+            <option value="ACHAT">ACHAT</option>
+            <option value="VENTE">VENTE</option>
           </select>                         
         </div>
-        <div class="mb-5 flex w-full items-center">
+        @if(operationSens.errors && (operationSens.dirty || operationSens.touched)){
+          @if(operationSens.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Le sens est obligatoire</p>
+            </div>
+          }
+        } 
+        <div class="mt-5 flex w-full items-center">
           <label for="code_sin" class="w-1/2 text-sm font-medium text-gray-900">Code ISIN :</label>
-          <input type="text" id="code_sin" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">              
+          <input formControlName="codeIsin" type="text" id="code_sin" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">              
         </div>
-        <div class="mb-5 flex w-full items-center">
+        @if(codeIsin.errors && (codeIsin.dirty || codeIsin.touched)){
+          @if(codeIsin.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Le code SIN est obligatoire</p>
+            </div>
+          }
+        } 
+        <!--<div class="mt-5 flex w-full items-center">
           <label for="valeur_nom" class="w-1/2 text-sm font-medium text-gray-900">Valeur Nom. Unitaire :</label>
           <input type="number" id="valeur_nom" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-        </div>
-        <div class="mb-5 flex w-full items-center">
+        </div>-->
+        <div class="mt-5 flex w-full items-center">
           <label for="prix" class="w-1/2 text-sm font-medium text-gray-900">Prix de transaction :</label>
-          <input type="number" id="prix" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input formControlName="price" type="number" id="prix" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
-        <div class="flex w-full items-center">
+        @if(price.errors && (price.dirty || price.touched)){
+          @if(price.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Le prix est obligatoire</p>
+            </div>
+          }
+          @if(price.getError("min")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Le prix ne peut être 0</p>
+            </div>
+          }
+        } 
+        <!--<div class="flex w-full items-center">
           <label for="n_transaction" class="w-1/2 text-sm font-medium text-gray-900">N° transaction :</label>
           <input type="text" id="n_transaction" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-        </div>
+        </div>-->
       </div>
       <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 31%;">
         
-        <div class="mb-5 flex w-full items-center">
+        <div class=" flex w-full items-center">
           <label for="nature" class="w-1/2 text-sm font-medium text-gray-900">Nature instrument :</label>
-          <select id="nature" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-            <option>OAT</option>
-            <option>BAT</option>
-            <option>France</option>
-            <option>Germany</option>
+          <select formControlName="nature" id="nature" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+            <option disabled [selected]="true">Indiquez nature</option>
+            <option value="OAT">OAT</option>
+            <option value="BAT">BAT</option>
           </select>                    
         </div>
-        <div class="mb-5 flex w-full items-center">
+        @if(nature.errors && (nature.dirty || nature.touched)){
+          @if(nature.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Le prix est obligatoire</p>
+            </div>
+          }
+        } 
+        <div class=" mt-5 flex w-full items-center">
           <label for="taux" class="w-1/2 text-sm font-medium text-gray-900">Taux / Coupon :</label>
-          <input type="number" id="taux" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input formControlName="couponRate" type="number" id="taux" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
-        <div class="mb-5 flex w-full items-center">
+        @if(couponRate.errors && (couponRate.dirty || couponRate.touched)){
+          @if(couponRate.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Le coupon est obligatoire</p>
+            </div>
+          }
+          @if(couponRate.getError("min")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Le coupon ne peut être 0</p>
+            </div>
+          }
+        } 
+        <div class="mt-5 flex w-full items-center">
           <label for="qte" class="w-1/2 text-sm font-medium text-gray-900">Quantité :</label>
-          <input type="number" id="qte" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input formControlName="amount" type="number" id="qte" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
-        <div class="flex w-full items-center">
+        @if(amount.errors && (amount.dirty || amount.touched)){
+          @if(amount.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">La quantité est obligatoire</p>
+            </div>
+          }
+          @if(amount.getError("min")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">La quantité ne peut être 0</p>
+            </div>
+          }
+        } 
+        <div class="mt-5 flex w-full items-center">
           <label for="interet" class="w-1/2 text-sm font-medium text-gray-900">Intérêts courus :</label>
-          <input type="number" id="interet" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input formControlName="interet" type="number" id="interet" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
+        @if(interet.errors && (interet.dirty || interet.touched)){
+          @if(interet.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">L'intérêt est obligatoire</p>
+            </div>
+          }
+          @if(interet.getError("min")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">L'intérêt ne peut être 0</p>
+            </div>
+          }
+        }
       </div>
     </div>
     <div class="flex justify-end pb-4 px-4">
       <button data-modal-target="annulation-modal" data-modal-toggle="annulation-modal"  type="button" class="text-white !bg-red-600 hover:!bg-red-700 font-medium rounded-lg text-sm px-5 py-2 text-center">
         Annuler
       </button>
-      <button  data-modal-target="ajout-modal" data-modal-toggle="ajout-modal"  type="button" class="ml-4 text-white !bg-green-500 hover:!bg-green-600 font-medium rounded-lg text-sm px-5 py-2 text-center">
+      <button type="submit" class="ml-4 text-white !bg-green-500 hover:!bg-green-600 font-medium rounded-lg text-sm px-5 py-2 text-center">
         Ajouter
       </button>
     </div>
@@ -134,7 +217,9 @@
   </div>
 </div>
 
-
+<button #btnAjout  data-modal-target="ajout-modal" data-modal-toggle="ajout-modal"  type="button" class="ml-4 hidden text-white !bg-green-500 hover:!bg-green-600 font-medium rounded-lg text-sm px-5 py-2 text-center">
+  Ajouter
+</button>
 <!--Modal de Ajout--> 
 <div id="ajout-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
   <div class="relative p-4 w-full max-w-2xl max-h-full">

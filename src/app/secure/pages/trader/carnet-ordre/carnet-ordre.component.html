@@ -27,7 +27,7 @@
         Rechercher
       </button>
 
-      <div id="recherche-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+      <div id="recherche-modal" (submit)="rechercherOffres()" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-2xl max-h-full">
           <!-- Modal content -->
           <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -43,45 +43,45 @@
               </button>
             </div>
             <!-- Modal body -->
-            <form class="pt-6" action="" method="post">
+            <form [formGroup] = "form" class="pt-6" action="" method="post">
               <div class="mb-4 px-8 flex items-center justify-between">
                 <label for="n_transaction" class="w-1/3 text-gray-900 text-sm">N° transaction :</label>
-                <input type="text" name="n_transaction" id="n_transaction" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="N° transaction" required>
+                <input formControlName="num_transaction" type="text" name="n_transaction" id="n_transaction" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="N° transaction" required>
               </div>
               <div class="mb-4 px-8 flex items-center justify-between">
                 <label for="date_transaction" class="w-1/3 text-gray-900 text-sm">Date transaction :</label>
-                <input type="date" name="date_transaction" id="date_transaction" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Du ... au ..." required>
+                <input formControlName="date" type="date" name="date_transaction" id="date_transaction" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Du ... au ..." required>
               </div>
               <div class="mb-4 px-8 flex items-center justify-between">
                 <label for="pays" class="w-1/3 text-gray-900 text-sm">Emetteur :</label>
-                <select id="pays" name="pays" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3">
-                  <option>Indiquez Pays </option>
-                  <option value="TV">00228</option>
-                  <option value="PC">00221</option>
-                  <option value="GA">00229</option>
+                <select formControlName="emetteur" id="pays" name="pays" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3">
+                  <option disabled [selected]="true">Indiquez le pays </option>
+                  <option value="SENEGAL">SENEGAL</option>
+                  <option value="CAMEROUN">CAMEROUN</option>
+                  <option value="GHANA">GHANA</option>
                 </select>                             
               </div>
               <div class="mb-4 px-8 flex items-center justify-between">
                 <label for="nature" class="w-1/3 text-gray-900 text-sm">Nature :</label>
-                <select id="nature" name="nature" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3">
-                  <option>Indiquez Nature instrument </option>
+                <select formControlName="nature" id="nature" name="nature" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3">
+                  <option disabled [selected]="true">Indiquez la nature de l'instrument </option>
                   <option value="OAT">OAT</option>
                   <option value="BAT">BAT</option>
                 </select>                             
               </div>
               <div class="mb-4 px-8 flex items-center justify-between">
                 <label for="code" class="w-1/3 text-gray-900 text-sm">Code ISIN :</label>
-                <input type="text" name="code" id="code" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Indiquer le ISIN recherché" required>
+                <input formControlName="code" type="text" name="code" id="code" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Indiquer le ISIN recherché" required>
               </div>
               <div class="mb-6 px-8 flex items-center justify-between">
                 <label for="taux" class="w-1/3 text-gray-900 text-sm">Taux d'intérêt :</label>
-                <input type="text" name="taux" id="taux" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Taux fixe ou entre ...% et ...%" required>
+                <input formControlName="taux" type="text" name="taux" id="taux" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Taux fixe ou entre ...% et ...%" required>
               </div>
 
               <!-- Modal footer -->
               <div class="flex items-center justify-end py-3 px-8 border-t border-gray-200 rounded-b">
                 <button data-modal-hide="recherche-modal" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
-                <button type="submit" class="ml-5 text-white font-medium !bg-blue-800 hover:!bg-blue-900 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Envoyer</button>
+                <button data-modal-hide="recherche-modal" type="submit" class="ml-5 text-white font-medium !bg-blue-800 hover:!bg-blue-900 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Envoyer</button>
               </div>
             </form>
           </div>

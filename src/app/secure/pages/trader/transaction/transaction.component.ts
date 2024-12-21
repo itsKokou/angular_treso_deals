@@ -10,11 +10,12 @@ import { SecurityServiceImpl } from '../../../../core/services/impl/security.ser
 import { TransactionServiceImpl } from '../../../../core/services/impl/transaction.service.impl';
 import { PropositionServiceImpl } from '../../../../core/services/impl/proposition.service.impl';
 import { ResponseAssetResponse } from '../../../../core/models/carnet-ordre/response-asset-response';
+import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-transaction',
   standalone: true,
-  imports: [CommonModule, MatProgressBar, MatPaginatorModule],
+  imports: [CommonModule, MatProgressBar, MatPaginatorModule,  ReactiveFormsModule],
   templateUrl: './transaction.component.html',
   styleUrl: './transaction.component.css'
 })
@@ -33,8 +34,58 @@ export class TransactionComponent implements AfterViewInit {
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
     private transactionService: TransactionServiceImpl,
-    private propositionService: PropositionServiceImpl
+    private propositionService: PropositionServiceImpl,
+    private fb: FormBuilder
   ){}
+  
+  form = this.fb.group({
+    num_transaction: "",
+    date: "",
+    emetteur: "",
+    nature: "",
+    code: "",
+    taux: "",
+  })
+
+  get num_transaction(){
+    return this.form.controls["num_transaction"] as FormControl;
+  }
+  get date(){
+    return this.form.controls["date"] as FormControl;
+  }
+  get emetteur(){
+    return this.form.controls["emetteur"] as FormControl;
+  }
+  get nature(){
+    return this.form.controls["nature"] as FormControl;
+  }
+  get code(){
+    return this.form.controls["code"] as FormControl;
+  }
+  get taux(){
+    return this.form.controls["taux"] as FormControl;
+  }
+
+  rechercherOffres() {
+    console.log(this.form.value);
+    const {... data} = this.form.value
+    this.allDatasFiltered = this.allDatas.filter(item => item.codeIsin?.includes(data.code!) && item.issuerCountry?.includes(data.emetteur!) 
+    && item.nature?.includes(data.nature!) && item.echeanceDate?.includes(data.date!));
+
+    if (data.num_transaction != null  && data.num_transaction != ""){
+      var num = Number.parseInt(data.num_transaction);
+      this.allDatasFiltered = this.allDatasFiltered.filter(item => item.id ==num);
+    }
+
+    if (data.taux != null  && data.taux != ""){
+      var taux = Number.parseFloat(data.taux);
+      this.allDatasFiltered = this.allDatasFiltered.filter(item => item.transactionRate ==taux);
+    }
+
+    
+    this.totalElements = this.allDatasFiltered.length;
+    this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
+  }
 
   ngAfterViewInit() {
      initFlowbite();
