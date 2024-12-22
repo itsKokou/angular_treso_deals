@@ -50,6 +50,8 @@ export class LoginPageComponent {
   }
 
   onSubmit(){
+    console.log(this.form.errors);
+    
     localStorage.clear();
     this.isLoading = true;
     let data = this.form.getRawValue();

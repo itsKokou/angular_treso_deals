@@ -14,6 +14,10 @@ export class TransactionServiceImpl implements TransactionService {
   constructor(private http: HttpClient) { 
   }
 
+  addCarnetOrdre(data:any): Observable<ResponseAssetResponse> {
+    return this.http.post<ResponseAssetResponse>(`${this.apiUrl}/assets`, data);
+  }
+
   getTransactionEncours(): Observable<ResponseAssetResponse> {
     return this.http.get<ResponseAssetResponse>(`${this.apiUrl}/assets/published`);
   }

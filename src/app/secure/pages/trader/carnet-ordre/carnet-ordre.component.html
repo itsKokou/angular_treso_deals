@@ -113,15 +113,15 @@
               </tr>
               <tr>
                 <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Emetteur</th>
-                <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Code ISIN</th>
                 <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Nature</th>
+                <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Code ISIN</th>
                 <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Taux / Coupon</th>
                 <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Date d’échéance</th>
                 <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">N°</th>
                 <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Sens Transaction</th>
                 <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Quantité</th>
-                <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Prix / Taux de transaction</th>
-                <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Intérêt courus</th>
+                <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Prix / Taux proposé</th>
+                <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Intérêts courus</th>
                 <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Valeur totale </th>
                 <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Prix / Taux de transaction affiché</th>
                 <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Nombre</th>
@@ -135,10 +135,10 @@
                     <p class="mb-0 text-sm leading-normal">{{item.issuerCountry}}</p>
                   </td>
                   <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.codeIsin}}</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.nature}}</p>
                   </td>
                   <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.nature}}</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.codeIsin}}</p>
                   </td>
                   <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
                     <p class="mb-0 text-sm leading-normal">{{item.couponRate}}%</p>
@@ -159,13 +159,13 @@
                     <p class="mb-0 text-sm leading-normal">{{item.price}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.interet}}%</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.interet}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
                     <p class="mb-0 text-sm leading-normal">{{item.price! + item.interet!}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.transactionRate}}%</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.transactionRate}}</p>
                   </td>
                   <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
                     <p class="mb-0 text-sm leading-normal">{{item.propositions?.length}}</p>
