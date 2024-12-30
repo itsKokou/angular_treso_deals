@@ -14,6 +14,10 @@ export class PropositionServiceImpl implements PropositionService {
   constructor(private http: HttpClient) { 
   }
 
+  addProposaltoAsset(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/proposals/add`, data);
+  }
+
   getAllProposalsByAssetId(id: number): Observable<ResponseProposalResponse> {
     return this.http.get<ResponseProposalResponse>(`${this.apiUrl}/proposals/${id}?idAsset=${id}`);
   }

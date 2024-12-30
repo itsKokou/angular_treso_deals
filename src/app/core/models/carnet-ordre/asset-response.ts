@@ -3,6 +3,7 @@ import { Proposal } from "./proposal";
 
 export interface AssetResponse { 
     id?: number;
+    transactionNumber?: string;
     codeIsin?: string;
     publishedAt?: string;
     propositions?: Array<Proposal>;
@@ -17,6 +18,9 @@ export interface AssetResponse {
     transactionRate?: number;
     interet?: number;
     issuerCountry?: string;
+    residualDuration?: number;
+    transactionValue?: number;
+    unitaryValueName?: number;
 }
 
 

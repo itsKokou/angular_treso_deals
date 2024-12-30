@@ -6,4 +6,6 @@ export interface TransactionService{
   getTransactionEncours():Observable<ResponseAssetResponse>;
   getHistoriqueTransaction():Observable<ResponseAssetResponse>;
   addCarnetOrdre(data:any):Observable<ResponseAssetResponse>;
+  updateCarnetOrdre(data:any):Observable<ResponseAssetResponse>;
+  deleteCarnetOrdre(id:number):Observable<any>;
 }

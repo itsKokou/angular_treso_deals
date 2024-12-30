@@ -122,7 +122,7 @@
               @for (item of datasPaginated; track $index) {
                 <tr class="text-gray-700">
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.id}}</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.transactionNumber}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
                     <p class="mb-0 text-sm leading-normal">{{item.createdAt | date: "dd/MM/yyyy"}}</p>
@@ -149,13 +149,14 @@
                     <p class="mb-0 text-sm leading-normal">{{item.amount}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.price}}</p>
+                    <p *ngIf="item.nature=='OAT'" class="mb-0 text-sm leading-normal">{{item.price}}</p>
+                    <p *ngIf="item.nature=='BAT'" class="mb-0 text-sm leading-normal">{{item.transactionRate}}%</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
                     <p class="mb-0 text-sm leading-normal">{{item.interet}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.price! + item.interet!}}</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.transactionValue}}</p>
                   </td>
                   <td class="px-4 flex leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap">
                     <button type="button" (click)="voirDetail(btnDetail,item)" class="cursor-pointer !bg-blue-700 ml-2 px-2.5 text-sm rounded-lg py-1 my-0.5 whitespace-nowrap text-center font-semibold text-white">Voir</button>
@@ -224,9 +225,13 @@
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Echéance :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedCarnet.echeanceDate | date: 'dd/MM/yyyy' }}</p>
               </div>
-              <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Prix :</p>
+              <div *ngIf='selectedCarnet.nature == "OAT"' class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Prix Transaction :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.price}}</p>
+              </div>
+              <div *ngIf='selectedCarnet.nature == "BAT"' class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux Transaction :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.transactionRate}}%</p>
               </div>
             </div>
             <div class="mx-auto mt-2" style="width: 31%;">
@@ -240,7 +245,7 @@
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Durée :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">2,23</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.residualDuration}} an(s)</p>
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Intérêts :</p>
@@ -253,8 +258,8 @@
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.nature}}</p>
               </div>
               <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.transactionRate}}%</p>
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux/Coupon :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.couponRate}}%</p>
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Quantité :</p>
@@ -262,7 +267,7 @@
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Valeur :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.price! + selectedCarnet.interet!}}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.transactionValue}}</p>
               </div>
             </div>
           </div>
@@ -315,9 +320,11 @@
             </div>
           </div>
         </div>
+        <div *ngIf="isProposalLoading">
+          <mat-progress-bar class="text-purple-800" mode="indeterminate"></mat-progress-bar>
+        </div>
       </div>
       <!-- Modal footer -->
-      
     </div>
   </div>
 </div>

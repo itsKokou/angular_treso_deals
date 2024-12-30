@@ -11,12 +11,15 @@ import { PropositionServiceImpl } from '../../../../core/services/impl/propositi
 import { ResponseAssetResponse } from '../../../../core/models/carnet-ordre/response-asset-response';
 import { CommonModule } from '@angular/common';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormatNumberPipe } from '../../../../core/pipes/format-number.pipe';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-trading',
   standalone: true,
-  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule ],
+  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, MatProgressSpinnerModule,FormatNumberPipe ],
   templateUrl: './trading.component.html',
   styleUrl: './trading.component.css'
 })
@@ -31,13 +34,24 @@ export class TradingComponent implements AfterViewInit{
   allProposals: ProposalResponse[] = []; 
   datasPaginated: AssetResponse[] = []; 
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
     private transactionService: TransactionServiceImpl,
     private propositionService: PropositionServiceImpl,
-    private fb: FormBuilder
-  ){}
+    private fb: FormBuilder,
+    private snackBar:MatSnackBar,
+  ){
+    this.quantite.valueChanges.subscribe((value)=>{
+      this.prixTransaction.setValue(this.quantite.value*this.prixPropose.value)
+    });
+    this.prixPropose.valueChanges.subscribe((value)=>{
+      this.prixTransaction.setValue(this.quantite.value*this.prixPropose.value)
+    });
+  }
 
   form = this.fb.group({
     num_transaction: "",
@@ -66,6 +80,24 @@ export class TradingComponent implements AfterViewInit{
   get taux(){
     return this.form.controls["taux"] as FormControl;
   }
+
+  //---------------- Form Proposition
+  formProposition = this.fb.group({
+    quantite: [0, [Validators.required, Validators.min(1)]],
+    prixPropose: [0, [Validators.required, Validators.min(1)]],
+    prixTransaction: 0
+  })
+
+  get quantite(){
+    return this.formProposition.controls["quantite"] as FormControl;
+  }
+  get prixPropose(){
+    return this.formProposition.controls["prixPropose"] as FormControl;
+  }
+  get prixTransaction(){
+    return this.formProposition.controls["prixTransaction"] as FormControl;
+  }
+
 
   rechercherOffres() {
     console.log(this.form.value);
@@ -113,7 +145,6 @@ export class TradingComponent implements AfterViewInit{
 
   
   onPageChange(event: PageEvent) {
-    console.log('Page change event:', event);
     this.datasPaginated = this.allDatasFiltered.slice(event.pageIndex*event.pageSize, (event.pageIndex + 1)*event.pageSize)
   }
 
@@ -129,7 +160,57 @@ export class TradingComponent implements AfterViewInit{
 
   faireProposition(btnProposition: HTMLButtonElement,carnet: AssetResponse) {
     this.selectedCarnet = carnet;
+    this.quantite.addValidators(Validators.max(carnet.amount!))
     btnProposition.click();
+  }
+
+  abortProposition(){
+    this.formProposition.reset();
+  }
+
+  addProposition(){
+    if(this.formProposition.invalid){
+     this.formProposition.markAllAsTouched();
+     return; 
+    }
+
+    const openSpinner = document.getElementById("openSpinner");
+    const closeSpinner = document.getElementById("closeSpinner");
+    openSpinner?.click();
+    var data = {
+      assetId: this.selectedCarnet.id,
+      price: Number.parseFloat(this.prixPropose.getRawValue()),
+      amount: Number.parseFloat(this.quantite.getRawValue()),
+      transactionValue: Number.parseFloat(this.prixTransaction.getRawValue()),
+      interet: 100000
+    }
+
+    this.propositionService.addProposaltoAsset(data).subscribe((res) => {
+      closeSpinner?.click();
+      if (res.statusCode==201) {
+        this.snackBar.open("Proposition effectuée avec succès","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+        this.form.reset();
+      } else {
+        this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      }
+    }, (error)=>{
+      closeSpinner?.click();
+      this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+        duration: 5000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+      console.log(error);
+    });
+
   }
 
   filter() {

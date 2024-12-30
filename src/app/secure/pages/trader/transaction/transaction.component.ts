@@ -25,6 +25,7 @@ export class TransactionComponent implements AfterViewInit {
   selectedNature: String = "TOUT";
   selectedSens: String = "TOUT";
   isLoading: boolean = false;
+  isProposalLoading: boolean = false;
   allDatas: AssetResponse[] = []; 
   allDatasFiltered: AssetResponse[] = []; 
   allProposals: ProposalResponse[] = []; 
@@ -118,10 +119,12 @@ export class TransactionComponent implements AfterViewInit {
 
   voirDetail(btnDetail: HTMLButtonElement,carnet: AssetResponse) {
     //charger les données de item sur le modal
+    this.isProposalLoading = true;
     this.allProposals = []; 
     this.selectedCarnet = carnet;
     this.propositionService.getAllProposalsByAssetId(carnet.id!).subscribe((res)=>{
       this.allProposals = res.data!;
+      this.isProposalLoading = false;
     });
     btnDetail.click();
   }

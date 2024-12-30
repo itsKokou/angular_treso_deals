@@ -14,6 +14,14 @@ export class TransactionServiceImpl implements TransactionService {
   constructor(private http: HttpClient) { 
   }
 
+  updateCarnetOrdre(data: any): Observable<ResponseAssetResponse> {
+    return this.http.put<ResponseAssetResponse>(`${this.apiUrl}/assets`, data);
+  }
+
+  deleteCarnetOrdre(id: number):Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/assets/delete/${id}`);
+  }
+
   addCarnetOrdre(data:any): Observable<ResponseAssetResponse> {
     return this.http.post<ResponseAssetResponse>(`${this.apiUrl}/assets`, data);
   }

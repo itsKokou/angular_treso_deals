@@ -5,7 +5,8 @@ import { SecureRoutingModule } from './secure-routing.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule,
     SecureRoutingModule

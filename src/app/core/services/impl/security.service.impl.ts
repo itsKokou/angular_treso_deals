@@ -23,7 +23,7 @@ export class SecurityServiceImpl implements SecurityService {
   }
 
   validation(requestId: string, code: string): Observable<ResponseVerificationResponseDto> {
-    return this.http.post<ResponseVerificationResponseDto>(`${this.apiUrl}/auth/valid-verification/${requestId}/${code}`,{});
+    return this.http.post<ResponseVerificationResponseDto>(`${this.apiUrl}/auth/validate-verification/${requestId}/${code}`,{});
   }
   
   login(request: LoginRequest): Observable<ResponseLoginResponseDTO> {

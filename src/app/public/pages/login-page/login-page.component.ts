@@ -50,27 +50,29 @@ export class LoginPageComponent {
   }
 
   onSubmit(){
-    console.log(this.form.errors);
-    
     localStorage.clear();
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.isLoading = true;
     let data = this.form.getRawValue();
     this.securityService.login(data).subscribe((res: ResponseLoginResponseDTO) => {
-      
       this.isLoading = false;
-      console.log(res.data);
-      
       if (res.statusCode==200) {
         this.error=""
         this.loginReponse = res.data;
         this.securityService.isAuthenticated = true;
         localStorage.setItem("token", res.data!.token!);
-        localStorage.setItem("requesId", res.data!.initVerificationDTO!.requesId!.toString())
+        localStorage.setItem("requesId", res.data!.verificationDTO!.requesId!.toString())
         this.router.navigateByUrl("/validation")
       } else {
         this.securityService.isAuthenticated = false;
         this.error="Identifiant ou mot de passe incorrect"
       }
+    }, (err)=>{
+      this.isLoading = false;
+      this.error="Erreur lors de la connexion, veuillez réessayer !"
     });
   }
   

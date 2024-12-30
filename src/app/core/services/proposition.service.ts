@@ -3,4 +3,6 @@ import { ResponseProposalResponse } from "../models/carnet-ordre/response-propos
 
 export interface PropositionService{
   getAllProposalsByAssetId(id: number):Observable<ResponseProposalResponse>;
+  addProposaltoAsset(data:any):Observable<any>;
+
 }

@@ -1,11 +1,11 @@
 
 import { NexTransition } from '../enum/next-transition';
-import { InitVerificationDTO } from './init-verification-dto';
+import { VerificationDTO } from './verification-dto';
 
 
 export interface LoginResponseDTO { 
     nextTransition?: NexTransition.NexTransitionEnum;
-    initVerificationDTO?: InitVerificationDTO;
+    verificationDTO?: VerificationDTO;
     token?: string;
 }
 

@@ -4,7 +4,7 @@
       <div  class="inline-flex mt-1 w-full justify-center">
         <div style="width: 38%; margin-right:80px;" class="text-sm px-4 py-1 border border-gray-300 rounded-md">
             <label for="select-nature" class="block mb-1 font-medium text-gray-900">Nature :</label>
-            <select id="select-nature" #nature (change)="filterByNature(nature.value)" style="width:80%;" class="bg-gray-50  border border-gray-300 focus:ring-0 focus:border-gray-300 text-gray-900 rounded  block py-1 px-2">
+            <select id="select-nature" #natureRecherche (change)="filterByNature(natureRecherche.value)" style="width:80%;" class="bg-gray-50  border border-gray-300 focus:ring-0 focus:border-gray-300 text-gray-900 rounded  block py-1 px-2">
               <option value="TOUT" [selected]="selectedNature == 'TOUT'">Tout</option>
               <option value="OAT" [selected]="selectedNature == 'OAT'">OAT</option>
               <option value="BAT" [selected]="selectedNature == 'BAT'">BAT</option>
@@ -43,7 +43,7 @@
               </button>
             </div>
             <!-- Modal body -->
-            <form [formGroup] = "form" class="pt-6" action="" method="post">
+            <form [formGroup] = "formRecherche" class="pt-6" action="" method="post">
               <div class="mb-4 px-8 flex items-center justify-between">
                 <label for="n_transaction" class="w-1/3 text-gray-900 text-sm">N° transaction :</label>
                 <input formControlName="num_transaction" type="text" name="n_transaction" id="n_transaction" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="N° transaction" required>
@@ -63,7 +63,7 @@
               </div>
               <div class="mb-4 px-8 flex items-center justify-between">
                 <label for="nature" class="w-1/3 text-gray-900 text-sm">Nature :</label>
-                <select formControlName="nature" id="nature" name="nature" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3">
+                <select formControlName="natureC" id="nature" name="nature" class="w-full border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3">
                   <option disabled [selected]="true">Indiquez la nature de l'instrument </option>
                   <option value="OAT">OAT</option>
                   <option value="BAT">BAT</option>
@@ -147,7 +147,7 @@
                     <p class="mb-0 text-sm leading-normal">{{ item.echeanceDate | date: 'dd/MM/yyyy' }}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.id}}</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.transactionNumber}}</p>
                   </td>
                   <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
                     <p class="mb-0 text-sm leading-normal">{{item.operationSens}}</p>
@@ -156,16 +156,17 @@
                     <p class="mb-0 text-sm leading-normal">{{item.amount}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.price}}</p>
+                    <p class="mb-0 text-sm leading-normal">---</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
                     <p class="mb-0 text-sm leading-normal">{{item.interet}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.price! + item.interet!}}</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.transactionValue}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.transactionRate}}</p>
+                    <p *ngIf="item.nature=='OAT'" class="mb-0 text-sm leading-normal">{{item.price}}</p>
+                    <p *ngIf="item.nature=='BAT'" class="mb-0 text-sm leading-normal">{{item.transactionRate}}%</p>
                   </td>
                   <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
                     <p class="mb-0 text-sm leading-normal">{{item.propositions?.length}}</p>
@@ -176,11 +177,11 @@
                       <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                     </svg>
                     
-                    <svg class="cursor-pointer h-6 -mb-1 text-yellow-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="1.5" stroke="currentColor">
+                    <svg (click)="openUpdateModal(btnUpdate,item)" class="cursor-pointer h-6 -mb-1 text-yellow-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="1.5" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                     </svg>
 
-                    <svg (click)="supprimerCarnet(btnSupprimer,item)" class="cursor-pointer h-6 -mb-1 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="1.5" stroke="currentColor">
+                    <svg (click)="openSupprimerModal(btnSupprimer,item)" class="cursor-pointer h-6 -mb-1 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32" stroke-width="1.5" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                     </svg>
 
@@ -190,12 +191,12 @@
             </tbody>
           </table>
         </div>
-        
         <div *ngIf="isLoading">
           <mat-progress-bar class="text-purple-800" mode="indeterminate"></mat-progress-bar>
         </div>
         <div>
-          <mat-paginator showFirstLastButtons
+          <mat-paginator #paginator
+                 showFirstLastButtons
                 [length] ="totalElements"
                 [pageSize]="5"
                 [pageSizeOptions]="[5, 10, 25, 50]"
@@ -211,6 +212,7 @@
 
 <button class="hidden" #btnDetail data-modal-target="details-modal" data-modal-toggle="details-modal" >Details</button>
 <button class="hidden" #btnSupprimer data-modal-target="suppression-modal" data-modal-toggle="suppression-modal"> Supprimer</button>
+<button class="hidden" #btnUpdate data-modal-target="update-modal" data-modal-toggle="update-modal"> Update</button>
 
 <!--Modal de suppression--> 
 <div id="suppression-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -238,7 +240,7 @@
       <!-- Modal footer -->
       <div class="flex items-center justify-end py-3 px-8 border-t border-gray-200 rounded-b">
         <button data-modal-hide="suppression-modal" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
-        <button data-modal-hide="suppression-modal" type="button" class="ml-5 text-white font-medium !bg-red-600 hover:!bg-red-800 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Supprimer</button>
+        <button (click)="deleteCarnet()" data-modal-hide="suppression-modal" type="button" class="ml-5 text-white font-medium !bg-red-600 hover:!bg-red-800 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Supprimer</button>
       </div>
     </div>
   </div>
@@ -253,7 +255,7 @@
       <!-- Modal header -->
       <div class="flex align-middle bg-blue-800 items-center justify-between px-4 py-2 border-b rounded-t-lg ">
         <h3 class="text-xl mb-0 font-medium text-white ">
-          Détails proposition sur Offre N° xxx
+          Détails proposition sur Offre N° {{selectedCarnet.id}}
         </h3>
         <button type="button" class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="details-modal">
           <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -283,9 +285,13 @@
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Echéance :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedCarnet.echeanceDate | date: 'dd/MM/yyyy' }}</p>
               </div>
-              <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Prix :</p>
+              <div *ngIf='selectedCarnet.nature == "OAT"' class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Prix Transaction :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.price}}</p>
+              </div>
+              <div *ngIf='selectedCarnet.nature == "BAT"' class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux Transaction :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.transactionRate}}</p>
               </div>
             </div>
             <div class="mx-auto mt-2" style="width: 31%;">
@@ -299,7 +305,7 @@
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Durée :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">2,23</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.residualDuration}} an(s)</p>
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Intérêts :</p>
@@ -312,8 +318,8 @@
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.nature}}</p>
               </div>
               <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.transactionRate}}%</p>
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux/Coupon :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.couponRate}}%</p>
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Quantité :</p>
@@ -321,7 +327,7 @@
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Valeur :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.price! + selectedCarnet.interet!}}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.transactionValue}}</p>
               </div>
             </div>
           </div>
@@ -374,6 +380,9 @@
             </div>
           </div>
         </div>
+        <div *ngIf="isProposalLoading">
+          <mat-progress-bar class="text-purple-800" mode="indeterminate"></mat-progress-bar>
+        </div>
       </div>
       <!-- Modal footer -->
       
@@ -381,3 +390,273 @@
   </div>
 </div>
 
+
+<!--Modal de UPDATE--> 
+<div id="update-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-screen-xl max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+      <!-- Modal header -->
+      <div class="flex align-middle bg-blue-800 items-center justify-between px-4 py-2 border-b rounded-t-lg ">
+        <h3 class="text-xl mb-0 font-medium text-white ">
+          Modification : Offre N° {{selectedCarnet.id}}
+        </h3>
+        <button type="button" class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="update-modal">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="p-4 md:p-5 space-y-4">
+        <div class="border border-gray-400 p-3 rounded-md">
+          <div class="flex justify-center">
+            <h3 class="text-xl font-semibold text-gray-900">
+              Caractéristiques du titre 
+            </h3>
+          </div>
+          <form [formGroup]="form" (submit)="updateCarnet()" >
+            <div class="flex max-w-full justify-between mb-4 px-4">
+              <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 31%;">
+                <!--<div class="mb-5 flex w-full items-center">
+                  <label for="date_offre" class="w-1/2 text-sm font-medium text-gray-900">Date offre :</label>
+                  <input type="date" id="date_offre" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                </div>-->
+                <div class="flex w-full items-center">
+                  <label for="countries" class="w-1/2 text-sm font-medium text-gray-900">Emetteur :</label>
+                  <select formControlName="issuerCountry" id="countries" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                    <option disabled [selected]="true">Indiquez pays </option>
+                    <option value="SENEGAL">SENEGAL</option>
+                    <option value="CAMEROUN">CAMEROUN</option>
+                    <option value="GHANA">GHANA</option>
+                  </select>             
+                </div>
+                @if(issuerCountry.errors && (issuerCountry.dirty || issuerCountry.touched)){
+                  @if(issuerCountry.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">Emmeteur est requis</p>
+                    </div>
+                  }
+                }    
+                <div class="mt-5 flex w-full items-center">
+                  <label for="date_echeance" class="w-1/2 text-sm font-medium text-gray-900">Date d'échéance :</label>
+                  <input formControlName="echeanceDate" [min]="minDate" type="date" id="date_echeance" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                </div>
+                @if(echeanceDate.errors && (echeanceDate.dirty || echeanceDate.touched)){
+                  @if(echeanceDate.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">Date d'échéance est requise</p>
+                    </div>
+                  }
+                } 
+                <div class="mt-5 flex w-full items-center">
+                  <label for="duree" class="w-1/2 text-sm font-medium text-gray-900">Durée résiduelle (an) :</label>
+                  <input type="text" formControlName="residualDuration" id="duree" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                </div>
+                @if(residualDuration.errors && (residualDuration.dirty || residualDuration.touched)){
+                  @if(residualDuration.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">La durée est obligatoire</p>
+                    </div>
+                  }
+                  @if(residualDuration.getError("isnotdigit")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">La durée n'est pas valide</p>
+                    </div>
+                  }
+                } 
+                <div class="mt-5 flex w-full items-center">
+                  <label for="valeur" class="w-1/2 text-sm font-medium text-gray-900">Valeur transaction :</label>
+                  <input type="text" formControlName="transactionValue" id="valeur" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                </div>
+                @if(transactionValue.errors && (transactionValue.dirty || transactionValue.touched)){
+                  @if(transactionValue.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">La valeur est obligatoire</p>
+                    </div>
+                  }
+                  @if(transactionValue.getError("isnotdigit")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">La valeur n'est pas valide</p>
+                    </div>
+                  }
+                } 
+              </div>
+
+              <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 31%;">
+                <div class="flex w-full items-center">
+                  <label for="n_transaction" class="w-1/2 text-sm font-medium text-gray-900">N° transaction :</label>
+                  <input formControlName="transactionNumber" type="text" id="n_transaction" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                </div>
+                @if(transactionNumber.errors && (transactionNumber.dirty || transactionNumber.touched)){
+                  @if(transactionNumber.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">Le numéro est obligatoire</p>
+                    </div>
+                  }
+                }
+                <div class="mt-5 flex w-full items-center">
+                  <label for="sens" class="w-1/2 text-sm font-medium text-gray-900">Sens Transaction :</label>
+                  <select formControlName="operationSens" id="sens" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                    <option disabled [selected]="true">Indiquez sens </option>
+                    <option value="ACHAT">ACHAT</option>
+                    <option value="VENTE">VENTE</option>
+                  </select>                         
+                </div>
+                @if(operationSens.errors && (operationSens.dirty || operationSens.touched)){
+                  @if(operationSens.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">Le sens est obligatoire</p>
+                    </div>
+                  }
+                } 
+                <div class="mt-5 flex w-full items-center">
+                  <label for="nature" class="w-1/2 text-sm font-medium text-gray-900">Nature instrument :</label>
+                  <select formControlName="nature" id="nature" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                    <option disabled [selected]="true">Indiquez nature</option>
+                    <option value="OAT">OAT</option>
+                    <option value="BAT">BAT</option>
+                  </select>                    
+                </div>
+                @if(nature.errors && (nature.dirty || nature.touched)){
+                  @if(nature.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">Le prix est obligatoire</p>
+                    </div>
+                  }
+                }
+                <div class="mt-5 flex w-full items-center">
+                  <label for="code_sin" class="w-1/2 text-sm font-medium text-gray-900">Code ISIN :</label>
+                  <input formControlName="codeIsin" type="text" id="code_sin" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">              
+                </div>
+                @if(codeIsin.errors && (codeIsin.dirty || codeIsin.touched)){
+                  @if(codeIsin.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">Le code SIN est obligatoire</p>
+                    </div>
+                  }
+                } 
+                
+                <div class="mt-5 flex w-full items-center">
+                  <label for="prix" class="w-1/2 text-sm font-medium text-gray-900">{{label}} de transaction :</label>
+                  <input formControlName="price" type="text" id="prix" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                </div>
+                @if(price.errors && (price.dirty || price.touched)){
+                  @if(price.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">Le {{label.toLowerCase()}} est obligatoire</p>
+                    </div>
+                  }
+                  @if(price.getError("isnotdigit")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">Le {{label.toLowerCase()}} n'est pas valide</p>
+                    </div>
+                  }
+                } 
+                <!--<div class="mt-5 flex w-full items-center">
+                  <label for="n_transaction" class="w-1/2 text-sm font-medium text-gray-900">N° transaction :</label>
+                  <input type="text" id="n_transaction" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                </div>-->
+              </div>
+              <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 31%;">
+                <div class="flex w-full items-center">
+                  <label for="valeur_nom" class="w-1/2 text-sm font-medium text-gray-900">Valeur Nom. Unitaire :</label>
+                  <input type="text" formControlName="unitaryValueName" id="valeur_nom" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                </div>
+                @if(unitaryValueName.errors && (unitaryValueName.dirty || unitaryValueName.touched)){
+                  @if(unitaryValueName.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">La valeur est obligatoire</p>
+                    </div>
+                  }
+                  @if(unitaryValueName.getError("isnotdigit")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">La valeur n'est pas valide</p>
+                    </div>
+                  }
+                } 
+                
+                <div class=" mt-5 flex w-full items-center">
+                  <label for="taux" class="w-1/2 text-sm font-medium text-gray-900">Taux / Coupon :</label>
+                  <input formControlName="couponRate" type="text" id="taux" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                </div>
+                @if(couponRate.errors && (couponRate.dirty || couponRate.touched)){
+                  @if(couponRate.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">Le coupon est obligatoire</p>
+                    </div>
+                  }
+                  @if(couponRate.getError("isnotdigit")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">Le coupon n'est pas valide</p>
+                    </div>
+                  }
+                } 
+                <div class="mt-5 flex w-full items-center">
+                  <label for="qte" class="w-1/2 text-sm font-medium text-gray-900">Quantité :</label>
+                  <input formControlName="amount" type="text" id="qte" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                </div>
+                @if(amount.errors && (amount.dirty || amount.touched)){
+                  @if(amount.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">La quantité est obligatoire</p>
+                    </div>
+                  }
+                  @if(amount.getError("isnotdigit")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">La quantité n'est pas valide</p>
+                    </div>
+                  }
+                } 
+                <div class="mt-5 flex w-full items-center">
+                  <label for="interet" class="w-1/2 text-sm font-medium text-gray-900">Intérêts courus :</label>
+                  <input formControlName="interet" type="text" id="interet" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+                </div>
+                @if(interet.errors && (interet.dirty || interet.touched)){
+                  @if(interet.getError("required")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">L'intérêt est obligatoire</p>
+                    </div>
+                  }
+                  @if(interet.getError("isnotdigit")){
+                    <div class="flex justify-end">
+                      <p class="text-left text-sm " style="color: red;">L'intérêt n'est pas valide</p>
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+        
+            <!-- Modal footer -->
+            <div class="flex items-center justify-end py-3 px-8 border-t border-gray-200 rounded-b">
+              <button id="hideUpdate" data-modal-hide="update-modal" (click)="abortUpdate()" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
+              <button type="submit" class="ml-5 text-white font-medium !bg-green-500 hover:!bg-green-600 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Enregistrer</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- SPINNER  -->
+<button id="openSpinner" data-modal-target="spinner-modal" data-modal-toggle="spinner-modal" class="hidden" type="button">
+  Toggle Spinner
+</button>
+
+<button  id="closeSpinner" data-modal-hide="spinner-modal" type="button" class="hidden">
+  Fermer
+</button>
+
+<div id="spinner-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-2xl max-h-full">
+    <div class="relative bg-transparent">
+      <div class="flex justify-center items-center p-4">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,14 +12,14 @@
 
     <div class="flex max-w-full justify-between mb-4 px-4">
       <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 31%;">
-        <div class="mb-5 flex w-full items-center">
+        <!--<div class="mb-5 flex w-full items-center">
           <label for="date_offre" class="w-1/2 text-sm font-medium text-gray-900">Date offre :</label>
           <input type="date" id="date_offre" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-        </div>
+        </div>-->
         <div class="flex w-full items-center">
           <label for="countries" class="w-1/2 text-sm font-medium text-gray-900">Emetteur :</label>
           <select formControlName="issuerCountry" id="countries" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-            <option disabled [selected]="true">Indiquez le pays </option>
+            <option disabled [selected]="true">Indiquez pays </option>
             <option value="SENEGAL">SENEGAL</option>
             <option value="CAMEROUN">CAMEROUN</option>
             <option value="GHANA">GHANA</option>
@@ -34,7 +34,7 @@
         }    
         <div class="mt-5 flex w-full items-center">
           <label for="date_echeance" class="w-1/2 text-sm font-medium text-gray-900">Date d'échéance :</label>
-          <input formControlName="echeanceDate" type="date" id="date_echeance" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input formControlName="echeanceDate" [min]="minDate" type="date" id="date_echeance" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
         @if(echeanceDate.errors && (echeanceDate.dirty || echeanceDate.touched)){
           @if(echeanceDate.getError("required")){
@@ -43,20 +43,56 @@
             </div>
           }
         } 
-        <div class="mb-5 mt-5 flex w-full items-center">
+        <div class="mt-5 flex w-full items-center">
           <label for="duree" class="w-1/2 text-sm font-medium text-gray-900">Durée résiduelle (an) :</label>
-          <input type="number" id="duree" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input type="text" formControlName="residualDuration" id="duree" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
-        <div class="flex w-full items-center">
+        @if(residualDuration.errors && (residualDuration.dirty || residualDuration.touched)){
+          @if(residualDuration.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">La durée est obligatoire</p>
+            </div>
+          }
+          @if(residualDuration.getError("isnotdigit")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">La durée n'est pas valide</p>
+            </div>
+          }
+        } 
+        <div class="mt-5 flex w-full items-center">
           <label for="valeur" class="w-1/2 text-sm font-medium text-gray-900">Valeur transaction :</label>
-          <input type="number" id="valeur" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input type="text" formControlName="transactionValue" id="valeur" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
+        @if(transactionValue.errors && (transactionValue.dirty || transactionValue.touched)){
+          @if(transactionValue.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">La valeur est obligatoire</p>
+            </div>
+          }
+          @if(transactionValue.getError("isnotdigit")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">La valeur n'est pas valide</p>
+            </div>
+          }
+        } 
       </div>
+
       <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 31%;">
         <div class="flex w-full items-center">
+          <label for="n_transaction" class="w-1/2 text-sm font-medium text-gray-900">N° transaction :</label>
+          <input formControlName="transactionNumber" type="text" id="n_transaction" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+        </div>
+        @if(transactionNumber.errors && (transactionNumber.dirty || transactionNumber.touched)){
+          @if(transactionNumber.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Le numéro est obligatoire</p>
+            </div>
+          }
+        }
+        <div class="mt-5 flex w-full items-center">
           <label for="sens" class="w-1/2 text-sm font-medium text-gray-900">Sens Transaction :</label>
           <select formControlName="operationSens" id="sens" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-            <option disabled [selected]="true">Indiquez le sens </option>
+            <option disabled [selected]="true">Indiquez sens </option>
             <option value="ACHAT">ACHAT</option>
             <option value="VENTE">VENTE</option>
           </select>                         
@@ -69,44 +105,6 @@
           }
         } 
         <div class="mt-5 flex w-full items-center">
-          <label for="code_sin" class="w-1/2 text-sm font-medium text-gray-900">Code ISIN :</label>
-          <input formControlName="codeIsin" type="text" id="code_sin" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">              
-        </div>
-        @if(codeIsin.errors && (codeIsin.dirty || codeIsin.touched)){
-          @if(codeIsin.getError("required")){
-            <div class="flex justify-end">
-              <p class="text-left text-sm " style="color: red;">Le code SIN est obligatoire</p>
-            </div>
-          }
-        } 
-        <div class="mt-5 flex w-full items-center">
-          <label for="valeur_nom" class="w-1/2 text-sm font-medium text-gray-900">Valeur Nom. Unitaire :</label>
-          <input type="number" id="valeur_nom" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-        </div>
-        <div class="mt-5 flex w-full items-center">
-          <label for="prix" class="w-1/2 text-sm font-medium text-gray-900">Prix de transaction :</label>
-          <input formControlName="price" type="number" id="prix" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-        </div>
-        @if(price.errors && (price.dirty || price.touched)){
-          @if(price.getError("required")){
-            <div class="flex justify-end">
-              <p class="text-left text-sm " style="color: red;">Le prix est obligatoire</p>
-            </div>
-          }
-          @if(price.getError("min")){
-            <div class="flex justify-end">
-              <p class="text-left text-sm " style="color: red;">Le prix ne peut être 0</p>
-            </div>
-          }
-        } 
-        <div class="mt-5 flex w-full items-center">
-          <label for="n_transaction" class="w-1/2 text-sm font-medium text-gray-900">N° transaction :</label>
-          <input type="text" id="n_transaction" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-        </div>
-      </div>
-      <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 31%;">
-        
-        <div class=" flex w-full items-center">
           <label for="nature" class="w-1/2 text-sm font-medium text-gray-900">Nature instrument :</label>
           <select formControlName="nature" id="nature" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
             <option disabled [selected]="true">Indiquez nature</option>
@@ -120,10 +118,57 @@
               <p class="text-left text-sm " style="color: red;">Le prix est obligatoire</p>
             </div>
           }
+        }
+        <div class="mt-5 flex w-full items-center">
+          <label for="code_sin" class="w-1/2 text-sm font-medium text-gray-900">Code ISIN :</label>
+          <input formControlName="codeIsin" type="text" id="code_sin" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">              
+        </div>
+        @if(codeIsin.errors && (codeIsin.dirty || codeIsin.touched)){
+          @if(codeIsin.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Le code SIN est obligatoire</p>
+            </div>
+          }
         } 
+        
+        <div class="mt-5 flex w-full items-center">
+          <label for="prix" class="w-1/2 text-sm font-medium text-gray-900">{{label}} de transaction :</label>
+          <input formControlName="price" type="text" id="prix" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+        </div>
+        @if(price.errors && (price.dirty || price.touched)){
+          @if(price.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Le {{label.toLowerCase()}} est obligatoire</p>
+            </div>
+          }
+          @if(price.getError("isnotdigit")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Le {{label.toLowerCase()}} n'est pas valide</p>
+            </div>
+          }
+        } 
+      </div>
+      <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 31%;">
+        <div class="flex w-full items-center">
+          <label for="valeur_nom" class="w-1/2 text-sm font-medium text-gray-900">Valeur Nom. Unitaire :</label>
+          <input type="text" formControlName="unitaryValueName" id="valeur_nom" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+        </div>
+        @if(unitaryValueName.errors && (unitaryValueName.dirty || unitaryValueName.touched)){
+          @if(unitaryValueName.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">La valeur est obligatoire</p>
+            </div>
+          }
+          @if(unitaryValueName.getError("isnotdigit")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">La valeur n'est pas valide</p>
+            </div>
+          }
+        } 
+         
         <div class=" mt-5 flex w-full items-center">
           <label for="taux" class="w-1/2 text-sm font-medium text-gray-900">Taux / Coupon :</label>
-          <input formControlName="couponRate" type="number" id="taux" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input formControlName="couponRate" type="text" id="taux" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
         @if(couponRate.errors && (couponRate.dirty || couponRate.touched)){
           @if(couponRate.getError("required")){
@@ -131,15 +176,15 @@
               <p class="text-left text-sm " style="color: red;">Le coupon est obligatoire</p>
             </div>
           }
-          @if(couponRate.getError("min")){
+          @if(couponRate.getError("isnotdigit")){
             <div class="flex justify-end">
-              <p class="text-left text-sm " style="color: red;">Le coupon ne peut être 0</p>
+              <p class="text-left text-sm " style="color: red;">Le coupon n'est pas valide</p>
             </div>
           }
         } 
         <div class="mt-5 flex w-full items-center">
           <label for="qte" class="w-1/2 text-sm font-medium text-gray-900">Quantité :</label>
-          <input formControlName="amount" type="number" id="qte" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input formControlName="amount" type="text" id="qte" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
         @if(amount.errors && (amount.dirty || amount.touched)){
           @if(amount.getError("required")){
@@ -147,15 +192,15 @@
               <p class="text-left text-sm " style="color: red;">La quantité est obligatoire</p>
             </div>
           }
-          @if(amount.getError("min")){
+          @if(amount.getError("isnotdigit")){
             <div class="flex justify-end">
-              <p class="text-left text-sm " style="color: red;">La quantité ne peut être 0</p>
+              <p class="text-left text-sm " style="color: red;">La quantité n'est pas valide</p>
             </div>
           }
         } 
         <div class="mt-5 flex w-full items-center">
           <label for="interet" class="w-1/2 text-sm font-medium text-gray-900">Intérêts courus :</label>
-          <input formControlName="interet" type="number" id="interet" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input formControlName="interet" type="text" id="interet" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
         @if(interet.errors && (interet.dirty || interet.touched)){
           @if(interet.getError("required")){
@@ -163,17 +208,17 @@
               <p class="text-left text-sm " style="color: red;">L'intérêt est obligatoire</p>
             </div>
           }
-          @if(interet.getError("min")){
+          @if(interet.getError("isnotdigit")){
             <div class="flex justify-end">
-              <p class="text-left text-sm " style="color: red;">L'intérêt ne peut être 0</p>
+              <p class="text-left text-sm " style="color: red;">L'intérêt n'est pas valide</p>
             </div>
           }
         }
       </div>
     </div>
     <div class="flex justify-end pb-4 px-4">
-      <button data-modal-target="annulation-modal" data-modal-toggle="annulation-modal"  type="button" class="text-white !bg-red-600 hover:!bg-red-700 font-medium rounded-lg text-sm px-5 py-2 text-center">
-        Annuler
+      <button (click)="abortSubmission()" type="button" class="text-white !bg-gray-400 hover:!bg-gray-700 font-medium rounded-lg text-sm px-5 py-2 text-center">
+        Réinitialiser
       </button>
       <button type="submit" class="ml-4 text-white !bg-green-500 hover:!bg-green-600 font-medium rounded-lg text-sm px-5 py-2 text-center">
         Ajouter
@@ -185,11 +230,11 @@
     
 
 <!--Modal de Annulation--> 
-<div id="annulation-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<!--<div id="annulation-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
   <div class="relative p-4 w-full max-w-2xl max-h-full">
-    <!-- Modal content -->
+  
     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-      <!-- Modal header -->
+      
       <div class="flex align-middle bg-blue-800 items-center justify-between px-4 py-2 border-b rounded-t-lg ">
         <h3 class="text-xl mb-0 font-medium text-white ">
           Confirmation d'Annulation
@@ -200,7 +245,7 @@
           </svg>
         </button>
       </div>
-      <!-- Modal body -->
+   
       <div class="p-4 text-center md:p-5 space-y-4">
         <svg class="text-blue-700 w-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
@@ -208,16 +253,16 @@
 
         <p class="mb-5 text-lg font-normal text-gray-700 dark:text-gray-400">Voulez-vous confirmer l'annulation de l'ajout de la transaction de code ISIN : <span class="font-semibold">BJ0000000121</span> ?</p>
       </div>
-      <!-- Modal footer -->
+    
       <div class="flex items-center justify-end py-3 px-8 border-t border-gray-200 rounded-b">
         <button data-modal-hide="annulation-modal" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
         <button data-modal-hide="annulation-modal" type="button" class="ml-5 text-white font-medium !bg-red-600 hover:!bg-red-800 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Confirmer</button>
       </div>
     </div>
   </div>
-</div>
+</div>-->
 
-<button #btnAjout  data-modal-target="ajout-modal" data-modal-toggle="ajout-modal"  type="button" class="ml-4 hidden text-white !bg-green-500 hover:!bg-green-600 font-medium rounded-lg text-sm px-5 py-2 text-center">
+<button id="btnAdd" data-modal-target="ajout-modal" data-modal-toggle="ajout-modal"  type="button" class="ml-4 hidden text-white !bg-green-500 hover:!bg-green-600 font-medium rounded-lg text-sm px-5 py-2 text-center">
   Ajouter
 </button>
 <!--Modal de Ajout--> 
@@ -237,16 +282,36 @@
         </button>
       </div>
       <!-- Modal body -->
-      <div class="p-4 text-center md:p-5 space-y-4">
+      <div class="text-center px-8 py-5 space-y-4">
         <svg class="text-green-500 w-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
         </svg>
-        <p class="mb-5 text-lg font-normal text-gray-700 dark:text-gray-400">Voulez-vous confirmer la création de la transaction de code ISIN : <span class="font-semibold">BJ0000000121</span> ?</p>
+        <p class="mb-5 text-lg font-normal text-gray-700 dark:text-gray-400">Voulez-vous confirmer la création de la transaction de code ISIN : <span class="font-semibold">{{codeIsin.value}}</span> ?</p>
       </div>
       <!-- Modal footer -->
       <div class="flex items-center justify-end py-3 px-8 border-t border-gray-200 rounded-b">
-        <button data-modal-hide="ajout-modal" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
-        <button data-modal-hide="ajout-modal" type="button" class="ml-5 text-white font-medium !bg-green-500 hover:!bg-green-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Confirmer</button>
+        <button (click)="abortSubmission()" data-modal-hide="ajout-modal" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
+        <button (click)="confirmSubmission()" data-modal-hide="ajout-modal" type="button" class="ml-5 text-white font-medium !bg-green-500 hover:!bg-green-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Confirmer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SPINNER  -->
+<button id="openSpinner" data-modal-target="spinner-modal" data-modal-toggle="spinner-modal" class="hidden" type="button">
+  Toggle Spinner
+</button>
+
+<button  id="closeSpinner" data-modal-hide="spinner-modal" type="button" class="hidden">
+  Fermer
+</button>
+
+<div id="spinner-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-2xl max-h-full">
+    <div class="relative bg-transparent">
+      <div class="flex justify-center items-center p-4">
+        <mat-spinner></mat-spinner>
       </div>
     </div>
   </div>

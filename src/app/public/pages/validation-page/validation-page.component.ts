@@ -47,12 +47,10 @@ export class ValidationPageComponent {
     
     this.securityService.validation(requesId,code).subscribe((res: ResponseVerificationResponseDto)=>{
       this.isLoading = false;
-      console.log(res);
       
       if (res.statusCode==200){
         this.error = "";
         let profil = res.data?.user?.profile;
-        console.log(res.data?.user);
         localStorage.setItem("connectedUser", JSON.stringify(res.data?.user!));
         if (profil=="ADMIN_GESTION"){
           this.router.navigateByUrl('/gestion/dashboard')
@@ -64,6 +62,9 @@ export class ValidationPageComponent {
       }else{
         this.error = "Le code de vérification est invalide";
       }
+    }, (error)=>{
+      this.isLoading = false;
+      this.error = "Le code de vérification est invalide";
     });
     //EN cas d'erreur
     // this.isLoading = false;
