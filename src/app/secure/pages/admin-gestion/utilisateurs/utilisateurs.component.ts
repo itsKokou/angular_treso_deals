@@ -11,11 +11,10 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import {MatPaginatorIntl, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 
 @Component({
-  selector: 'app-utilisateurs',
-  standalone: true,
-  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule],
-  templateUrl: './utilisateurs.component.html',
-  styleUrl: './utilisateurs.component.css'
+    selector: 'app-utilisateurs',
+    imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule],
+    templateUrl: './utilisateurs.component.html',
+    styleUrl: './utilisateurs.component.css'
 })
 export class UtilisateursComponent implements AfterViewInit {
   totalElements: number = 0;  

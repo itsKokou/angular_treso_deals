@@ -9,12 +9,13 @@ import { Router } from '@angular/router';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @Component({
-  selector: 'app-login-page',
   standalone: true,
+  selector: 'app-login-page',
   imports: [CommonModule, ReactiveFormsModule, MatProgressBarModule],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css'
 })
+
 export class LoginPageComponent {
   isPasswordVisible: boolean = false;
   loginReponse?: LoginResponseDTO;

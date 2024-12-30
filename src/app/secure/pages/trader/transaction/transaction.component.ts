@@ -13,9 +13,9 @@ import { ResponseAssetResponse } from '../../../../core/models/carnet-ordre/resp
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-transaction',
   standalone: true,
-  imports: [CommonModule, MatProgressBar, MatPaginatorModule,  ReactiveFormsModule],
+  selector: 'app-transaction',
+  imports: [CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule],
   templateUrl: './transaction.component.html',
   styleUrl: './transaction.component.css'
 })

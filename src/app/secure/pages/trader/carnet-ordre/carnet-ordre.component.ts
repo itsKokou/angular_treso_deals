@@ -16,8 +16,8 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-carnet-ordre',
   standalone: true,
+  selector: 'app-carnet-ordre',
   imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, MatProgressSpinnerModule],
   templateUrl: './carnet-ordre.component.html',
   styleUrl: './carnet-ordre.component.css'

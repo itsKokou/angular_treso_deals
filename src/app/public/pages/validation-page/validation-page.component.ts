@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { initFlowbite } from 'flowbite';
@@ -9,8 +8,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
-  selector: 'app-validation-page',
   standalone: true,
+  selector: 'app-validation-page',
   imports: [CommonModule, ReactiveFormsModule, MatProgressBarModule],
   templateUrl: './validation-page.component.html',
   styleUrl: './validation-page.component.css'
@@ -21,7 +20,6 @@ export class ValidationPageComponent {
   isLoading: boolean = false;
 
   constructor(
-    private http: HttpClient,
     private fb: FormBuilder,
     private router: Router,
     private securityService: SecurityServiceImpl
