@@ -31,6 +31,7 @@
             ],
             "scripts": [
               "src/assets/js/treso.js"
+
             ]
           },
           "configurations": {

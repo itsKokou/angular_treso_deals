@@ -187,13 +187,14 @@ export class TradingComponent implements AfterViewInit{
 
     this.propositionService.addProposaltoAsset(data).subscribe((res) => {
       closeSpinner?.click();
-      if (res.statusCode==201) {
+      if (res.statusCode==200) {
         this.snackBar.open("Proposition effectuée avec succès","Ok",{
           duration: 5000,
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
         });
-        this.form.reset();
+        this.formProposition.reset();
+        document.getElementById('closeProposition')?.click();
       } else {
         this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
           duration: 5000,

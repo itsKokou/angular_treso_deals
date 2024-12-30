@@ -10,9 +10,15 @@
                 <div class="mb-4">  
                     <input type="text" name="statut" required class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Statuts Juridiques (Banque, SGI, Autre)">  
                 </div>  
-                
+                  
                 <div class="mb-4">  
-                    <input type="text" name="pays" required class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Pays :">  
+                    <select2 id="selectPays"  class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1"
+                        [overlay]="false"
+                        [data]="dataPays"
+                        placeholder="Pays"
+                        styleMode="borderless"
+                    >
+                    </select2>
                 </div>  
                 <div>  
                     <input type="text" name="ville" required class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Ville :">  
@@ -97,4 +103,21 @@
 </div>   
 
 
+<!-- SPINNER  -->
+<button id="openSpinner" data-modal-target="spinner-modal" data-modal-toggle="spinner-modal" class="hidden" type="button">
+  Toggle Spinner
+</button>
 
+<button  id="closeSpinner" data-modal-hide="spinner-modal" type="button" class="hidden">
+  Fermer
+</button>
+
+<div id="spinner-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-2xl max-h-full">
+    <div class="relative bg-transparent">
+      <div class="flex justify-center items-center p-4">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+  </div>
+</div>

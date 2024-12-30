@@ -119,9 +119,9 @@ export class TransactionComponent implements AfterViewInit {
 
   voirDetail(btnDetail: HTMLButtonElement,carnet: AssetResponse) {
     //charger les données de item sur le modal
+    this.selectedCarnet = carnet;
     this.isProposalLoading = true;
     this.allProposals = []; 
-    this.selectedCarnet = carnet;
     this.propositionService.getAllProposalsByAssetId(carnet.id!).subscribe((res)=>{
       this.allProposals = res.data!;
       this.isProposalLoading = false;
