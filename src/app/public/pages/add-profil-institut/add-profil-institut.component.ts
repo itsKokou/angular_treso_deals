@@ -19,7 +19,7 @@ export class AddProfilInstitutComponent implements OnInit {
   dataPays:any = []
 
   constructor(
-    private fb: FormBuilder,
+    private fb : FormBuilder,
     private snackBar:MatSnackBar,
   ){}
 
