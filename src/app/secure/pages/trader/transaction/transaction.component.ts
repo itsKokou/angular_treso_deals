@@ -31,12 +31,12 @@ export class TransactionComponent implements AfterViewInit {
   allProposals: ProposalResponse[] = []; 
   datasPaginated: AssetResponse[] = []; 
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
+  private fb = inject(FormBuilder);
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
     private transactionService: TransactionServiceImpl,
-    private propositionService: PropositionServiceImpl,
-    private fb: FormBuilder
+    private propositionService: PropositionServiceImpl
   ){}
   
   form = this.fb.group({

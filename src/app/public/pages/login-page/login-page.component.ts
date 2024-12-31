@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { initFlowbite } from 'flowbite';
 import { SecurityServiceImpl } from '../../../core/services/impl/security.service.impl';
@@ -20,6 +20,7 @@ export class LoginPageComponent {
   isPasswordVisible: boolean = false;
   loginReponse?: LoginResponseDTO;
   isLoading: boolean = false;
+  private fb = inject(FormBuilder);
 
   form : FormGroup = this.fb.group({
     identifiant: ["", [Validators.required, Validators.email]],
@@ -36,7 +37,6 @@ export class LoginPageComponent {
   }
 
   constructor(
-    private fb: FormBuilder,
     private securityService: SecurityServiceImpl,
     private router: Router
   ){}

@@ -14,6 +14,8 @@ import { PropositionServiceImpl } from '../../../../core/services/impl/propositi
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ProposalEnum } from '../../../../core/models/enum/proposal-enum';
+import { Proposal } from '../../../../core/models/carnet-ordre/proposal';
 
 @Component({
   standalone: true,
@@ -26,6 +28,9 @@ export class CarnetOrdreComponent implements AfterViewInit {
 
   totalElements: number = 0; 
   selectedCarnet: AssetResponse = {}; 
+  selectedProposal: ProposalResponse = {};
+  proposalMessage: string = "l\'acceptation" 
+  selectedStatut!: ProposalEnum.StatusEnum; 
   selectedNature: String = "TOUT";
   selectedSens: String = "TOUT";
   isLoading: boolean = false;
@@ -41,12 +46,12 @@ export class CarnetOrdreComponent implements AfterViewInit {
   minDate!: string;
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  private fb = inject(FormBuilder);
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
     private transactionService: TransactionServiceImpl,
     private propositionService: PropositionServiceImpl,
-    private fb: FormBuilder,
     private snackBar: MatSnackBar
   ){
     const today = new Date();
@@ -259,7 +264,7 @@ export class CarnetOrdreComponent implements AfterViewInit {
     this.filter();
   }
 
-  voirDetail(btnDetail: HTMLButtonElement,carnet: AssetResponse) {
+  voirDetail(carnet: AssetResponse) {
     //charger les données de item sur le modal
     this.isProposalLoading = true;
     this.allProposals = [];
@@ -268,7 +273,7 @@ export class CarnetOrdreComponent implements AfterViewInit {
       this.isProposalLoading = false;
       this.allProposals = res.data!;
     });
-    btnDetail.click();
+    document.getElementById("btnDetail")?.click();
   }
 
   openSupprimerModal(btnSupprimer: HTMLButtonElement,carnet: AssetResponse) {
@@ -375,6 +380,50 @@ export class CarnetOrdreComponent implements AfterViewInit {
         console.log(error);
       });
     }
+  }
+
+  openTreatmentModal(proposal: ProposalResponse, statut: ProposalEnum.StatusEnum, message: string){
+    this.selectedProposal = proposal;
+    this.selectedStatut = statut;
+    this.proposalMessage = message;
+    document.getElementById("closeDetail")?.click();
+    document.getElementById("btnConfirm")?.click();
+  }
+
+  treatProposal(){
+    const openSpinner = document.getElementById("openSpinner");
+    const closeSpinner = document.getElementById("closeSpinner");
+    openSpinner?.click();
+
+    this.selectedProposal.status = this.selectedStatut;
+    
+    this.propositionService.treatProposal(this.selectedProposal.id, this.selectedStatut, this.selectedProposal).subscribe((res : ResponseAssetResponse) => {
+        closeSpinner?.click();
+        if (res.statusCode==204) {
+          this.snackBar.open("Proposition validée avec succès","Ok",{
+            duration: 5000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+          this.voirDetail(this.selectedCarnet);
+        } else {
+          this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+            duration: 5000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+          this.voirDetail(this.selectedCarnet);
+        }
+      }, (error)=>{
+        closeSpinner?.click();
+        this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+        this.voirDetail(this.selectedCarnet);
+        console.log(error);
+    });
   }
 
 }

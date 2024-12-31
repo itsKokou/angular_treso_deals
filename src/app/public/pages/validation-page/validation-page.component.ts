@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { SecurityServiceImpl } from '../../../core/services/impl/security.service.impl';
@@ -16,11 +16,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 })
 export class ValidationPageComponent {
   error : string = ""
+  private fb = inject(FormBuilder);
   form : FormGroup = this.fb.group({});
   isLoading: boolean = false;
 
   constructor(
-    private fb: FormBuilder,
     private router: Router,
     private securityService: SecurityServiceImpl
   ){}

@@ -1,22 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { initFlowbite } from 'flowbite';
-import { Select2Module } from 'ng-select2-component';
+import {Select2Data,Select2Module } from 'ng-select2-component';
+
 
 @Component({
-  standalone: true,
   selector: 'app-add-profil-institut',
-  imports: [MatProgressSpinnerModule, CommonModule, ReactiveFormsModule, Select2Module ],
+  imports: [MatProgressSpinnerModule, CommonModule, ReactiveFormsModule, Select2Module, ReactiveFormsModule],
   templateUrl: './add-profil-institut.component.html',
   styleUrl: './add-profil-institut.component.css'
 })
+
 export class AddProfilInstitutComponent {
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
-  dataPays:any = []
+  dataPays:Select2Data = []
+  private fb = inject(FormBuilder);
 
   form: FormGroup = this.fb.group({
     denomination : ["", [Validators.required, Validators.minLength(2)]],
@@ -32,9 +34,10 @@ export class AddProfilInstitutComponent {
   });
 
   constructor(
-    private fb: FormBuilder,
     private snackBar:MatSnackBar
-  ){}
+  ){
+    
+  }
 
   
   ngOnInit(): void {
@@ -52,7 +55,8 @@ export class AddProfilInstitutComponent {
   }
 
   onSubmit(){
-
+    console.log("Hello");
+    
   }
 
 

@@ -5,6 +5,7 @@ export namespace ProposalEnum {
         Accepted: 'ACCEPTED' as StatusEnum,
         Rejected: 'REJECTED' as StatusEnum
     };
+    
     export type PublicationStatusEnum = 'PENDING' | 'VALIDATED' | 'CANCELLED';
     export const PublicationStatusEnum = {
         Pending: 'PENDING' as PublicationStatusEnum,
