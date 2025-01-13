@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { initFlowbite } from 'flowbite';
 
 @Component({
     standalone: true,
@@ -7,6 +8,14 @@ import { Component } from '@angular/core';
     templateUrl: './dashbord.component.html',
     styleUrl: './dashbord.component.css'
 })
-export class DashbordComponent {
+export class DashbordComponent implements OnInit {
+
+    constructor(){
+        localStorage.setItem("trader","Dashboard");
+    }
+    
+    ngOnInit(): void {
+        initFlowbite();
+    }
 
 }

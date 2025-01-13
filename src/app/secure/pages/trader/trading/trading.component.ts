@@ -45,6 +45,7 @@ export class TradingComponent implements AfterViewInit{
     private fb: FormBuilder,
     private snackBar:MatSnackBar,
   ){
+    localStorage.setItem("trader","Trading");
     this.quantite.valueChanges.subscribe((value)=>{
       this.prixTransaction.setValue(this.quantite.value*this.prixPropose.value)
     });

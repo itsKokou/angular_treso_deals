@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ResponseAssetResponse } from '../../models/carnet-ordre/response-asset-response';
 import { TransactionService } from '../transaction.service';
+import { ResponseResumeAsset } from '../../models/carnet-ordre/response-resume-asset';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,10 @@ export class TransactionServiceImpl implements TransactionService {
   private apiUrl = `${environment.APIURL}`
 
   constructor(private http: HttpClient) { 
+  }
+
+  getResumeOrdre(data: any): Observable<ResponseResumeAsset> {
+    return this.http.post<any>(`${this.apiUrl}/assets/overview`, data);
   }
 
   updateCarnetOrdre(data: any): Observable<ResponseAssetResponse> {

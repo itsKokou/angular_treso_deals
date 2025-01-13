@@ -37,7 +37,9 @@ export class TransactionComponent implements AfterViewInit {
     private matPaginatorIntl:MatPaginatorIntl,
     private transactionService: TransactionServiceImpl,
     private propositionService: PropositionServiceImpl
-  ){}
+  ){
+    localStorage.setItem("trader","Mes Transactions");
+  }
   
   form = this.fb.group({
     num_transaction: "",

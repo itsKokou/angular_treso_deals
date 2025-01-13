@@ -38,10 +38,10 @@ export class SecurityServiceImpl implements SecurityService {
     }
   }
 
-  getConnectedUser(){
+  getConnectedUser():any{
     var user = localStorage.getItem("connectedUser")
     if(user != null){
-      return JSON.parse(user);
+      return JSON.parse(user) as UserDto;
     }else{
       this.router.navigateByUrl("/login");
     }

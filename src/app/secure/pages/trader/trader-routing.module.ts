@@ -7,6 +7,7 @@ import { TradingComponent } from './trading/trading.component';
 import { ProfilDetailComponent } from './profil-detail/profil-detail.component';
 import { CarnetOrdreComponent } from './carnet-ordre/carnet-ordre.component';
 import { AddCarnetOrdreComponent } from './add-carnet-ordre/add-carnet-ordre.component';
+import { ChatComponent } from './chat/chat.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
         path: 'carnet/ordre/form',
         component: AddCarnetOrdreComponent
       },
+      {
+        path: 'chat',
+        component: ChatComponent
+      }
 
     ]
   }

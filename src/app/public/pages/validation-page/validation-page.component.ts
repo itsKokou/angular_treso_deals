@@ -53,6 +53,7 @@ export class ValidationPageComponent {
         if (profil=="ADMIN_GESTION"){
           this.router.navigateByUrl('/gestion/dashboard')
         }else if (profil=="TRADER"){
+          localStorage.setItem("trader","Dashboard");
           this.router.navigateByUrl('/trader/dashboard')
         }else if (profil=="SUPER_ADMIN"){
           this.router.navigateByUrl('/admin/dashboard')
