@@ -60,8 +60,10 @@ export class CarnetOrdreComponent implements AfterViewInit {
     this.nature.valueChanges.subscribe((value)=>{
       if (value=="BAT"){
         this.label = "Taux"
+        this.unitaryValueName.setValue(1000000);
       }else{
         this.label = "Prix"
+        this.unitaryValueName.setValue(10000);
       }
     });
   }
@@ -107,9 +109,9 @@ export class CarnetOrdreComponent implements AfterViewInit {
     couponRate: ["", [Validators.required, this.validateDigit]],
     amount : ["", [Validators.required, this.validateQte]],
     interet: ["", [Validators.required, this.validateDigit]],
-    unitaryValueName: ["", [Validators.required, this.validateDigit]],
-    transactionValue: ["", [Validators.required, this.validateDigit]],
-    residualDuration: ["", [Validators.required, this.validateDigit]],
+    unitaryValueName: [0],
+    transactionValue: [0],
+    residualDuration: [0],
   });
 
   get transactionNumber(){
@@ -308,13 +310,13 @@ export class CarnetOrdreComponent implements AfterViewInit {
       echeanceDate: carnet.echeanceDate,
       operationSens: carnet.operationSens,
       codeIsin: carnet.codeIsin,
-      price: carnet.price?.toString(),
+      price: carnet.proposedPrice?.toString(),
       nature: carnet.nature,
       couponRate: carnet.couponRate?.toString(),
       amount : carnet.amount?.toString(),
       interet: carnet.interet?.toString(),
-      unitaryValueName: carnet.unitaryValueName?.toString(),
-      transactionValue: carnet.transactionValue?.toString(),
+      unitaryValueName: 0,
+      transactionValue: carnet.totalTransactionValue?.toString(),
       residualDuration: carnet.residualDuration?.toString()
     });
     btnUpdate.click();

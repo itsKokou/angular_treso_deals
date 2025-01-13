@@ -156,17 +156,17 @@
                     <p class="mb-0 text-sm leading-normal">{{item.amount}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">---</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.nature=="OAT" ? item.proposedPrice : item.proposedRate}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
                     <p class="mb-0 text-sm leading-normal">{{item.interet}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.transactionValue}}</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.totalTransactionValue}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p *ngIf="item.nature=='OAT'" class="mb-0 text-sm leading-normal">{{item.price}}</p>
-                    <p *ngIf="item.nature=='BAT'" class="mb-0 text-sm leading-normal">{{item.transactionRate}}%</p>
+                    <p *ngIf="item.nature=='OAT'" class="mb-0 text-sm leading-normal">{{item.proposedPrice}}</p>
+                    <p *ngIf="item.nature=='BAT'" class="mb-0 text-sm leading-normal">{{item.proposedRate}}%</p>
                   </td>
                   <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
                     <p class="mb-0 text-sm leading-normal">{{item.propositions?.length}}</p>
@@ -275,7 +275,7 @@
             <div class="mx-auto mt-2" style="width: 31%;">
               <div class="w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Date :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{ selectedCarnet.createdAt | date: 'dd/MM/yyyy' }}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{ selectedCarnet.date | date: 'dd/MM/yyyy' }}</p>
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Emetteur :</p>
@@ -287,11 +287,11 @@
               </div>
               <div *ngIf='selectedCarnet.nature == "OAT"' class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Prix Transaction :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.price}}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.proposedPrice}}</p>
               </div>
               <div *ngIf='selectedCarnet.nature == "BAT"' class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux Transaction :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.transactionRate}}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.proposedRate}}</p>
               </div>
             </div>
             <div class="mx-auto mt-2" style="width: 31%;">
@@ -305,11 +305,15 @@
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Durée :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.residualDuration}} an(s)</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.residualDuration | number: '1.2-2'}} an(s)</p>
               </div>
-              <div class="mt-2 w-full flex">
+              <div *ngIf='selectedCarnet.nature == "OAT"' class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Intérêts :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.interet}}</p>
+              </div>
+              <div *ngIf='selectedCarnet.nature == "BAT"' class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Redement :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.yieldRate}}%</p>
               </div>
             </div>
             <div class="mx-auto mt-2" style="width: 31%;">
@@ -317,7 +321,7 @@
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Nature :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.nature}}</p>
               </div>
-              <div class="mt-2 w-full flex">
+              <div  *ngIf='selectedCarnet.nature == "OAT"' class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux/Coupon :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.couponRate}}%</p>
               </div>
@@ -327,7 +331,7 @@
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Valeur :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.transactionValue}}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.totalTransactionValue}}</p>
               </div>
             </div>
           </div>

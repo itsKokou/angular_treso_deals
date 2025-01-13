@@ -5,7 +5,7 @@ export interface AssetResponse {
     id?: number;
     transactionNumber?: string;
     codeIsin?: string;
-    publishedAt?: string;
+    date?: string;
     propositions?: Array<Proposal>;
     operationSens?: OperationEnum.SensEnum;
     createdAt?: string;
@@ -21,6 +21,16 @@ export interface AssetResponse {
     residualDuration?: number;
     transactionValue?: number;
     unitaryValueName?: number;
+
+    proposedRate?: number;
+    proposedPrice?: number;
+    valueDate?: string;
+    totalNominalValue?: number;
+    transactionPrice?: number;
+    totalTransactionValue?: number;
+    yieldRate?: number;
+    estimatedYield?: number;
+    feesedPrice?: number;
 }
 
 
