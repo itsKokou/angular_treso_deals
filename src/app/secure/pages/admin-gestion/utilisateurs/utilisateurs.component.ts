@@ -5,10 +5,10 @@ import { UserServiceImpl } from '../../../../core/services/impl/user.service.imp
 import { InstituteUserDTO } from '../../../../core/models/institution/institute-user-dto';
 import { UserDto } from '../../../../core/models/user/user-dto';
 import { SecurityServiceImpl } from '../../../../core/services/impl/security.service.impl';
-import { ResponseInstituteUserDTO } from '../../../../core/models/institution/response-institute-user-dto';
 import { CommonModule } from '@angular/common';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import {MatPaginatorIntl, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
+import { RestResponse } from '../../../../core/models/rest-response';
 
 @Component({
     selector: 'app-utilisateurs',
@@ -27,7 +27,9 @@ export class UtilisateursComponent implements AfterViewInit {
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
     private userService: UserServiceImpl,
-  ){}
+  ){
+    localStorage.setItem("gestion","Utilisateurs");
+  }
 
 
   ngAfterViewInit() {
@@ -42,18 +44,18 @@ export class UtilisateursComponent implements AfterViewInit {
     initFlowbite();
     this.isLoading = true;
     // this.userService.getUserByInstitutionId(this.connectedUser.institutionId!).subscribe((res: ResponseInstituteUserDTO)=>{
-    this.userService.getUserByInstitutionId(1001).subscribe((res: ResponseInstituteUserDTO)=>{
+    this.userService.getUserByInstitutionId(1037).subscribe((res: RestResponse<InstituteUserDTO[]>)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {
         this.allDatas = res.data!;
         this.totalElements = this.allDatas.length;
+        this.datasPaginated = this.allDatas.slice(0*5, (0 + 1)*5);
       }
     });
   }
 
   
   onPageChange(event: PageEvent) {
-    console.log('Page change event:', event);
     this.datasPaginated = this.allDatas.slice(event.pageIndex*event.pageSize, (event.pageIndex + 1)*event.pageSize)
   }
 

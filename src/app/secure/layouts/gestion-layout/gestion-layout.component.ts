@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
+import { UserDto } from '../../../core/models/user/user-dto';
+import { SecurityServiceImpl } from '../../../core/services/impl/security.service.impl';
 
 @Component({
     selector: 'app-gestion-layout',
@@ -8,9 +10,30 @@ import { initFlowbite } from 'flowbite';
     templateUrl: './gestion-layout.component.html',
     styleUrl: './gestion-layout.component.css'
 })
-export class GestionLayoutComponent {
+export class GestionLayoutComponent implements OnInit {
+  private securityService = inject(SecurityServiceImpl);
+  connectedUser? : UserDto;
+  page : any = "Dashboard";
+
+  constructor(private router: Router){
+  }
 
   ngOnInit(): void {
     initFlowbite();
+    this.connectedUser = this.securityService.getConnectedUser();
+    this.page = localStorage.getItem("trader");
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Réinitialisez les données ici
+        this.page = localStorage.getItem("gestion");
+      }
+    });
+  }
+
+  deconnexion(){
+    localStorage.clear();
+    this.securityService.isAuthenticated = false;
+    this.router.navigateByUrl('/login');
   }
 }

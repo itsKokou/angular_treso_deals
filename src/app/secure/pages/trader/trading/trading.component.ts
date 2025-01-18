@@ -8,13 +8,13 @@ import { SecurityServiceImpl } from '../../../../core/services/impl/security.ser
 import { MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { TransactionServiceImpl } from '../../../../core/services/impl/transaction.service.impl';
 import { PropositionServiceImpl } from '../../../../core/services/impl/proposition.service.impl';
-import { ResponseAssetResponse } from '../../../../core/models/carnet-ordre/response-asset-response';
 import { CommonModule } from '@angular/common';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormatNumberPipe } from '../../../../core/pipes/format-number.pipe';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { RestResponse } from '../../../../core/models/rest-response';
 
 @Component({
   standalone: true,
@@ -132,8 +132,7 @@ export class TradingComponent implements AfterViewInit{
 
   ngOnInit(): void {
     this.isLoading = true;
-    // this.userService.getUserByInstitutionId(this.connectedUser.institutionId!).subscribe((res: ResponseInstituteUserDTO)=>{
-    this.transactionService.getTransactionEncours().subscribe((res: ResponseAssetResponse)=>{
+    this.transactionService.getTransactionEncours().subscribe((res: RestResponse<AssetResponse[]>)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {
         this.allDatas = res.data!;

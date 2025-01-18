@@ -16,7 +16,6 @@ export class TraderLayoutComponent implements OnInit {
   page : any = "Dashboard";
 
   constructor(private router: Router){
-    
   }
 
   ngOnInit(): void {

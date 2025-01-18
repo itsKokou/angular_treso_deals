@@ -9,8 +9,8 @@ import { UserDto } from '../../../../core/models/user/user-dto';
 import { SecurityServiceImpl } from '../../../../core/services/impl/security.service.impl';
 import { TransactionServiceImpl } from '../../../../core/services/impl/transaction.service.impl';
 import { PropositionServiceImpl } from '../../../../core/services/impl/proposition.service.impl';
-import { ResponseAssetResponse } from '../../../../core/models/carnet-ordre/response-asset-response';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { RestResponse } from '../../../../core/models/rest-response';
 
 @Component({
   standalone: true,
@@ -101,8 +101,7 @@ export class TransactionComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    // this.userService.getUserByInstitutionId(this.connectedUser.institutionId!).subscribe((res: ResponseInstituteUserDTO)=>{
-    this.transactionService.getHistoriqueTransaction().subscribe((res: ResponseAssetResponse)=>{
+    this.transactionService.getHistoriqueTransaction().subscribe((res: RestResponse<AssetResponse[]>)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {
         this.allDatas = res.data!;

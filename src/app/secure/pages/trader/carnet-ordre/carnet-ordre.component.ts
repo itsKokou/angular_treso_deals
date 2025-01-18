@@ -6,7 +6,6 @@ import { UserDto } from '../../../../core/models/user/user-dto';
 import { SecurityServiceImpl } from '../../../../core/services/impl/security.service.impl';
 import { MatPaginator, MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { TransactionServiceImpl } from '../../../../core/services/impl/transaction.service.impl';
-import { ResponseAssetResponse } from '../../../../core/models/carnet-ordre/response-asset-response';
 import { CommonModule } from '@angular/common';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { ProposalResponse } from '../../../../core/models/carnet-ordre/proposal-response';
@@ -16,6 +15,7 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProposalEnum } from '../../../../core/models/enum/proposal-enum';
 import { Proposal } from '../../../../core/models/carnet-ordre/proposal';
+import { RestResponse } from '../../../../core/models/rest-response';
 
 @Component({
   standalone: true,
@@ -106,9 +106,9 @@ export class CarnetOrdreComponent implements AfterViewInit {
     codeIsin: ["", [Validators.required]],
     price: ["", [Validators.required, this.validateDigit]],
     nature: ["", [Validators.required]],
-    couponRate: ["", [Validators.required, this.validateDigit]],
+    couponRate: [0],
     amount : ["", [Validators.required, this.validateQte]],
-    interet: ["", [Validators.required, this.validateDigit]],
+    // interet: [0],
     unitaryValueName: [0],
     transactionValue: [0],
     residualDuration: [0],
@@ -149,9 +149,9 @@ export class CarnetOrdreComponent implements AfterViewInit {
   get amount(){
     return this.form.controls["amount"] as FormControl;
   }
-  get interet(){
-    return this.form.controls["interet"] as FormControl;
-  }
+  // get interet(){
+  //   return this.form.controls["interet"] as FormControl;
+  // }
   get unitaryValueName(){
     return this.form.controls["unitaryValueName"] as FormControl;
   }
@@ -222,8 +222,8 @@ export class CarnetOrdreComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.isLoading = true;
-    // this.userService.getUserByInstitutionId(this.connectedUser.institutionId!).subscribe((res: ResponseInstituteUserDTO)=>{
-    this.transactionService.getAllCarnetOrdre().subscribe((res: ResponseAssetResponse)=>{
+    
+    this.transactionService.getAllCarnetOrdre().subscribe((res: RestResponse<AssetResponse[]>)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {
         this.allDatas = res.data!;
@@ -310,11 +310,11 @@ export class CarnetOrdreComponent implements AfterViewInit {
       echeanceDate: carnet.echeanceDate,
       operationSens: carnet.operationSens,
       codeIsin: carnet.codeIsin,
-      price: carnet.proposedPrice?.toString(),
+      price: carnet.nature == "OAT" ? carnet.proposedPrice?.toString() : carnet.proposedRate?.toString(),
       nature: carnet.nature,
-      couponRate: carnet.couponRate?.toString(),
+      couponRate: carnet.nature == "OAT" ? carnet.couponRate?.toString() : 0,
       amount : carnet.amount?.toString(),
-      interet: carnet.interet?.toString(),
+      // interet: carnet.interet?.toString(),
       unitaryValueName: 0,
       transactionValue: carnet.totalTransactionValue?.toString(),
       residualDuration: carnet.residualDuration?.toString()
@@ -346,14 +346,14 @@ export class CarnetOrdreComponent implements AfterViewInit {
         nature: this.nature.getRawValue(),
         couponRate: Number.parseFloat(this.couponRate.getRawValue()),
         amount : Number.parseFloat(this.amount.getRawValue()),
-        interet: Number.parseFloat(this.interet.getRawValue()),
+        // interet: Number.parseFloat(this.interet.getRawValue()),
         unitaryValueName: Number.parseFloat(this.unitaryValueName.getRawValue()),
         transactionValue: Number.parseFloat(this.transactionValue.getRawValue()),
         residualDuration: Number.parseFloat(this.residualDuration.getRawValue()),
         transactionRate: this.nature.getRawValue() == "BAT" ? Number.parseFloat(this.price.getRawValue()) : 1,
       }
 
-      this.transactionService.updateCarnetOrdre(data).subscribe((res : ResponseAssetResponse) => {
+      this.transactionService.updateCarnetOrdre(data).subscribe((res : any) => {
         closeSpinner?.click();
         if (res.statusCode==200) {
           this.snackBar.open("Carnet d'ordre mis à jour avec succès","Ok",{
@@ -400,7 +400,7 @@ export class CarnetOrdreComponent implements AfterViewInit {
 
     this.selectedProposal.status = this.selectedStatut;
     
-    this.propositionService.treatProposal(this.selectedProposal.id, this.selectedStatut, this.selectedProposal).subscribe((res : ResponseAssetResponse) => {
+    this.propositionService.treatProposal(this.selectedProposal.id, this.selectedStatut, this.selectedProposal).subscribe((res : any) => {
         closeSpinner?.click();
         if (res.statusCode==204) {
           this.snackBar.open("Proposition validée avec succès","Ok",{

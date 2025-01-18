@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { UserService } from '../user.service';
-import { ResponseInstituteUserDTO } from '../../models/institution/response-institute-user-dto';
 import { Injectable } from '@angular/core';
+import { RestResponse } from '../../models/rest-response';
+import { InstituteUserDTO } from '../../models/institution/institute-user-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,8 @@ export class UserServiceImpl implements UserService {
   constructor(private http: HttpClient) { 
   }
 
-  getUserByInstitutionId(id: number): Observable<ResponseInstituteUserDTO> {
-    return this.http.get<ResponseInstituteUserDTO>(`${this.apiUrl}/users/${id}`);
+  getUserByInstitutionId(id: number): Observable<RestResponse<InstituteUserDTO[]>> {
+    return this.http.get<RestResponse<InstituteUserDTO[]>>(`${this.apiUrl}/users/${id}`);
   }
 
 }

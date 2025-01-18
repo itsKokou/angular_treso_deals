@@ -1,13 +1,14 @@
 import { Observable } from "rxjs";
-import { ResponseAssetResponse } from "../models/carnet-ordre/response-asset-response";
-import { ResponseResumeAsset } from "../models/carnet-ordre/response-resume-asset";
+import { ResumeAssetResponse } from "../models/carnet-ordre/resume-asset-response";
+import { RestResponse } from "../models/rest-response";
+import { AssetResponse } from "../models/carnet-ordre/asset-response";
 
 export interface TransactionService{
-  getAllCarnetOrdre():Observable<ResponseAssetResponse>;
-  getTransactionEncours():Observable<ResponseAssetResponse>;
-  getHistoriqueTransaction():Observable<ResponseAssetResponse>;
-  getResumeOrdre(data:any):Observable<ResponseResumeAsset>;
-  addCarnetOrdre(data:any):Observable<ResponseAssetResponse>;
-  updateCarnetOrdre(data:any):Observable<ResponseAssetResponse>;
+  getAllCarnetOrdre():Observable<RestResponse<AssetResponse[]>>;
+  getTransactionEncours():Observable<RestResponse<AssetResponse[]>>;
+  getHistoriqueTransaction():Observable<RestResponse<AssetResponse[]>>;
+  getResumeOrdre(data:any):Observable<RestResponse<ResumeAssetResponse>>;
+  addCarnetOrdre(data:any):Observable<any>;
+  updateCarnetOrdre(data:any):Observable<any>;
   deleteCarnetOrdre(id:number):Observable<any>;
 }

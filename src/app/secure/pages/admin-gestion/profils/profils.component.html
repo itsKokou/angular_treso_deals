@@ -277,61 +277,56 @@
                   <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Profil</th>
                   <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Admin</th>
                   <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Action</th>
-                  <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Voir Plus</th>
+                  <!--<th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Voir Plus</th>-->
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="px-4 border-b text-left">
-                    <p class="text-sm leading-normal">Samanta William</p>
-                  </td>
-                  <td class="px-4 border-b text-left">
-                    <p class="text-sm leading-normal">Samanta William</p>
-                  </td>
-                  <td class="px-4 border-b text-left">
-                    <p class="text-sm leading-normal">March 25, 2021</p>
-                  </td>
-                  <td class="px-4 border-b text-center">
-                    <p class="text-sm leading-normal">Admin_Institution</p>
-                  </td>
-                  <td class="px-4 border-b text-center">
-                    <p class="text-sm leading-normal">Admin Test</p>
-                  </td>
-                  <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                    <button type="button" class="px-2.5 text-xs rounded-md py-1.4 text-center font-bold uppercase leading-none text-white hover:!bg-red-600" style="background-color: red;">Refuser</button>
-                    <button type="button" class="ml-2 bg-gradient-to-tl from-green-600 to-lime-400 hover:from-lime-400 hover:to-green-600 px-2.5 text-xs rounded-1.8 py-1.4 text-center font-bold uppercase leading-none text-white">Accepter</button>
-                  </td>
-                  <td class="px-4 border-b text-center">
-                    <p class="text-sm leading-normal">Voir</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="px-4 border-b text-left">
-                    <p class="text-sm leading-normal">Samanta William</p>
-                  </td>
-                  <td class="px-4 border-b text-left">
-                    <p class="text-sm leading-normal">Samanta William</p>
-                  </td>
-                  <td class="px-4 border-b text-left">
-                    <p class="text-sm leading-normal">March 25, 2021</p>
-                  </td>
-                  <td class="px-4 border-b text-center">
-                    <p class="text-sm leading-normal">Admin_Institution</p>
-                  </td>
-                  <td class="px-4 border-b text-center">
-                    <p class="text-sm leading-normal">Admin Test</p>
-                  </td>
-                  <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                    <button type="button" class="px-2.5 text-xs rounded-md py-1.4 text-center font-bold uppercase leading-none text-white hover:!bg-red-600" style="background-color: red;">Refuser</button>
-                    <button type="button" class="ml-2 bg-gradient-to-tl from-green-600 to-lime-400 hover:from-lime-400 hover:to-green-600 px-2.5 text-xs rounded-1.8 py-1.4 text-center font-bold uppercase leading-none text-white">Accepter</button>
-                  </td>
-                  <td class="px-4 border-b text-center">
-                    <p class="text-sm leading-normal">Voir</p>
-                  </td>
-                </tr>
+                @for (item of datasPaginatedInstitut; track $index) {
+                  <tr>
+                    <td class="px-4 border-b text-left">
+                      <p class="text-sm leading-normal">{{item.applicant}}</p>
+                    </td>
+                    <td class="px-4 border-b text-left">
+                      <p class="text-sm leading-normal">{{item.institutionName}}</p>
+                    </td>
+                    <td class="px-4 border-b text-left">
+                      <p class="text-sm leading-normal">{{item.date | date: 'dd/MM/yyyy'}}</p>
+                    </td>
+                    <td class="px-4 border-b text-center">
+                      <p class="text-sm leading-normal">Admin_Institution</p>
+                    </td>
+                    <td class="px-4 border-b text-center">
+                      <p class="text-sm leading-normal">{{item.adminName}}</p>
+                    </td>
+                    <td class="p-2 text-sm flex flex-col items-center leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                      <p *ngIf="item.status == 'ACCEPTED'" class="px-3 my-1 w-fit text-sm text-green-600 font-semibold bg-green-200 rounded-full">Validé</p>
+                      <div *ngIf="item.status == 'PENDING'" class="flex justify-center items-center">
+                        <button (click)="openTreatmentModal(item,'REJECTED', 'le refus')" type="button" class="px-2.5 text-xs rounded-md py-1.4 text-center font-bold uppercase leading-none text-white hover:!bg-red-600" style="background-color: red;">Refuser</button>
+                        <button  (click)="openTreatmentModal(item,'ACCEPTED', 'l\'acceptation')" type="button" class="ml-2 bg-gradient-to-tl from-green-600 to-lime-400 hover:from-lime-400 hover:to-green-600 px-2.5 text-xs rounded-1.8 py-1.4 text-center font-bold uppercase leading-none text-white">Accepter</button>
+                      </div>
+                      <!--<p *ngIf="item.status == 'PENDING'" class="px-3 my-1 w-fit text-sm text-gray-600 font-semibold bg-gray-200 rounded-full">En attente</p>-->
+                      <p *ngIf="item.status == 'REJECTED'" class="px-3 my-1 w-fit text-sm text-red-600 font-semibold bg-red-200 rounded-full">Rejeté</p>
+                    </td>
+                    <!--<td class="px-4 border-b text-center">
+                      <p class="text-sm leading-normal">Voir</p>
+                    </td>-->
+                  </tr>
+                }
               </tbody>
             </table>
           </div>
+          <div *ngIf="isLoading">
+            <mat-progress-bar class="text-purple-800" mode="indeterminate"></mat-progress-bar>
+          </div>
+          <div>
+          <mat-paginator showFirstLastButtons
+                [length] ="totalElementsInstitut"
+                [pageSize]="5"
+                [pageSizeOptions]="[5, 10, 25, 50]"
+                aria-label="Select page"
+                (page)="onPageChangeInstitut($event)">
+          </mat-paginator>
+        </div>
         </div>
       </div>
     </div>
@@ -349,63 +344,119 @@
                   <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Profil</th>
                   <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Admin</th>
                   <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Action</th>
-                  <th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Voir Plus</th>
+                  <!--<th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Voir Plus</th>-->
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="px-4 border-b text-left">
-                    <p class="text-sm leading-normal">Samanta William</p>
-                  </td>
-                  <td class="px-4 border-b text-left">
-                    <p class="text-sm leading-normal">Samanta William</p>
-                  </td>
-                  <td class="px-4 border-b text-left">
-                    <p class="text-sm leading-normal">March 25, 2021</p>
-                  </td>
-                  <td class="px-4 border-b text-center">
-                    <p class="text-sm leading-normal">Admin_Intermediaire</p>
-                  </td>
-                  <td class="px-4 border-b text-center">
-                    <p class="text-sm leading-normal">Admin Test</p>
-                  </td>
-                  <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                    <button type="button" class="px-2.5 text-xs rounded-md py-1.4 text-center font-bold uppercase leading-none text-white hover:!bg-red-600" style="background-color: red;">Refuser</button>
-                    <button type="button" class="ml-2 bg-gradient-to-tl from-green-600 to-lime-400 hover:from-lime-400 hover:to-green-600 px-2.5 text-xs rounded-1.8 py-1.4 text-center font-bold uppercase leading-none text-white">Accepter</button>
-                  </td>
-                  <td class="px-4 border-b text-center">
-                    <p class="text-sm leading-normal">Voir</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="px-4 border-b text-left">
-                    <p class="text-sm leading-normal">Samanta William</p>
-                  </td>
-                  <td class="px-4 border-b text-left">
-                    <p class="text-sm leading-normal">Samanta William</p>
-                  </td>
-                  <td class="px-4 border-b text-left">
-                    <p class="text-sm leading-normal">March 25, 2021</p>
-                  </td>
-                  <td class="px-4 border-b text-center">
-                    <p class="text-sm leading-normal">Admin_Intermediaire</p>
-                  </td>
-                  <td class="px-4 border-b text-center">
-                    <p class="text-sm leading-normal">Admin Test</p>
-                  </td>
-                  <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                    <button type="button" class="px-2.5 text-xs rounded-md py-1.4 text-center font-bold uppercase leading-none text-white hover:!bg-red-600" style="background-color: red;">Refuser</button>
-                    <button type="button" class="ml-2 bg-gradient-to-tl from-green-600 to-lime-400 hover:from-lime-400 hover:to-green-600 px-2.5 text-xs rounded-1.8 py-1.4 text-center font-bold uppercase leading-none text-white">Accepter</button>
-                  </td>
-                  <td class="px-4 border-b text-center">
-                    <p class="text-sm leading-normal">Voir</p>
-                  </td>
-                </tr>
+                 @for (item of datasPaginatedIntermediaire; track $index) {
+                  <tr>
+                    <td class="px-4 border-b text-left">
+                      <p class="text-sm leading-normal">{{item.applicant}}</p>
+                    </td>
+                    <td class="px-4 border-b text-left">
+                      <p class="text-sm leading-normal">{{item.institutionName}}</p>
+                    </td>
+                    <td class="px-4 border-b text-left">
+                      <p class="text-sm leading-normal">{{item.date | date: 'dd/MM/yyyy'}}</p>
+                    </td>
+                    <td class="px-4 border-b text-center">
+                      <p class="text-sm leading-normal">Admin_Intermediaire</p>
+                    </td>
+                    <td class="px-4 border-b text-center">
+                      <p class="text-sm leading-normal">{{item.adminName}}</p>
+                    </td>
+                    <td class="p-2 text-sm flex flex-col items-center leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                      <p *ngIf="item.status == 'ACCEPTED'" class="px-3 my-1 w-fit text-sm text-green-600 font-semibold bg-green-200 rounded-full">Validé</p>
+                      <div *ngIf="item.status == 'PENDING'" class="flex justify-center items-center">
+                        <button (click)="openTreatmentModal(item,'REJECTED', 'le refus')" type="button" class="px-2.5 text-xs rounded-md py-1.4 text-center font-bold uppercase leading-none text-white hover:!bg-red-600" style="background-color: red;">Refuser</button>
+                        <button  (click)="openTreatmentModal(item,'ACCEPTED', 'l\'acceptation')" type="button" class="ml-2 bg-gradient-to-tl from-green-600 to-lime-400 hover:from-lime-400 hover:to-green-600 px-2.5 text-xs rounded-1.8 py-1.4 text-center font-bold uppercase leading-none text-white">Accepter</button>
+                      </div>
+                      <!--<p *ngIf="item.status == 'PENDING'" class="px-3 my-1 w-fit text-sm text-gray-600 font-semibold bg-gray-200 rounded-full">En attente</p>-->
+                      <p *ngIf="item.status == 'REJECTED'" class="px-3 my-1 w-fit text-sm text-red-600 font-semibold bg-red-200 rounded-full">Rejeté</p>
+                    </td>
+                    <!--<td class="px-4 border-b text-center">
+                      <p class="text-sm leading-normal">Voir</p>
+                    </td>-->
+                  </tr>
+                }
               </tbody>
             </table>
           </div>
+          <div *ngIf="isLoading">
+            <mat-progress-bar class="text-purple-800" mode="indeterminate"></mat-progress-bar>
+          </div>
+          <div>
+          <mat-paginator showFirstLastButtons
+                [length] ="totalElementsIntermediaire"
+                [pageSize]="5"
+                [pageSizeOptions]="[5, 10, 25, 50]"
+                aria-label="Select page"
+                (page)="onPageChangeIntermediaire($event)">
+          </mat-paginator>
+        </div>
         </div>
       </div>
     </div>
   </div>           
+</div>
+
+
+<!-- CONFIRMATION PROPOSAL -->
+<button id="btnConfirm" data-modal-target="confirm-modal" data-modal-toggle="confirm-modal"  type="button" class="ml-4 hidden text-white !bg-green-500 hover:!bg-green-600 font-medium rounded-lg text-sm px-5 py-2 text-center">
+  confirmer
+</button>
+<!--Modal de confirm--> 
+<div id="confirm-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-2xl max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+      <!-- Modal header -->
+      <div class="flex align-middle bg-blue-800 items-center justify-between px-4 py-2 border-b rounded-t-lg ">
+        <h3 class="text-xl mb-0 font-medium text-white ">
+          Demande de confirmation
+        </h3>
+        <button type="button" class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="confirm-modal">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="text-center px-8 py-5 space-y-4">
+        <svg *ngIf="proposalMessage=='l\'acceptation'"  class="text-green-500 w-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+        <svg *ngIf="proposalMessage=='le refus'" class="text-red-600 w-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+        <p class="mb-5 text-lg font-normal text-gray-700 dark:text-gray-400">Voulez-vous confirmer {{proposalMessage}} du profil de {{selectedProfil.applicant}} ?</p>
+      </div>
+      <!-- Modal footer -->
+      <div class="flex items-center justify-end py-3 px-8 border-t border-gray-200 rounded-b">
+        <button data-modal-hide="confirm-modal" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
+        <button data-modal-hide="confirm-modal" [ngClass]="proposalMessage=='l\'acceptation'? '!bg-green-500 hover:!bg-green-700' : '!bg-red-600 hover:!bg-red-800 '" (click)="treatProfil()" type="button" class="ml-5 text-white font-medium text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Confirmer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- SPINNER  -->
+<button id="openSpinner" data-modal-target="spinner-modal" data-modal-toggle="spinner-modal" class="hidden" type="button">
+  Toggle Spinner
+</button>
+
+<button  id="closeSpinner" data-modal-hide="spinner-modal" type="button" class="hidden">
+  Fermer
+</button>
+
+<div id="spinner-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-2xl max-h-full">
+    <div class="relative bg-transparent">
+      <div class="flex justify-center items-center p-4">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+  </div>
 </div>

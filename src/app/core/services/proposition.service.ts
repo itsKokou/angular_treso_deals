@@ -1,9 +1,10 @@
 import { Observable } from "rxjs";
-import { ResponseProposalResponse } from "../models/carnet-ordre/response-proposal-response";
 import { ProposalEnum } from "../models/enum/proposal-enum";
+import { RestResponse } from "../models/rest-response";
+import { ProposalResponse } from "../models/carnet-ordre/proposal-response";
 
 export interface PropositionService{
-  getAllProposalsByAssetId(id: number):Observable<ResponseProposalResponse>;
+  getAllProposalsByAssetId(id: number):Observable<RestResponse<ProposalResponse[]>>;
   addProposaltoAsset(data:any):Observable<any>;
   treatProposal(id:any, statut:ProposalEnum.StatusEnum, proposal: any):Observable<any>;
 }

@@ -3,8 +3,9 @@ import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { PropositionService } from '../proposition.service';
-import { ResponseProposalResponse } from '../../models/carnet-ordre/response-proposal-response';
 import { ProposalEnum } from '../../models/enum/proposal-enum';
+import { RestResponse } from '../../models/rest-response';
+import { ProposalResponse } from '../../models/carnet-ordre/proposal-response';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class PropositionServiceImpl implements PropositionService {
     return this.http.post(`${this.apiUrl}/proposals/add`, data);
   }
 
-  getAllProposalsByAssetId(id: number): Observable<ResponseProposalResponse> {
-    return this.http.get<ResponseProposalResponse>(`${this.apiUrl}/proposals/${id}?idAsset=${id}`);
+  getAllProposalsByAssetId(id: number): Observable<RestResponse<ProposalResponse[]>> {
+    return this.http.get<RestResponse<ProposalResponse[]>>(`${this.apiUrl}/proposals/${id}?idAsset=${id}`);
   }
 }

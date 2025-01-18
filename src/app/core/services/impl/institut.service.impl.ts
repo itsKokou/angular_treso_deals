@@ -2,8 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { ResponseProposalResponse } from '../../models/carnet-ordre/response-proposal-response';
-import { ProposalEnum } from '../../models/enum/proposal-enum';
 import { InstitutService } from '../institut.service';
 
 @Injectable({

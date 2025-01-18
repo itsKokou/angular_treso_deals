@@ -114,7 +114,7 @@
               </li>
               <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">Dashboard</li>
             </ol>
-            <h6 class="mb-0 font-bold capitalize">Dashboard</h6>
+            <h6 class="mb-0 font-bold capitalize">{{page}}</h6>
           </nav>
 
           <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
@@ -209,18 +209,12 @@
 
                 <div id="dropdownDivider" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-fit !-ml-6">
                   <div class="px-4 py-3">
-                    <span class="block text-sm text-gray-900">Bonnie Green</span>
-                    <span class="block text-sm  text-gray-500 truncate">name&#64;flowbite.com</span>
+                    <span class="block text-sm text-gray-900">{{connectedUser?.firstName+" "+connectedUser?.lastName}}</span>
+                    <span class="block text-sm  text-gray-500 truncate">{{connectedUser?.email}}</span>
                   </div>
                   <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDividerButton">
                     <li>
-                      <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-                    </li>
-                    <li>
-                      <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                    </li>
-                    <li>
-                      <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                      <a (click)="deconnexion()" class="block cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Déconnexion</a>
                     </li>
                   </ul>
                 </div>

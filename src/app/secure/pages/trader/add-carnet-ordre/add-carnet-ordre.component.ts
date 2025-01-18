@@ -3,12 +3,11 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { initFlowbite } from 'flowbite';
 import { TransactionServiceImpl } from '../../../../core/services/impl/transaction.service.impl';
-import { ResponseAssetResponse } from '../../../../core/models/carnet-ordre/response-asset-response';
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { FormatNumberPipe } from '../../../../core/pipes/format-number.pipe';
 import { ResumeAssetResponse } from '../../../../core/models/carnet-ordre/resume-asset-response';
-import { ResponseResumeAsset } from '../../../../core/models/carnet-ordre/response-resume-asset';
+import { RestResponse } from '../../../../core/models/rest-response';
 
 @Component({
   standalone: true,
@@ -185,7 +184,7 @@ export class AddCarnetOrdreComponent {
       }
 
 
-      this.transactionService.getResumeOrdre(data).subscribe((res : ResponseResumeAsset) => {
+      this.transactionService.getResumeOrdre(data).subscribe((res : RestResponse<ResumeAssetResponse>) => {
         closeSpinner?.click();
         if (res.statusCode==200) {
           this.resumeAsset = res.data!;
@@ -253,7 +252,7 @@ export class AddCarnetOrdreComponent {
       proposedRate: this.nature.getRawValue() == "BAT" ? Number.parseFloat(this.price.getRawValue()) : null,
     }
 
-    this.transactionService.addCarnetOrdre(data).subscribe((res : ResponseAssetResponse) => {
+    this.transactionService.addCarnetOrdre(data).subscribe((res : any) => {
       closeSpinner?.click();
       console.log(res);
       
