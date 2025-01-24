@@ -36,4 +36,13 @@ export class GestionLayoutComponent implements OnInit {
     this.securityService.isAuthenticated = false;
     this.router.navigateByUrl('/login');
   }
+
+  onClick(){
+    const toggleButton = document.querySelector('[data-drawer-toggle="default-sidebar"]')!;
+    const sidebar = document.getElementById('default-sidebar')!;
+
+    toggleButton.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+    });
+  }
 }

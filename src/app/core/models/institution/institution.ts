@@ -17,19 +17,6 @@ export interface Institution {
     transferLimitted?: boolean;
 }
 
-// "id": 1001,
-//         "name": "BDX Bank",
-//         "legalStatus": "BANK",
-//         "country": "Sénégal",
-//         "city": "Dakar",
-//         "address": "Parcelles Assainies U26",
-//         "phoneNumber": "775946696",
-//         "email": "bdx@bdx.com",
-//         "managerFirstName": "Cheikh Ibra",
-//         "managerLastName": "YADE",
-//         "managerTitle": "Director",
-//         "transferLimit": null,
-//         "transferLimitted": false
 
 
 

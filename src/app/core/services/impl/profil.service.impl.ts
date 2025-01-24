@@ -17,6 +17,10 @@ export class ProfilServiceImpl implements ProfilService {
   constructor(private http: HttpClient) { 
   }
 
+  addProfil(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/users`, data);
+  }
+
   getProfilDetail(idSubscription: number): Observable<any> {
     return this.http.get<RestResponse<ProfilResponse[]>>(`${this.apiUrl}/invitations/details/${idSubscription}`);
   }

@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import { CanvasJSAngularChartsModule, CanvasJSChart } from '@canvasjs/angular-charts';
+import { RouterLink } from '@angular/router';
 
 @Component({
     standalone: true,
     selector: 'app-dashbord',
-    imports: [CommonModule, CanvasJSAngularChartsModule],
+    imports: [CommonModule, CanvasJSAngularChartsModule, RouterLink],
     templateUrl: './dashbord.component.html',
     styleUrl: './dashbord.component.css'
 })

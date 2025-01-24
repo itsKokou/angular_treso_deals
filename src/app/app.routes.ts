@@ -19,6 +19,11 @@ export const routes: Routes = [
         // canMatch:[AuthenticationGuard]
     },
     {
+        path: 'institut',
+        loadChildren : ()=>import("./secure/pages/admin-institut/admin-institut.module").then(mod=>mod.AdminInstitutModule),
+        // canMatch:[AuthenticationGuard]
+    },
+    {
         path: 'trader',
         loadChildren : ()=>import("./secure/pages/trader/trader.module").then(mod=>mod.TraderModule),
         // canMatch:[AuthenticationGuard]

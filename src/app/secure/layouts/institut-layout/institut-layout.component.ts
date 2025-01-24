@@ -1,34 +1,43 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { initFlowbite } from 'flowbite';
 import { SecurityServiceImpl } from '../../../core/services/impl/security.service.impl';
 import { UserDto } from '../../../core/models/user/user-dto';
+import { initFlowbite } from 'flowbite';
 
 @Component({
-    selector: 'app-trader-layout',
-    imports: [RouterOutlet, RouterLink, RouterLinkActive],
-    templateUrl: './trader-layout.component.html',
-    styleUrl: './trader-layout.component.css'
+  selector: 'app-institut-layout',
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  templateUrl: './institut-layout.component.html',
+  styleUrl: './institut-layout.component.css'
 })
-export class TraderLayoutComponent implements OnInit {
+export class InstitutLayoutComponent implements OnInit {
   private securityService = inject(SecurityServiceImpl);
   connectedUser? : UserDto;
-  page : any = "Dashboard";
+  page : String = "Dashboard";
 
   constructor(private router: Router){
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        // Réinitialisez les données ici
+        console.log(event.url);
+        const url = event.url.split('/')[2]
+        console.log(url);
+        if(url=="dashboard"){
+          this.page = "Dashboard";
+        }else if(url=="profils"){
+          this.page = "Profils";
+        }else if(url=="utilisateurs"){
+          this.page = "Utilisateurs";
+        }
+      }
+    });
   }
 
   ngOnInit(): void {
     initFlowbite();
     this.connectedUser = this.securityService.getConnectedUser();
-    this.page = localStorage.getItem("trader");
-
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        // Réinitialisez les données ici
-        this.page = localStorage.getItem("trader");
-      }
-    });
   }
 
   redirectToProfil(){
