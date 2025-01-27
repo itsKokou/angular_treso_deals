@@ -7,5 +7,4 @@ export interface ProfilService{
   getAllProfil():Observable<RestResponse<ProfilResponse[]>>;
   getProfilDetail(idSubscription:number):Observable<any>;
   updateProfil(idSubscription:number, status: ProposalEnum.StatusEnum):Observable<RestResponse<ProfilResponse>>;
-  addProfil(data: any):Observable<any>;
 }

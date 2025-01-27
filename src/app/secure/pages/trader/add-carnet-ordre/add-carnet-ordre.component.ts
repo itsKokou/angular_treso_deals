@@ -32,9 +32,6 @@ export class AddCarnetOrdreComponent {
     private transactionService : TransactionServiceImpl,
     private snackBar:MatSnackBar,
   ){
-    console.log(this.today);
-    
-    localStorage.setItem("trader","Carnet d'ordres");
     const tomorrow = new Date();
     tomorrow.setDate(this.today.getDate() + 1)
     this.minDate = tomorrow.toISOString().split('T')[0];

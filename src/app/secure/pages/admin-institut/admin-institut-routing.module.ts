@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { InstitutLayoutComponent } from '../../layouts/institut-layout/institut-layout.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ProfilsComponent } from './profils/profils.component';
 import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 
 const routes: Routes = [
@@ -13,10 +12,6 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent
-      },
-      {
-        path: 'profils',
-        component: ProfilsComponent
       },
       {
         path: 'utilisateurs',

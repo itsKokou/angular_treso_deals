@@ -38,7 +38,6 @@ export class TransactionComponent implements AfterViewInit {
     private transactionService: TransactionServiceImpl,
     private propositionService: PropositionServiceImpl
   ){
-    localStorage.setItem("trader","Mes Transactions");
   }
   
   form = this.fb.group({

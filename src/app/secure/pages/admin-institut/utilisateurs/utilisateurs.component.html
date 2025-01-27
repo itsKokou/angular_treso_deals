@@ -1,6 +1,6 @@
  <div class="w-full px-6 py-6 mx-auto">
     <div class="mt-4 flex justify-end">
-    <a routerLink="form" class="px-6 py-2 flex bg-blue-700 text-white font-medium rounded-md hover:bg-blue-800">
+    <a id="btnAddProfil" data-modal-target="profil-modal" data-modal-toggle="profil-modal" class="px-6 py-2 flex bg-blue-700 text-white font-medium rounded-md hover:bg-blue-800">
       <svg class="w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
       </svg>
@@ -17,24 +17,30 @@
         <table  class="w-full border-gray-200 text-slate-700">
           <thead class="align-bottom">
             <tr>
+              <th class="px-4 py-3 font-bold text-left uppercase border-b border-gray-200 text-xs whitespace-nowrap text-slate-400">Id</th>
               <th class="px-4 py-3 font-bold text-left uppercase border-b border-gray-200 text-xs whitespace-nowrap text-slate-400">Nom</th>
-              <th class="px-4 py-3 font-bold text-left uppercase border-b border-gray-200 text-xs whitespace-nowrap text-slate-400">Identifiant</th>
+              <th class="px-4 py-3 font-bold text-left uppercase border-b border-gray-200 text-xs whitespace-nowrap text-slate-400">Prénom</th>
+              <th class="px-4 py-3 font-bold text-left uppercase border-b border-gray-200 text-xs whitespace-nowrap text-slate-400">Email</th>
               <th class="px-4 py-3 font-bold text-left uppercase border-b border-gray-200 text-xs whitespace-nowrap text-slate-400">Date d’adhesion</th>
               <th class="px-4 py-3 font-bold text-center uppercase border-b border-gray-200 text-xs whitespace-nowrap text-slate-400">Profil</th>
               <th class="px-4 py-3 font-bold text-center uppercase border-b border-gray-200 text-xs whitespace-nowrap text-slate-400">Institution</th>
               <th class="px-4 py-3 font-bold text-center uppercase border-b border-gray-200 text-xs whitespace-nowrap text-slate-400">Contact</th>
-              <th class="px-4 py-3 font-bold text-center uppercase border-b border-gray-200 text-xs whitespace-nowrap text-slate-400">Etat</th>
-              <th class="px-4 py-3 font-bold text-center uppercase border-b border-gray-200 text-xs whitespace-nowrap text-slate-400">Voir Plus</th>
             </tr>
           </thead>
           <tbody>
           @for (item of datasPaginated; track $index) {
             <tr>
               <td class="px-4 border-b text-left">
-                <p class="text-sm leading-normal">{{item.firstName + " "+ item.lastName}}</p>
+                <p class="text-sm leading-normal py-2">{{item.id}}</p>
               </td>
               <td class="px-4 border-b text-left">
-                <p class="text-sm leading-normal">#{{item.id}}</p>
+                <p class="text-sm leading-normal">{{item.lastName}}</p>
+              </td>
+              <td class="px-4 border-b text-left">
+                <p class="text-sm leading-normal">{{item.firstName }}</p>
+              </td>
+              <td class="px-4 border-b text-left">
+                <p class="text-sm leading-normal">{{item.email }}</p>
               </td>
               <td class="px-4 border-b text-left">
                 <p class="text-sm leading-normal">March 25, 2021</p>
@@ -43,23 +49,10 @@
                 <p class="text-sm leading-normal">{{item.profile}}</p>
               </td>
               <td class="px-4 border-b text-center">
-                <p class="text-sm leading-normal">{{item.department}}</p>
-              </td>
-              <td class="px-4 text-sm py-2 flex justify-center border-b">   
-                <svg class="w-5 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-                </svg>
-                <svg class="w-6 ml-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                </svg>
-              </td>
-              <td class="px-4 text-sm leading-normal text-center border-b">
-                <span *ngIf="item.status == 'ENABLED'" class="px-2.5 bg-green-100 text-xs rounded-full py-1.4 text-center font-bold text-green-600">Actif</span>
-                <span *ngIf="item.status == 'LOCKED'" class="px-2.5 bg-orange-100 text-xs rounded-full py-1.4 text-center font-bold text-orange-600">Bloqué</span>
-                <span *ngIf="item.status == 'DELETED'" class="px-2.5 bg-red-100 text-xs rounded-full py-1.4 text-center font-bold text-red-600">Supprimé</span>
+                <p class="text-sm leading-normal">{{item.institutionName}}</p>
               </td>
               <td class="px-4 border-b text-center">
-                <p class="text-sm leading-normal">Voir</p>
+                <p class="text-sm leading-normal">{{item.phoneNumber}}</p>
               </td>
             </tr>
           }  
@@ -78,68 +71,194 @@
               (page)="onPageChange($event)">
         </mat-paginator>
       </div>
-      <!--<table class="police" mat-table [dataSource]="dataSource">
-
-        <ng-container matColumnDef="Nom">
-          <th mat-header-cell *matHeaderCellDef> Nom Complet</th>
-          <td mat-cell *matCellDef="let element"> {{element.firstName + " "+ element.lastName}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Identifiant">
-          <th mat-header-cell *matHeaderCellDef> Identifiant </th>
-          <td mat-cell *matCellDef="let element"> #{{element.id}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Date d’adhesion">
-          <th mat-header-cell *matHeaderCellDef> Date d’adhesion </th>
-          <td mat-cell *matCellDef="let element"> 03/12/2024 </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Profil">
-          <th mat-header-cell *matHeaderCellDef> Profil </th>
-          <td mat-cell *matCellDef="let element"> {{element.profile}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Institution">
-          <th mat-header-cell *matHeaderCellDef> Institution </th>
-          <td mat-cell *matCellDef="let element"> {{element.department}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Contact">
-          <th mat-header-cell *matHeaderCellDef> Contact </th>
-          <td class="flex justify-center" mat-cell *matCellDef="let element">
-            <svg class="w-5 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
-            </svg>
-            <svg class="w-6 ml-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-            </svg>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Etat">
-          <th mat-header-cell *matHeaderCellDef> Etat </th>
-          <td mat-cell *matCellDef="let element"> 
-            <span *ngIf="element.status == 'ENABLED'" class="px-2.5 bg-green-100 text-xs rounded-full py-1.4 text-center font-bold text-green-600">Actif</span>
-            <span *ngIf="element.status == 'LOCKED'" class="px-2.5 bg-orange-100 text-xs rounded-full py-1.4 text-center font-bold text-orange-600">Bloqué</span>
-            <span *ngIf="element.status == 'DELETED'" class="px-2.5 bg-red-100 text-xs rounded-full py-1.4 text-center font-bold text-red-600">Supprimé</span> 
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Actions">
-          <th mat-header-cell *matHeaderCellDef> Actions </th>
-          <td mat-cell *matCellDef="let element"> {{element.department}} </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                    showFirstLastButtons
-                    aria-label="Select page of Utilisateurs">
-      </mat-paginator>-->
     </div>
   </div>
 </div>
 
+<div id="profil-modal" (submit)="onSubmit()" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-5xl max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+      <!-- Modal header -->
+      <div class="flex align-middle bg-blue-800 items-center justify-between px-4 py-2 border-b rounded-t-lg ">
+        <h3 class="text-xl mb-0 font-medium text-white ">
+          Nouvel Utilisateur
+        </h3>
+        <button type="button" id="closeProfilModal" class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="profil-modal">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <form [formGroup] = "formProfil" class="pt-6" action="" method="post">
+        <div class="flex justify-between items-start">
+          <div class="w-full">
+            <div class="mb-4 px-8">
+              <input formControlName="lastName" type="text" name="n_transaction" id="n_transaction" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Nom :" required>
+              @if(lastName.errors && (lastName.dirty || lastName.touched)){
+                  @if(lastName.getError("required")){
+                      <p class="text-left text-sm " style="color: red;">Le nom est obligatoire</p>
+                  }
+                  @if(lastName.getError("minlength")){
+                      <p class="text-left text-sm " style="color: red;">Minimum 2 caractères</p>
+                  }
+              }
+            </div>
+
+            <div class="mb-4 px-8">
+              <input formControlName="firstName" type="text" name="first_name" id="first_name" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Prénom :" required>
+              @if(firstName.errors && (firstName.dirty || firstName.touched)){
+                  @if(firstName.getError("required")){
+                      <p class="text-left text-sm " style="color: red;">Le prénom est obligatoire</p>
+                  }
+                  @if(firstName.getError("minlength")){
+                      <p class="text-left text-sm " style="color: red;">Minimum 2 caractères</p>
+                  }
+              }
+            </div>
+
+            <div class="mb-4 px-8">
+              <input formControlName="email" type="email" name="email_" id="email_" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Email :" required>
+              @if(email.errors && (email.dirty || email.touched)){
+                  @if(email.getError("required")){
+                      <p class="text-left text-sm " style="color: red;">L'e-mail portable est obligatoire</p>
+                  }
+                  @if(email.getError("email")){
+                      <p class="text-left text-sm " style="color: red;">L'e-mail n'est pas valide</p>
+                  }
+              }
+            </div>
+
+            <div class="mb-4 px-8">
+              <input formControlName="secondEmail" type="email" name="second_mail" id="second_mail" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Email secondaire :">
+            </div>
+            
+            <div class="mb-4 px-8">
+              <select formControlName="profile" id="type_profil" name="type_profil" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3">
+                <option disabled [selected]="1">Sélectionnez le type de profil</option>
+                <option value="TRADER">Trader</option>
+                <option value="BANK_VALIDATOR">Validateur</option>
+                <option value="BANK_OPERATOR">Opérateur</option>
+              </select>  
+              @if(profile.errors && (profile.dirty || profile.touched)){
+                @if(profile.getError("required")){
+                    <p class="text-left text-sm " style="color: red;">Le type de profil est obligatoire</p>
+                }
+              }                           
+            </div>
+          </div>
+
+          <div class="w-full">
+            <div class="mb-4 px-8">
+              <input formControlName="phoneNumber" type="text" name="phone" id="phone" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Téléphone portable (+Indicatif) :" required>
+              @if(phoneNumber.errors && (phoneNumber.dirty || phoneNumber.touched)){
+                @if(phoneNumber.getError("required")){
+                    <p class="text-left text-sm " style="color: red;">Le téléphone portable est obligatoire</p>
+                }
+              }
+            </div>
+            
+            <div class="mb-4 px-8">
+              <input formControlName="fixeNumber" type="text" name="fixe" id="fixe" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Téléphone fixe . (+Indicatif) :" required>
+              @if(fixeNumber.errors && (fixeNumber.dirty || fixeNumber.touched)){
+                  @if(fixeNumber.getError("required")){
+                      <p class="text-left text-sm " style="color: red;">Le téléphone fixe est obligatoire</p>
+                  }
+              }
+            </div>
+            
+            <div class="mb-4 px-8">
+              <input formControlName="job" type="text" name="job_" id="job_" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Fonction occupée :" required>
+              @if(job.errors && (job.dirty || job.touched)){
+                @if(job.getError("required")){
+                    <p class="text-left text-sm " style="color: red;">La fonction est obligatoire</p>
+                }
+                @if(job.getError("minlength")){
+                    <p class="text-left text-sm " style="color: red;">Minimum 2 caractères</p>
+                }
+              }
+            </div>
+            
+            <div class="mb-4 px-8">
+              <input formControlName="department" type="text" name="department_" id="department_" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Direction/Département :" required>
+              @if(department.errors && (department.dirty || department.touched)){
+                @if(department.getError("required")){
+                    <p class="text-left text-sm " style="color: red;">Le département est obligatoire</p>
+                }
+                @if(department.getError("minlength")){
+                    <p class="text-left text-sm " style="color: red;">Minimum 2 caractères</p>
+                }
+              }
+            </div>
+          </div>
+        </div>
+        
+        
+
+        <!-- Modal footer -->
+        <div class="flex items-center justify-end py-3 px-8 border-t border-gray-200 rounded-b">
+          <button data-modal-hide="profil-modal" (click)="resetFormProfil()" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
+          <button type="submit" class="ml-5 text-white font-medium !bg-green-500 hover:!bg-green-600 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Créer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- SPINNER  -->
+<button id="openSpinner" data-modal-target="spinner-modal" data-modal-toggle="spinner-modal" class="hidden" type="button">
+  Toggle Spinner
+</button>
+
+<button  id="closeSpinner" data-modal-hide="spinner-modal" type="button" class="hidden">
+  Fermer
+</button>
+
+<div id="spinner-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-2xl max-h-full">
+    <div class="relative bg-transparent">
+      <div class="flex justify-center items-center p-4">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- CONFIRMATION PROFIL -->
+<button id="btnConfirmProfil" data-modal-target="confirm-profil-modal" data-modal-toggle="confirm-profil-modal"  type="button" class="ml-4 hidden text-white !bg-green-500 hover:!bg-green-600 font-medium rounded-lg text-sm px-5 py-2 text-center">
+  confirmer
+</button>
+<!--Modal de confirm--> 
+<div id="confirm-profil-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-2xl max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+      <!-- Modal header -->
+      <div class="flex align-middle bg-blue-800 items-center justify-between px-4 py-2 border-b rounded-t-lg ">
+        <h3 class="text-xl mb-0 font-medium text-white ">
+          Demande de confirmation
+        </h3>
+        <button type="button" class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="confirm-profil-modal">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="text-center px-8 py-5 space-y-4">
+        <svg class="text-green-500 w-16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+       <p class="mb-5 text-lg font-normal text-gray-700 dark:text-gray-400">Voulez-vous confirmer la création du profil de l'utilisateur {{firstName.value + " " + lastName.value}} ?</p>
+      </div>
+      <!-- Modal footer -->
+      <div class="flex items-center justify-end py-3 px-8 border-t border-gray-200 rounded-b">
+        <button data-modal-hide="confirm-profil-modal" (click)="resetFormProfil()" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
+        <button data-modal-hide="confirm-profil-modal" (click)="confirmProfilSubmission()" type="button" class="ml-5 !bg-green-500 hover:!bg-green-700 text-white font-medium text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Confirmer</button>
+      </div>
+    </div>
+  </div>
+</div>

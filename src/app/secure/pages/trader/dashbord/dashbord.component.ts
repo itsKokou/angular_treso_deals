@@ -94,7 +94,6 @@ export class DashbordComponent implements OnInit, AfterViewInit {
 	}
    
     constructor(){
-        localStorage.setItem("trader","Dashboard");
     }
 
     ngAfterViewInit(): void {

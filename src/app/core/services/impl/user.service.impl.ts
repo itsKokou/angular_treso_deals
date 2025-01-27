@@ -19,4 +19,12 @@ export class UserServiceImpl implements UserService {
     return this.http.get<RestResponse<InstituteUserDTO[]>>(`${this.apiUrl}/users/${id}`);
   }
 
+  getUserAdminInstitut(): Observable<RestResponse<any>> {
+    return this.http.get<RestResponse<any>>(`${this.apiUrl}/users`);
+  }
+
+  addUser(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/users`, data);
+  }
+
 }

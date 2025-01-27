@@ -20,14 +20,9 @@ export class InstitutLayoutComponent implements OnInit {
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        // Réinitialisez les données ici
-        console.log(event.url);
         const url = event.url.split('/')[2]
-        console.log(url);
         if(url=="dashboard"){
           this.page = "Dashboard";
-        }else if(url=="profils"){
-          this.page = "Profils";
         }else if(url=="utilisateurs"){
           this.page = "Utilisateurs";
         }
@@ -40,11 +35,6 @@ export class InstitutLayoutComponent implements OnInit {
     this.connectedUser = this.securityService.getConnectedUser();
   }
 
-  redirectToProfil(){
-    document.getElementById("dropdownDividerButton")?.click();
-    localStorage.setItem("trader","Mon Profil");
-    this.router.navigateByUrl('/trader/profil');
-  }
 
   deconnexion(){
     localStorage.clear();

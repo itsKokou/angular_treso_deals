@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Route, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { SecurityServiceImpl } from '../../../core/services/impl/security.service.impl';
 import { UserDto } from '../../../core/models/user/user-dto';
@@ -13,22 +13,35 @@ import { UserDto } from '../../../core/models/user/user-dto';
 export class TraderLayoutComponent implements OnInit {
   private securityService = inject(SecurityServiceImpl);
   connectedUser? : UserDto;
-  page : any = "Dashboard";
+  page : any ;
 
-  constructor(private router: Router){
+  constructor(
+    private router: Router,
+  ){
+    this.router.events.subscribe((event) => {
+      console.log(event);
+      if (event instanceof NavigationEnd) {
+        // Réinitialisez les données ici
+        console.log(event.url);
+        const url = event.url.split('/')[2]
+        if(url=="dashboard"){
+          this.page = "Dashboard";
+        }else if(url=="transaction"){
+          this.page = "Mes Transactions";
+        }else if(url=="trading"){
+          this.page = "Trading";
+        }else if(url=="carnet"){
+          this.page = "Carnet d'ordres";
+        }else if(url=="chat"){
+          this.page = "Messagerie";
+        }
+      }
+    });
   }
 
   ngOnInit(): void {
     initFlowbite();
     this.connectedUser = this.securityService.getConnectedUser();
-    this.page = localStorage.getItem("trader");
-
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        // Réinitialisez les données ici
-        this.page = localStorage.getItem("trader");
-      }
-    });
   }
 
   redirectToProfil(){
