@@ -11,7 +11,7 @@ const routes: Routes = [
   {
     path : "add/profil/institut",
     component: AddProfilInstitutComponent
-  },
+  },p
   {
     path : "add/profil/intermediaire",
     component: AddProfilIntermediaireComponent
