@@ -19,10 +19,8 @@ export class TraderLayoutComponent implements OnInit {
     private router: Router,
   ){
     this.router.events.subscribe((event) => {
-      console.log(event);
       if (event instanceof NavigationEnd) {
         // Réinitialisez les données ici
-        console.log(event.url);
         const url = event.url.split('/')[2]
         if(url=="dashboard"){
           this.page = "Dashboard";
@@ -42,12 +40,6 @@ export class TraderLayoutComponent implements OnInit {
   ngOnInit(): void {
     initFlowbite();
     this.connectedUser = this.securityService.getConnectedUser();
-  }
-
-  redirectToProfil(){
-    document.getElementById("dropdownDividerButton")?.click();
-    localStorage.setItem("trader","Mon Profil");
-    this.router.navigateByUrl('/trader/profil');
   }
 
   deconnexion(){

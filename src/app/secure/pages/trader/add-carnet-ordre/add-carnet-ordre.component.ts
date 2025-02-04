@@ -8,6 +8,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { FormatNumberPipe } from '../../../../core/pipes/format-number.pipe';
 import { ResumeAssetResponse } from '../../../../core/models/carnet-ordre/resume-asset-response';
 import { RestResponse } from '../../../../core/models/rest-response';
+import { CountryDto } from '../../../../core/models/country/country-dto';
+import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
 
 @Component({
   standalone: true,
@@ -25,11 +27,13 @@ export class AddCarnetOrdreComponent {
   minDate!: string;
   today : Date = new Date();
   sensLabel : String = "";
-  resumeAsset?: ResumeAssetResponse 
+  resumeAsset?: ResumeAssetResponse ;
+  countries: CountryDto[] = [];
 
   constructor(
     private fb: FormBuilder,
     private transactionService : TransactionServiceImpl,
+    private countryService : CountryServiceImpl,
     private snackBar:MatSnackBar,
   ){
     const tomorrow = new Date();
@@ -62,8 +66,8 @@ export class AddCarnetOrdreComponent {
   }
 
   form : FormGroup = this.fb.group({
-    transactionNumber: ["", [Validators.required]],
-    issuerCountry: ["", [Validators.required]],
+    //transactionNumber: ["", [Validators.required]],
+    countryCode: ["", [Validators.required]],
     echeanceDate: ["", [Validators.required]],
     emissionDate: ["", [Validators.required]],
     operationSens: ["", [Validators.required]],
@@ -78,12 +82,12 @@ export class AddCarnetOrdreComponent {
     residualDuration: [""],
   });
 
-  get transactionNumber(){
-    return this.form.controls["transactionNumber"] as FormControl;
-  }
+  // get transactionNumber(){
+  //   return this.form.controls["transactionNumber"] as FormControl;
+  // }
 
-  get issuerCountry(){
-    return this.form.controls["issuerCountry"] as FormControl;
+  get countryCode(){
+    return this.form.controls["countryCode"] as FormControl;
   }
 
   get echeanceDate(){
@@ -167,7 +171,8 @@ export class AddCarnetOrdreComponent {
       const closeSpinner = document.getElementById("closeSpinner");
       openSpinner?.click();
       var data = {
-        transactionNumber: this.transactionNumber.getRawValue(),
+        // transactionNumber: this.transactionNumber.getRawValue(),
+        countryCode: this.countryCode.getRawValue(),
         operationSens: this.operationSens.getRawValue(),
         nature: this.nature.getRawValue(),
         echeanceDate: this.echeanceDate.getRawValue(),
@@ -183,6 +188,8 @@ export class AddCarnetOrdreComponent {
 
       this.transactionService.getResumeOrdre(data).subscribe((res : RestResponse<ResumeAssetResponse>) => {
         closeSpinner?.click();
+        console.log(res);
+        
         if (res.statusCode==200) {
           this.resumeAsset = res.data!;
           const btnAdd = document.getElementById("btnAdd");
@@ -196,6 +203,7 @@ export class AddCarnetOrdreComponent {
         }
       }, (error)=>{
         closeSpinner?.click();
+        console.log(error);
         this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
           duration: 5000,
           horizontalPosition: this.horizontalPosition,
@@ -216,7 +224,7 @@ export class AddCarnetOrdreComponent {
     openSpinner?.click();
     // var data = {
     //   transactionNumber: this.transactionNumber.getRawValue(),
-    //   issuerCountry: this.issuerCountry.getRawValue(),
+    //   countryCode: this.countryCode.getRawValue(),
     //   echeanceDate: this.echeanceDate.getRawValue(),
     //   operationSens: this.operationSens.getRawValue(),
     //   codeIsin: this.codeIsin.getRawValue(),
@@ -236,7 +244,8 @@ export class AddCarnetOrdreComponent {
     //   transactionRate: this.nature.getRawValue() == "BAT" ? Number.parseFloat(this.price.getRawValue()) : 1,
     // }
     var data = {
-      transactionNumber: this.transactionNumber.getRawValue(),
+      // transactionNumber: this.transactionNumber.getRawValue(),
+      countryCode: this.countryCode.getRawValue(),
       operationSens: this.operationSens.getRawValue(),
       nature: this.nature.getRawValue(),
       echeanceDate: this.echeanceDate.getRawValue(),
@@ -280,5 +289,11 @@ export class AddCarnetOrdreComponent {
 
   ngOnInit(): void {
     initFlowbite();
+
+    this.countryService.getCountries().subscribe((res : RestResponse<CountryDto[]>)=>{
+      if(res.statusCode==200){
+        this.countries = res.data!;
+      }
+    });
   }
 }

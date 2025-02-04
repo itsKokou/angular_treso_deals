@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, inject } from '@angular/core';
 import { MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { RouterLink } from '@angular/router';
 import { InstituteUserDTO } from '../../../../core/models/institution/institute-user-dto';
 import { UserDto } from '../../../../core/models/user/user-dto';
 import { SecurityServiceImpl } from '../../../../core/services/impl/security.service.impl';
@@ -12,7 +11,6 @@ import { RestResponse } from '../../../../core/models/rest-response';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { UserInstitut } from '../../../../core/models/user/user-institut';
 
 @Component({
   selector: 'app-utilisateurs',
@@ -22,10 +20,11 @@ import { UserInstitut } from '../../../../core/models/user/user-institut';
 })
 export class UtilisateursComponent implements AfterViewInit {
   totalElements: number = 0;  
-
   isLoading: boolean = false;
-  allDatas: UserInstitut[] = []; 
-  datasPaginated: UserInstitut[] = [];
+  allDatas: InstituteUserDTO[] = []; 
+  datasPaginated: InstituteUserDTO[] = [];
+  selectedUser: InstituteUserDTO = {};
+  selectedAction: String = "";
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
@@ -87,11 +86,11 @@ export class UtilisateursComponent implements AfterViewInit {
   ngOnInit(): void {
     initFlowbite();
     this.isLoading = true;
-    // this.userService.getUserByInstitutionId(this.connectedUser.institutionId!).subscribe((res: ResponseInstituteUserDTO)=>{
-    this.userService.getUserAdminInstitut().subscribe((res: RestResponse<any>)=>{
+    this.userService.getUserByInstitutionId(this.connectedUser.institutionId!).subscribe((res: RestResponse<InstituteUserDTO[]>)=>{
+    //this.userService.getUserAdminInstitut().subscribe((res: RestResponse<any>)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {
-        this.allDatas = res.data!.content;
+        this.allDatas = res.data!.reverse();
         this.totalElements = this.allDatas.length;
         this.datasPaginated = this.allDatas.slice(0*5, (0 + 1)*5);
       }
@@ -122,6 +121,7 @@ export class UtilisateursComponent implements AfterViewInit {
     openSpinner?.click();
 
     const {... data} = this.formProfil.getRawValue();
+    data.institutionId = this.connectedUser.institutionId!;
     this.userService.addUser(data).subscribe( (res)=>{
       closeSpinner?.click();
       if (res.statusCode==204) {
@@ -148,5 +148,111 @@ export class UtilisateursComponent implements AfterViewInit {
     });
   }
 
+  voirDetail(item:InstituteUserDTO){
+    this.selectedUser = item;
+    document.getElementById("user-institut-btn")?.click();
+  }
+
+  showModaltraiterUser(item:InstituteUserDTO, action:String){
+    this.selectedUser = item;
+    this.selectedAction = action;
+    document.getElementById("btnConfirmUser")?.click();
+  }
+
+  traiterUser(){
+    const openSpinner = document.getElementById("openSpinner");
+    openSpinner?.click();
+    if (this.selectedAction=="active") {
+      this.activateUser();
+    } else if(this.selectedAction=="lock") {
+      this.lockUser();
+    }else if(this.selectedAction=="delete") {
+      this.deleteUser();
+    }
+  }
+
+  activateUser(){
+    const closeSpinner = document.getElementById("closeSpinner");
+    this.userService.activateUserInstitut(this.selectedUser.id,this.selectedUser).subscribe( (res)=>{
+      closeSpinner?.click();
+      if (res.statusCode==204) {
+        this.snackBar.open("Utilisateur Activé avec succès","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+        this.ngOnInit();
+      } else {
+        this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      }
+    }, (error)=>{
+      closeSpinner?.click();
+      this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+        duration: 5000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+    });
+  }
+
+  lockUser(){
+    const closeSpinner = document.getElementById("closeSpinner");
+    this.userService.LockUserInstitut(this.selectedUser.id,this.connectedUser.institutionId,this.selectedUser).subscribe( (res)=>{
+      closeSpinner?.click();
+      if (res.statusCode==200) {
+        this.snackBar.open("Utilisateur Bloqué avec succès","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+        this.ngOnInit();
+      } else {
+        this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      }
+    }, (error)=>{
+      closeSpinner?.click();
+      this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+        duration: 5000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+    });
+  }
+
+  deleteUser(){
+    const closeSpinner = document.getElementById("closeSpinner");
+    this.userService.DeleteUserInstitut(this.selectedUser.id,this.connectedUser.institutionId).subscribe( (res)=>{
+      closeSpinner?.click();
+      if (res.statusCode==200) {
+        this.snackBar.open("Utilisateur archivé avec succès","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+        this.ngOnInit();
+      } else {
+        this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      }
+    }, (error)=>{
+      closeSpinner?.click();
+      this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+        duration: 5000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+    });
+  }
 
 }

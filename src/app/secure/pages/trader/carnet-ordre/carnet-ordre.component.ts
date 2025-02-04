@@ -14,13 +14,15 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModu
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProposalEnum } from '../../../../core/models/enum/proposal-enum';
-import { Proposal } from '../../../../core/models/carnet-ordre/proposal';
 import { RestResponse } from '../../../../core/models/rest-response';
+import { FormatNumberPipe } from '../../../../core/pipes/format-number.pipe';
+import { CountryDto } from '../../../../core/models/country/country-dto';
+import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
 
 @Component({
   standalone: true,
   selector: 'app-carnet-ordre',
-  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, MatProgressSpinnerModule],
+  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, MatProgressSpinnerModule, FormatNumberPipe ],
   templateUrl: './carnet-ordre.component.html',
   styleUrl: './carnet-ordre.component.css'
 })
@@ -44,6 +46,7 @@ export class CarnetOrdreComponent implements AfterViewInit {
   pageEvent : PageEvent = new PageEvent();
   label: string = "Prix";
   minDate!: string;
+  countries: CountryDto[] = [];
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   private fb = inject(FormBuilder);
@@ -51,6 +54,7 @@ export class CarnetOrdreComponent implements AfterViewInit {
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
     private transactionService: TransactionServiceImpl,
+    private countryService : CountryServiceImpl,
     private propositionService: PropositionServiceImpl,
     private snackBar: MatSnackBar
   ){
@@ -229,6 +233,12 @@ export class CarnetOrdreComponent implements AfterViewInit {
         this.allDatasFiltered = this.allDatas;
         this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
         this.totalElements = this.allDatasFiltered.length;
+      }
+    });
+
+    this.countryService.getCountries().subscribe((res : RestResponse<CountryDto[]>)=>{
+      if(res.statusCode==200){
+        this.countries = res.data!;
       }
     });
   }

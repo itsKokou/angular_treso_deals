@@ -8,6 +8,7 @@ export interface InstituteUserDTO {
     phoneNumber?: string;
     fixeNumber?: string;
     job?: string;
+    createdAt?: string;
     secondEmail?: string;
     department?: string;
     profile?: string;

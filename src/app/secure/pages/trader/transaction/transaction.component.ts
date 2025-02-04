@@ -11,11 +11,14 @@ import { TransactionServiceImpl } from '../../../../core/services/impl/transacti
 import { PropositionServiceImpl } from '../../../../core/services/impl/proposition.service.impl';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RestResponse } from '../../../../core/models/rest-response';
+import { FormatNumberPipe } from '../../../../core/pipes/format-number.pipe';
+import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
+import { CountryDto } from '../../../../core/models/country/country-dto';
 
 @Component({
   standalone: true,
   selector: 'app-transaction',
-  imports: [CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule],
+  imports: [CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, FormatNumberPipe ],
   templateUrl: './transaction.component.html',
   styleUrl: './transaction.component.css'
 })
@@ -32,10 +35,12 @@ export class TransactionComponent implements AfterViewInit {
   datasPaginated: AssetResponse[] = []; 
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
   private fb = inject(FormBuilder);
+  countries: CountryDto[] = [];
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
     private transactionService: TransactionServiceImpl,
+    private countryService : CountryServiceImpl,
     private propositionService: PropositionServiceImpl
   ){
   }
@@ -107,6 +112,12 @@ export class TransactionComponent implements AfterViewInit {
         this.allDatasFiltered = this.allDatas;
         this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
         this.totalElements = this.allDatasFiltered.length;
+      }
+    });
+
+    this.countryService.getCountries().subscribe((res : RestResponse<CountryDto[]>)=>{
+      if(res.statusCode==200){
+        this.countries = res.data!;
       }
     });
   }

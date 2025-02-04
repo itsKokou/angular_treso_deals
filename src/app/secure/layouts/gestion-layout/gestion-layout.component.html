@@ -2,20 +2,25 @@
 
 
   <div class="m-0 text-base antialiased font-normal leading-default bg-gray-50 text-slate-500">
-    
-    <!-- sidenav  -->
-    <aside id="default-sidebar" class="max-w-62.5 ease-nav-brand z-20 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent" style="background-color: #4D44B5;">
-      <button (click)="onClick()" data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 ">
-        <span class="sr-only">Open sidebar</span>
-        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-        </svg>
-    </button>
-      <div class="h-19.5">
-        <i class="absolute top-0 right-0  opacity-50 cursor-pointer fas fa-times text-white " sidenav-close>Hello</i>
-        <a routerLink="/gestion/dashboard" class="block px-8 py-6 m-0 text-lg whitespace-nowrap text-white">
-          <img src="./assets/img/logo-ct.png" class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-8" alt="main_logo" />
-          <span class="ml-1 font-bold transition-all duration-200 ease-nav-brand">TRESO LINK</span>
+    <!-- SIDE-BAR  -->
+
+    <!-- Large Sidebar  -->
+    <aside id="largeSidebar" class="max-w-62.5 ease-nav-brand z-20 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent" style="background-color: #4D44B5;">
+
+      <div class="h-fit">
+        <div class="flex justify-end px-4 pt-2 -mb-4">
+          <svg (click)="hideSideBar()" id="btnHide" class="h-5 text-white cursor-pointer rounded hover:text-purple-800 hover:bg-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
+          </svg>
+          <svg (click)="showSideBar()" id="btnShow" class="h-5 hidden text-white cursor-pointer rounded hover:text-purple-800 hover:bg-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
+          </svg>
+
+        </div>
+
+        <a class="px-8 py-4 m-0 text-lg flex items-center whitespace-nowrap text-white" routerLink="/gestion/dashboard" >
+          <img src="./assets/img/logo1.png" class="rounded-full h-full max-w-full transition-all duration-200 ease-nav-brand max-h-10" alt="main_logo" />
+          <span class="ml-2 font-bold transition-all duration-200 ease-nav-brand">TRESO LINK</span>
         </a>
       </div>
       
@@ -108,9 +113,18 @@
       </div>
     </aside>
 
+     <!-- Small Sidebar  -->
+    <aside id="smallSidebar" class="hidden max-w-20 ease-nav-brand z-20 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent">
+      <div class="h-fit">
+        <svg (click)="showSideBar()" id="btnShow" class="h-5 text-white cursor-pointer bg-purple-600 rounded hover:text-purple-800 hover:bg-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
+        </svg>
+      </div>
+    </aside>
+
     <!-- end sidenav -->
 
-    <main class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
+    <main id="main" class="ease-soft-in-out xl:ml-68.5 relative h-full max-h-screen rounded-xl transition-all duration-200">
       <!-- Navbar -->
       <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start sticky top-[1%] backdrop-saturate-[200%] backdrop-blur-[30px] bg-[hsla(0,0%,100%,0.8)] shadow-blur z-10" navbar-main navbar-scroll="true">
         <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
@@ -118,9 +132,9 @@
             <!-- breadcrumb -->
             <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
               <li class="text-sm leading-normal">
-                <a class="opacity-50 text-slate-700" href="#">Pages</a>
+                <a class="opacity-50 text-slate-700" routerLink="/gestion/dashboard">Pages</a>
               </li>
-              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">Dashboard</li>
+              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">{{page}}</li>
             </ol>
             <h6 class="mb-0 font-bold capitalize">{{page}}</h6>
           </nav>

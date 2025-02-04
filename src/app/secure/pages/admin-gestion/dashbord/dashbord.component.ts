@@ -9,7 +9,6 @@ import { initFlowbite } from 'flowbite';
 })
 export class DashbordComponent {
   constructor(){
-    localStorage.setItem("gestion","Dashboard");
   }
   ngOnInit(): void {
     initFlowbite();

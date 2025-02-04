@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, inject } from '@angular/core';
 import { MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { RouterLink } from '@angular/router';
 import { initFlowbite } from 'flowbite';
@@ -10,10 +10,14 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProposalEnum } from '../../../../core/models/enum/proposal-enum';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UserDto } from '../../../../core/models/user/user-dto';
+import { SecurityServiceImpl } from '../../../../core/services/impl/security.service.impl';
+import { InvitationServiceImpl } from '../../../../core/services/impl/invitation.service.impl';
 
 @Component({
     selector: 'app-profils',
-    imports: [RouterLink, CommonModule, MatProgressBarModule, MatPaginatorModule, MatProgressSpinnerModule],
+    imports: [ReactiveFormsModule, CommonModule, MatProgressBarModule, MatPaginatorModule, MatProgressSpinnerModule],
     templateUrl: './profils.component.html',
     styleUrl: './profils.component.css'
 })
@@ -31,13 +35,42 @@ export class ProfilsComponent implements AfterViewInit {
   datasPaginatedIntermediaire: ProfilResponse[] = []; 
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+  connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
     private profilService: ProfilServiceImpl,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private invitationService : InvitationServiceImpl,
+    private fb: FormBuilder
   ){
-    localStorage.setItem("gestion","Profils");
+    this.institutionType.valueChanges.subscribe((value)=>{
+      if (value == "BANK") {
+        this.message.setValue("Bonjour,\nNous avons l'honneur de vous inviter à rejoindre la plateforme TRESO LINK, en qualité d'Intermédiaire Financier.\nNous vous remercions d'avance pour votre marque de confiance.\nTeam TRESO LINK");
+      } else if(value == "SGI") {
+         this.message.setValue("Bonjour,\n"+ this.connectedUser.firstName + " " + this.connectedUser.lastName + " vous invite à rejoindre la plateforme TRESO LINK, afin de rapprocher vos opportunités d'investissement.");
+      }
+    });
+  }
+
+  form = this.fb.group({
+    name : ["", [Validators.required, Validators.minLength(2)]],
+    email : ["", [Validators.required, Validators.email]],
+    institutionType : ["", [Validators.required]],
+    message : [""]
+  });
+
+  get name(){
+    return this.form.controls["name"] as FormControl;
+  }
+  get email(){
+    return this.form.controls["email"] as FormControl;
+  }
+  get institutionType(){
+    return this.form.controls["institutionType"] as FormControl;
+  }
+  get message(){
+    return this.form.controls["message"] as FormControl;
   }
 
 
@@ -117,6 +150,47 @@ export class ProfilsComponent implements AfterViewInit {
           verticalPosition: this.verticalPosition,
         });
     });
+  }
+
+  onSubmitInvitation(){
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+    }else{
+      const openSpinner = document.getElementById("openSpinner");
+      const closeSpinner = document.getElementById("closeSpinner");
+      openSpinner?.click();
+      const {... data} = this.form.getRawValue();
+      
+      this.invitationService.sendInvitation(data).subscribe((res : any) => {
+        closeSpinner?.click();
+        document.getElementById("closeInvitationModal")?.click();
+
+        
+        if (res.statusCode==204) {
+          this.snackBar.open("Votre invitation a été envoyée avec succès! \nNous vous remercions pour votre marque de confiance","Ok",{
+            duration: 5000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+          this.form.reset();
+        } else {
+          this.snackBar.open("Une erreur s'est produite lors de l'envoi. Veuillez rééssayer !","Ok",{
+            duration: 5000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+        }
+      }, (error)=>{
+        closeSpinner?.click();
+        this.snackBar.open("Une erreur s'est produite lors de l'envoi SMTP. Veuillez rééssayer !","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+        console.log(error);
+      });
+
+    }
   }
 
 }

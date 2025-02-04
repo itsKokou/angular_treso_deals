@@ -12,7 +12,7 @@ import { RestResponse } from '../../../../core/models/rest-response';
 
 @Component({
     selector: 'app-utilisateurs',
-    imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule],
+    imports: [CommonModule, MatProgressBar, MatPaginatorModule],
     templateUrl: './utilisateurs.component.html',
     styleUrl: './utilisateurs.component.css'
 })
@@ -43,7 +43,6 @@ export class UtilisateursComponent implements AfterViewInit {
   ngOnInit(): void {
     initFlowbite();
     this.isLoading = true;
-    // this.userService.getUserByInstitutionId(this.connectedUser.institutionId!).subscribe((res: ResponseInstituteUserDTO)=>{
     this.userService.getUserByInstitutionId(1037).subscribe((res: RestResponse<InstituteUserDTO[]>)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {

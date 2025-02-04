@@ -3,10 +3,11 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } fro
 import { initFlowbite } from 'flowbite';
 import { UserDto } from '../../../core/models/user/user-dto';
 import { SecurityServiceImpl } from '../../../core/services/impl/security.service.impl';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-gestion-layout',
-    imports: [RouterOutlet, RouterLink, RouterLinkActive],
+    imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
     templateUrl: './gestion-layout.component.html',
     styleUrl: './gestion-layout.component.css'
 })
@@ -16,19 +17,23 @@ export class GestionLayoutComponent implements OnInit {
   page : any = "Dashboard";
 
   constructor(private router: Router){
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const url = event.url.split('/')[2]
+        if(url=="dashboard"){
+          this.page = "Dashboard";
+        }else if(url=="profils"){
+          this.page = "Profils";
+        }else if(url=="utilisateurs"){
+          this.page = "Utilisateurs";
+        }
+      }
+    });
   }
 
   ngOnInit(): void {
     initFlowbite();
     this.connectedUser = this.securityService.getConnectedUser();
-    this.page = localStorage.getItem("trader");
-
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        // Réinitialisez les données ici
-        this.page = localStorage.getItem("gestion");
-      }
-    });
   }
 
   deconnexion(){
@@ -37,12 +42,17 @@ export class GestionLayoutComponent implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
-  onClick(){
-    const toggleButton = document.querySelector('[data-drawer-toggle="default-sidebar"]')!;
-    const sidebar = document.getElementById('default-sidebar')!;
+  hideSideBar(){
+    document.getElementById("largeSidebar")?.classList.add("hidden");
+    document.getElementById("smallSidebar")?.classList.remove("hidden");
+    document.getElementById("main")?.classList.remove("xl:ml-68.5");
+    document.getElementById("main")?.classList.add("xl:ml-8");
+  }
 
-    toggleButton.addEventListener('click', () => {
-        sidebar.classList.toggle('-translate-x-full');
-    });
+  showSideBar(){
+    document.getElementById("smallSidebar")?.classList.add("hidden");
+    document.getElementById("largeSidebar")?.classList.remove("hidden");
+    document.getElementById("main")?.classList.remove("xl:ml-8");
+    document.getElementById("main")?.classList.add("xl:ml-68.5");
   }
 }

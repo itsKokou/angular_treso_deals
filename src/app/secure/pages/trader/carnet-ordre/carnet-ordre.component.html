@@ -153,19 +153,19 @@
                     <p class="mb-0 text-sm leading-normal">{{item.operationSens}}</p>
                   </td>
                   <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.amount}}</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.amount | formatNumber}}</p>
                   </td>
                   <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
                     <p class="mb-0 text-sm leading-normal">{{item.nature=="OAT" ? item.proposedPrice : item.proposedRate}}</p>
                   </td>
                   <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">{{item.interet}}</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.interet | formatNumber}}</p>
                   </td>
                  <!-- <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
                     <p class="mb-0 text-sm leading-normal">{{item.totalTransactionValue}}</p>
                   </td>-->
                   <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
-                    <p *ngIf="item.nature=='OAT'" class="mb-0 text-sm leading-normal">{{item.proposedPrice}}</p>
+                    <p *ngIf="item.nature=='OAT'" class="mb-0 text-sm leading-normal">{{item.proposedPrice | formatNumber}}</p>
                     <p *ngIf="item.nature=='BAT'" class="mb-0 text-sm leading-normal">{{item.proposedRate}}%</p>
                   </td>
                   <!--<td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
@@ -287,7 +287,7 @@
               </div>
               <div *ngIf='selectedCarnet.nature == "OAT"' class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Prix Transaction :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.proposedPrice}}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.proposedPrice | formatNumber}}</p>
               </div>
               <div *ngIf='selectedCarnet.nature == "BAT"' class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux Transaction :</p>
@@ -305,11 +305,11 @@
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Durée :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.residualDuration | number: '1.2-2'}} an(s)</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.residualDuration}}</p>
               </div>
               <div *ngIf='selectedCarnet.nature == "OAT"' class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Intérêts :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.interet}}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.interet | formatNumber}}</p>
               </div>
               <div *ngIf='selectedCarnet.nature == "BAT"' class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Redement :</p>
@@ -327,11 +327,11 @@
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Quantité :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.amount}}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.amount | formatNumber}}</p>
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Valeur :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.totalTransactionValue}}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.totalTransactionValue | formatNumber}}</p>
               </div>
             </div>
           </div>
@@ -361,16 +361,16 @@
                       <p class="mb-0 text-sm leading-normal">{{item.id}}</p>
                     </td>
                     <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                      <p class="mb-0 text-sm leading-normal">{{item.amount}}</p>
+                      <p class="mb-0 text-sm leading-normal">{{item.amount | formatNumber}}</p>
                     </td>
                     <td class="px-4 align-middle bg-transparent border-b whitespace-nowrap">
-                      <p class="mb-0 text-sm leading-normal">{{item.price}}</p>
+                      <p class="mb-0 text-sm leading-normal">{{item.price | formatNumber}}</p>
                     </td>
                     <td class="px-4 align-middle text-left bg-transparent border-b whitespace-nowrap">
-                      <p class="mb-0 text-sm leading-normal">{{item.interet}}</p>
+                      <p class="mb-0 text-sm leading-normal">{{item.interet | formatNumber}}</p>
                     </td>
                     <td class="px-4 align-middle text-center bg-transparent border-b whitespace-nowrap">
-                      <p class="mb-0 text-sm leading-normal">{{item.transactionValue}}</p>
+                      <p class="mb-0 text-sm leading-normal">{{item.transactionValue | formatNumber}}</p>
                     </td>
                     <td class="px-4 text-center flex justify-center items-center bg-transparent border-b whitespace-nowrap">
                       <p *ngIf="item.status == 'ACCEPTED'" class="px-3 my-1 w-fit text-sm text-green-600 font-semibold bg-green-200 rounded-full">Validé</p>
@@ -474,9 +474,10 @@
                   <label for="countries" class="w-1/2 text-sm font-medium text-gray-900">Emetteur :</label>
                   <select formControlName="issuerCountry" id="countries" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
                     <option disabled [selected]="true">Indiquez pays </option>
-                    <option value="SENEGAL">SENEGAL</option>
-                    <option value="CAMEROUN">CAMEROUN</option>
-                    <option value="GHANA">GHANA</option>
+                    @for (item of countries; track $index) {
+                      <option [value]="item.code">{{item.name}}</option>
+                    }
+                    
                   </select>             
                 </div>
                 @if(issuerCountry.errors && (issuerCountry.dirty || issuerCountry.touched)){
