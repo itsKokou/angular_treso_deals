@@ -86,7 +86,7 @@ export class TransactionComponent implements AfterViewInit {
 
     if (data.taux != null  && data.taux != ""){
       var taux = Number.parseFloat(data.taux);
-      this.allDatasFiltered = this.allDatasFiltered.filter(item => item.transactionRate ==taux);
+      // this.allDatasFiltered = this.allDatasFiltered.filter(item => item.transactionRate ==taux);
     }
 
     

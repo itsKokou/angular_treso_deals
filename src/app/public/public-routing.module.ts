@@ -6,6 +6,8 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { ValidationPageComponent } from './pages/validation-page/validation-page.component';
 import { SecurityServiceImpl } from '../core/services/impl/security.service.impl';
 import { AuthenticationGuard } from '../core/guards/authentication.guard';
+import { CguPageComponent } from './pages/cgu-page/cgu-page.component';
+import { ChangePasswordPageComponent } from './pages/change-password-page/change-password-page.component';
 
 const routes: Routes = [
   {
@@ -29,6 +31,16 @@ const routes: Routes = [
     path: "validation",
     component: ValidationPageComponent,
     canMatch:[AuthenticationGuard]
+  },
+  {
+    path: "conditions/generales",
+    component: CguPageComponent,
+    // canMatch:[AuthenticationGuard]
+  },
+  {
+    path: "change/password",
+    component: ChangePasswordPageComponent,
+    // canMatch:[AuthenticationGuard]
   }
   
 ];

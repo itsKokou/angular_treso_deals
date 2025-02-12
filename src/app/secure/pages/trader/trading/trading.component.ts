@@ -10,7 +10,7 @@ import { TransactionServiceImpl } from '../../../../core/services/impl/transacti
 import { PropositionServiceImpl } from '../../../../core/services/impl/proposition.service.impl';
 import { CommonModule } from '@angular/common';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FormatNumberPipe } from '../../../../core/pipes/format-number.pipe';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
@@ -49,12 +49,6 @@ export class TradingComponent implements AfterViewInit{
     private fb: FormBuilder,
     private snackBar:MatSnackBar,
   ){
-    this.quantite.valueChanges.subscribe((value)=>{
-      this.prixTransaction.setValue(this.quantite.value*this.prixPropose.value)
-    });
-    this.prixPropose.valueChanges.subscribe((value)=>{
-      this.prixTransaction.setValue(this.quantite.value*this.prixPropose.value)
-    });
   }
 
   form = this.fb.group({
@@ -87,8 +81,8 @@ export class TradingComponent implements AfterViewInit{
 
   //---------------- Form Proposition
   formProposition = this.fb.group({
-    quantite: [0, [Validators.required, Validators.min(1)]],
-    prixPropose: [0, [Validators.required, Validators.min(1)]],
+    quantite: [0, [Validators.required, Validators.min(1), this.validateQte]],
+    prixPropose: [0, [Validators.required, Validators.min(1), this.validateDigit]],
     prixTransaction: 0
   })
 
@@ -101,6 +95,34 @@ export class TradingComponent implements AfterViewInit{
   get prixTransaction(){
     return this.formProposition.controls["prixTransaction"] as FormControl;
   }
+
+  validateDigit(control: AbstractControl): ValidationErrors | null {
+      var value : string = control.value;
+      if (!value) {
+        return null; 
+      }
+      const normalizedValue = value.replace(',', '.');
+      const numberRegex = /^(\d+(\.\d+)?|\d+(\,\d+)?|\.\d+)$/;
+      if (!numberRegex.test(normalizedValue)) {
+        return { isnotdigit: true };
+      }
+      return null; 
+    }
+  
+    validateQte(control: AbstractControl): ValidationErrors | null {
+      var value : string = control.value;
+      if (!value) {
+        return null; 
+      }
+      if(value.includes(',') || value.includes('.')){
+        return { isnotdigit: true };
+      }
+      const numberRegex = /^(\d+(\.\d+)?|\d+(\,\d+)?|\.\d+)$/;
+      if (!numberRegex.test(value)) {
+        return { isnotdigit: true };
+      }
+      return null; 
+    }
 
 
   rechercherOffres() {
@@ -116,17 +138,16 @@ export class TradingComponent implements AfterViewInit{
 
     if (data.taux != null  && data.taux != ""){
       var taux = Number.parseFloat(data.taux);
-      this.allDatasFiltered = this.allDatasFiltered.filter(item => item.transactionRate ==taux);
+      // this.allDatasFiltered = this.allDatasFiltered.filter(item => item.transactionRate ==taux);
     }
 
-    
     this.totalElements = this.allDatasFiltered.length;
-    this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
+    this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
   }
 
   ngAfterViewInit() {
-     initFlowbite();
-    this.matPaginatorIntl.itemsPerPageLabel="Utilisateurs par page";
+    initFlowbite();
+    this.matPaginatorIntl.itemsPerPageLabel="Offres par page";
     this.matPaginatorIntl.firstPageLabel = "Première page";
     this.matPaginatorIntl.lastPageLabel = "Dernière page";
     this.matPaginatorIntl.nextPageLabel = "Page suivante";
@@ -139,8 +160,8 @@ export class TradingComponent implements AfterViewInit{
       this.isLoading = false;
       if (res.statusCode == 200) {
         this.allDatas = res.data!;
-        this.allDatasFiltered = this.allDatas;
-        this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
+        this.allDatasFiltered = this.allDatas.reverse();
+        this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
         this.totalElements = this.allDatasFiltered.length;
       }
     });
@@ -177,6 +198,25 @@ export class TradingComponent implements AfterViewInit{
     this.formProposition.reset();
   }
 
+  onQuantiteChange(event: any) {
+    let rawValue = event.target.value.replace(/\s/g, ''); // Supprime les espaces pour garder la vraie valeur
+    this.quantite.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
+
+    if(!isNaN(Number(this.quantite.value))){
+      this.prixTransaction.setValue(this.quantite.value*this.prixPropose.value)
+    }
+  }
+
+  onPrixChange(event: any) {
+    let rawValue = event.target.value.replace(/\s/g, ''); // Supprime les espaces pour garder la vraie valeur
+    this.prixPropose.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
+
+    if(!isNaN(Number(this.quantite.value))){
+      this.prixTransaction.setValue(this.quantite.value*this.prixPropose.value)
+    }
+  }
+
+
   addProposition(){
     if(this.formProposition.invalid){
      this.formProposition.markAllAsTouched();
@@ -186,11 +226,12 @@ export class TradingComponent implements AfterViewInit{
     const openSpinner = document.getElementById("openSpinner");
     const closeSpinner = document.getElementById("closeSpinner");
     openSpinner?.click();
+    let val = this.prixTransaction.getRawValue();
     var data = {
       assetId: this.selectedCarnet.id,
       price: Number.parseFloat(this.prixPropose.getRawValue()),
       amount: Number.parseFloat(this.quantite.getRawValue()),
-      transactionValue: Number.parseFloat(this.prixTransaction.getRawValue()),
+      transactionValue: Number.parseFloat(val.toString().replace(/\s/g, '')),
       interet: 100000
     }
 

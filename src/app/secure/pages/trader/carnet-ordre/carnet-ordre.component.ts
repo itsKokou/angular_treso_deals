@@ -111,10 +111,11 @@ export class CarnetOrdreComponent implements AfterViewInit {
     nature: ["", [Validators.required]],
     couponRate: [0],
     amount : ["", [Validators.required, this.validateQte]],
+    emissionDate: ["", [Validators.required]],
     // interet: [0],
     unitaryValueName: [0],
-    transactionValue: [0],
-    residualDuration: [0],
+    // transactionValue: [0],
+    // residualDuration: [0],
   });
 
   get transactionNumber(){
@@ -152,18 +153,22 @@ export class CarnetOrdreComponent implements AfterViewInit {
   get amount(){
     return this.form.controls["amount"] as FormControl;
   }
+
+  get emissionDate(){
+    return this.form.controls["emissionDate"] as FormControl;
+  }
   // get interet(){
   //   return this.form.controls["interet"] as FormControl;
   // }
   get unitaryValueName(){
     return this.form.controls["unitaryValueName"] as FormControl;
   }
-  get transactionValue(){
-    return this.form.controls["transactionValue"] as FormControl;
-  }
-  get residualDuration(){
-    return this.form.controls["residualDuration"] as FormControl;
-  }
+  // get transactionValue(){
+  //   return this.form.controls["transactionValue"] as FormControl;
+  // }
+  // get residualDuration(){
+  //   return this.form.controls["residualDuration"] as FormControl;
+  // }
 
   validateDigit(control: AbstractControl): ValidationErrors | null {
     var value : string = control.value;
@@ -206,17 +211,17 @@ export class CarnetOrdreComponent implements AfterViewInit {
 
     if (data.taux != null  && data.taux != ""){
       var taux = Number.parseFloat(data.taux);
-      this.allDatasFiltered = this.allDatasFiltered.filter(item => item.transactionRate ==taux);
+      // this.allDatasFiltered = this.allDatasFiltered.filter(item => item.transactionRate ==taux);
     }
 
     this.totalElements = this.allDatasFiltered.length;
-    this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
+    this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
   }
 
 
   ngAfterViewInit() {
     initFlowbite();
-    this.matPaginatorIntl.itemsPerPageLabel="Utilisateurs par page";
+    this.matPaginatorIntl.itemsPerPageLabel="Offres par page";
     this.matPaginatorIntl.firstPageLabel = "Première page";
     this.matPaginatorIntl.lastPageLabel = "Dernière page";
     this.matPaginatorIntl.nextPageLabel = "Page suivante";
@@ -229,9 +234,9 @@ export class CarnetOrdreComponent implements AfterViewInit {
     this.transactionService.getAllCarnetOrdre().subscribe((res: RestResponse<AssetResponse[]>)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {
-        this.allDatas = res.data!;
+        this.allDatas = res.data!.reverse();
         this.allDatasFiltered = this.allDatas;
-        this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
+        this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
         this.totalElements = this.allDatasFiltered.length;
       }
     });
@@ -263,7 +268,7 @@ export class CarnetOrdreComponent implements AfterViewInit {
       }
     }
     this.totalElements = this.allDatasFiltered.length;
-    this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
+    this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
   }
 
   filterBySensTransaction(sens: string) {
@@ -324,8 +329,9 @@ export class CarnetOrdreComponent implements AfterViewInit {
       amount : carnet.amount?.toString(),
       // interet: carnet.interet?.toString(),
       unitaryValueName: 0,
-      transactionValue: carnet.totalTransactionValue?.toString(),
-      residualDuration: carnet.residualDuration?.toString()
+      emissionDate: carnet.valueDate?.toString()
+      // transactionValue: carnet.totalTransactionValue?.toString(),
+      // residualDuration: carnet.residualDuration?.toString(),
     });
     btnUpdate.click();
   }
@@ -342,23 +348,24 @@ export class CarnetOrdreComponent implements AfterViewInit {
       const openSpinner = document.getElementById("openSpinner");
       const closeSpinner = document.getElementById("closeSpinner");
       openSpinner?.click();
+
       var data = {
         id: this.selectedCarnet.id,
         transactionNumber: this.transactionNumber.getRawValue(),
-        availableAmount: this.selectedCarnet.availableAmount,
-        issuerCountry: this.issuerCountry.getRawValue(),
+        countryCode: this.issuerCountry.getRawValue(),
         echeanceDate: this.echeanceDate.getRawValue(),
+        emissionDate: this.emissionDate.getRawValue(),
         operationSens: this.operationSens.getRawValue(),
         codeIsin: this.codeIsin.getRawValue(),
-        price: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.price.getRawValue()) : 1,
-        nature: this.nature.getRawValue(),
+        proposedPrice: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.price.getRawValue()) : null,
+        proposedRate: this.nature.getRawValue() == "BAT" ? Number.parseFloat(this.price.getRawValue()) : null,
         couponRate: Number.parseFloat(this.couponRate.getRawValue()),
+        nature: this.nature.getRawValue(),
         amount : Number.parseFloat(this.amount.getRawValue()),
         // interet: Number.parseFloat(this.interet.getRawValue()),
-        unitaryValueName: Number.parseFloat(this.unitaryValueName.getRawValue()),
-        transactionValue: Number.parseFloat(this.transactionValue.getRawValue()),
-        residualDuration: Number.parseFloat(this.residualDuration.getRawValue()),
-        transactionRate: this.nature.getRawValue() == "BAT" ? Number.parseFloat(this.price.getRawValue()) : 1,
+        unitaryNominalValue: Number.parseFloat(this.unitaryValueName.getRawValue()),
+        // transactionValue: Number.parseFloat(this.transactionValue.getRawValue()),
+        // residualDuration: Number.parseFloat(this.residualDuration.getRawValue()),
       }
 
       this.transactionService.updateCarnetOrdre(data).subscribe((res : any) => {

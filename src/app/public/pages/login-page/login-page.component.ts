@@ -60,6 +60,7 @@ export class LoginPageComponent {
     let data = this.form.getRawValue();
     this.securityService.login(data).subscribe((res: ResponseLoginResponseDTO) => {
       this.isLoading = false;
+      
       if (res.statusCode==200) {
         this.error=""
         this.loginReponse = res.data;

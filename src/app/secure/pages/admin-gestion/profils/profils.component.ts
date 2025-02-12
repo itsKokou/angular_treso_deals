@@ -87,14 +87,13 @@ export class ProfilsComponent implements AfterViewInit {
     this.profilService.getAllProfil().subscribe((res: any)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {
-        const datas : ProfilResponse[] = res.data?.content;
+        const datas : ProfilResponse[] = res.data.reverse();
         this.allDatasInstitut = datas.filter((value) => value.type === 'BANK');
         this.allDatasIntermediaire = datas.filter((value) => value.type === 'SGI');
         this.datasPaginatedInstitut = this.allDatasInstitut.slice(0*5, (0 + 1)*5)
         this.datasPaginatedIntermediaire = this.allDatasIntermediaire.slice(0*5, (0 + 1)*5)
         this.totalElementsInstitut = this.allDatasInstitut.length;
         this.totalElementsIntermediaire = this.allDatasIntermediaire.length;
-
       }
     });
   }
@@ -168,7 +167,7 @@ export class ProfilsComponent implements AfterViewInit {
         
         if (res.statusCode==204) {
           this.snackBar.open("Votre invitation a été envoyée avec succès! \nNous vous remercions pour votre marque de confiance","Ok",{
-            duration: 5000,
+            duration: 8000,
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
           });

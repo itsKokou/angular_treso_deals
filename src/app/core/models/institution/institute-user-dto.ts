@@ -13,6 +13,7 @@ export interface InstituteUserDTO {
     department?: string;
     profile?: string;
     status?: InstitutionEnum.Status;
+
 }
 
 

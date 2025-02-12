@@ -4,33 +4,34 @@ import { Proposal } from "./proposal";
 export interface AssetResponse { 
     id?: number;
     transactionNumber?: string;
-    codeIsin?: string;
     date?: string;
-    propositions?: Array<Proposal>;
-    operationSens?: OperationEnum.SensEnum;
-    createdAt?: string;
     nature?: OperationEnum.NatureEnum;
+    codeIsin?: string;
     couponRate?: number;
-    echeanceDate?: string;
     amount?: number;
-    availableAmount?: number;
-    price?: number;
-    transactionRate?: number;
-    interet?: number;
-    issuerCountry?: string;
-    residualDuration?: number;
-    transactionValue?: number;
-    unitaryValueName?: number;
-
+    operationSens?: OperationEnum.SensEnum;
     proposedRate?: number;
-    proposedPrice?: number;
     valueDate?: string;
+    issuerCountry?: string;
+    echeanceDate?: string;
+    proposedPrice?: number;
+    availableAmount?: number;
+    createdAt?: string;
     totalNominalValue?: number;
     transactionPrice?: number;
-    totalTransactionValue?: number;
+    residualDuration?: number;
     yieldRate?: number;
+    totalTransactionValue?: number;
+    interet?: number;
     estimatedYield?: number;
-    feesedPrice?: number;
+    fees?: number;
+
+    // propositions?: Array<Proposal>;
+    // transactionRate?: number;
+    // transactionValue?: number;
+    // unitaryValueName?: number;
+
+        
 }
 
 

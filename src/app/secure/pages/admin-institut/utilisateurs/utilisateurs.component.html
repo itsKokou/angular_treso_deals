@@ -1,5 +1,5 @@
- <div class="w-full px-6 py-6 mx-auto">
-    <div class="mt-4 flex justify-end">
+<div class="w-full px-6 py-6 mx-auto">
+  <div class="mt-4 flex justify-end">
     <a id="btnAddProfil" data-modal-target="profil-modal" data-modal-toggle="profil-modal" class="px-6 py-2 flex bg-blue-700 text-white font-medium rounded-md hover:bg-blue-800">
       <svg class="w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -13,9 +13,9 @@
       <div class="py-4 px-4 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
         <h6 class="font-bold text-lg text-gray-800">Liste d'utilisateurs</h6>
       </div>
-      <div class="p-0 overflow-x-auto">
-        <table  class="w-full border-gray-200 text-slate-700 border-collapse">
-          <thead class="align-bottom">
+      <div class="p-0 overflow-x-auto overflow-y-auto max-h-96 ">
+        <table  class="w-full border-collapse  border-gray-200 text-slate-700">
+          <thead class="bg-white align-middle sticky top-0">
             <tr class="border-b border-gray-200">
               <th class="px-4 py-3 font-bold text-left uppercase text-xs whitespace-nowrap text-slate-400">Id</th>
               <th class="px-4 py-3 font-bold text-left uppercase text-xs whitespace-nowrap text-slate-400">Nom Complet</th>
@@ -28,9 +28,9 @@
               <th class="px-4 py-3 font-bold text-center uppercase text-xs whitespace-nowrap text-slate-400">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class=" overflow-y-auto">
           @for (item of datasPaginated; track $index) {
-            <tr class="border-b border-gray-200">
+            <tr class="text-gray-700 border-b border-gray-200 odd:bg-gray-100 even:bg-white">
               <td class="px-4 text-left">
                 <p class="text-sm leading-normal py-2">{{item.id}}</p>
               </td>
@@ -93,8 +93,8 @@
       <div>
         <mat-paginator showFirstLastButtons
               [length] ="totalElements"
-              [pageSize]="5"
-              [pageSizeOptions]="[5, 10, 25]"
+              [pageSize]="20"
+              [pageSizeOptions]="[20, 30, 50]"
               aria-label="Select page"
               (page)="onPageChange($event)">
         </mat-paginator>
@@ -322,55 +322,55 @@
           <div class="flex max-w-full justify-center">
             <div class="mx-auto mt-2" style="width: 46%;">
               <div class="w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">N° :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{ selectedUser.id }}</p>
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">N° :</p>
+                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{ selectedUser.id }}</p>
               </div>
               <div class="w-full flex mt-2">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Nom :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{ selectedUser.lastName }}</p>
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Nom :</p>
+                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{ selectedUser.lastName }}</p>
               </div>
               <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Prénom :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedUser.firstName}}</p>
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Prénom :</p>
+                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedUser.firstName}}</p>
               </div>
               <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Date d'adhésion :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedUser.createdAt | date:'dd/MM/YYYY'}}</p>
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Date d'adhésion :</p>
+                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedUser.createdAt | date:'dd/MM/YYYY'}}</p>
               </div>
               <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Email :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedUser.email }}</p>
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Email :</p>
+                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedUser.email }}</p>
               </div>
               <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Second Email :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedUser.secondEmail }}</p>
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Second Email :</p>
+                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedUser.secondEmail }}</p>
               </div>
             </div>
 
             <div class="mx-auto mt-2" style="width: 46%;">
               <div class="w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Téléphone portable :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedUser.phoneNumber }}</p>
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Téléphone portable :</p>
+                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedUser.phoneNumber }}</p>
               </div>
               <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Téléphone fixe :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedUser.fixeNumber }}</p>
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Téléphone fixe :</p>
+                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedUser.fixeNumber }}</p>
               </div>
               <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Fonction :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedUser.job}}</p>
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Fonction :</p>
+                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedUser.job}}</p>
               </div>
               <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Département :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedUser.department}}</p>
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Département :</p>
+                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedUser.department}}</p>
               </div>
               <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Profil :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{selectedUser.profile}} </p>
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Profil :</p>
+                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{selectedUser.profile}} </p>
               </div>
               <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Etat :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Etat :</p>
+                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">
                   {{selectedUser.status == 'ENABLED' ? "Actif" : selectedUser.status == 'LOCKED' ? "Bloqué" : "Archivé" }}
                 </p>
               </div>

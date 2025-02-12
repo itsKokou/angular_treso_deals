@@ -1,6 +1,6 @@
 import { ProfilUser } from "../enum/profil-user";
 
-export interface UserInstitut { 
+export interface UserStandard { 
     id?: number;
     firstName?: string;
     lastName?: string;

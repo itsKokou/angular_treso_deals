@@ -25,10 +25,10 @@
           }-->
         <div class="flex w-full items-center">
           <label for="sens" class="w-1/2 text-sm font-medium text-gray-900">Sens Transaction :</label>
-          <select formControlName="operationSens" id="sens" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <select formControlName="operationSens" id="sens" [ngClass]="operationSens.value == 'ACHAT'? 'text-red-600 border-red-600' : operationSens.value == 'VENTE'? 'text-green-500 !border-green-500':''" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
             <option disabled [selected]="true">Indiquez sens </option>
-            <option value="ACHAT">ACHAT</option>
-            <option value="VENTE">VENTE</option>
+            <option value="ACHAT" class="text-red-600">ACHAT</option>
+            <option value="VENTE"  class="text-green-500">VENTE</option>
           </select>                         
         </div>
         @if(operationSens.errors && (operationSens.dirty || operationSens.touched)){
@@ -56,7 +56,12 @@
         }
         <div class=" mt-5 flex w-full items-center">
           <label for="taux" class="w-1/2 text-sm font-medium text-gray-900">Taux / Coupon :</label>
-          <input formControlName="couponRate" type="text" id="taux" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input formControlName="couponRate" 
+            (input)="onCouponRateChange($event)" 
+            [value]="isCouponFocused ? couponRate.value : (couponRate.value | percentage)"
+            (focus)="isCouponFocused = true"
+            (blur)="isCouponFocused = false"
+            type="text" id="taux" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
         @if(couponRate.errors && (couponRate.dirty || couponRate.touched)){
           @if(couponRate.getError("required")){
@@ -83,7 +88,7 @@
         }
         <div class="mt-5 flex w-full items-center">
           <label for="qte" class="w-1/2 text-sm font-medium text-gray-900">Quantité titres {{sensLabel == "d'achat" ? "à acheter" : sensLabel == "de cession" ? "à vendre" :""}} :</label>
-          <input formControlName="amount" type="text" id="qte" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input formControlName="amount" (input)="onAmountChange($event)" [value]="amount.value | formatNumber" type="text" id="qte" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
         @if(amount.errors && (amount.dirty || amount.touched)){
           @if(amount.getError("required")){
@@ -104,6 +109,17 @@
           <label for="date_offre" class="w-1/2 text-sm font-medium text-gray-900">Date offre :</label>
           <input type="text" [value]="today.toLocaleDateString()" readonly id="date_offre" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
+        <div class="mt-5 flex w-full items-center">
+          <label for="date_emission" class="w-1/2 text-sm font-medium text-gray-900">Date d'émission :</label>
+          <input type="date" formControlName="emissionDate" id="date_emission" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+        </div>
+        @if(emissionDate.errors && (emissionDate.dirty || emissionDate.touched)){
+          @if(emissionDate.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Date d'émission est requise</p>
+            </div>
+          }
+        }
         <div class="mt-5 flex w-full items-center">
           <label for="nature" class="w-1/2 text-sm font-medium text-gray-900">Nature instrument :</label>
           <select formControlName="nature" id="nature" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
@@ -130,21 +146,16 @@
             </div>
           }
         } 
-        <div class="mt-5 flex w-full items-center">
-          <label for="date_emission" class="w-1/2 text-sm font-medium text-gray-900">Date d'émission :</label>
-          <input type="date" formControlName="emissionDate" id="date_emission" [min]="minDate" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-        </div>
-        @if(emissionDate.errors && (emissionDate.dirty || emissionDate.touched)){
-          @if(emissionDate.getError("required")){
-            <div class="flex justify-end">
-              <p class="text-left text-sm " style="color: red;">Date d'émission est requise</p>
-            </div>
-          }
-        }
         
         <div class="mt-5 flex w-full items-center">
           <label for="prix" class="w-1/2 text-sm font-medium text-gray-900">{{label}} {{sensLabel}} proposé :</label>
-          <input formControlName="price" type="text" id="prix" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input formControlName="price" 
+            (input)="onPriceChange($event)" 
+            [value]="price.value | formatNumber"
+            [value]="nature.value == 'OAT' ? (price.value | formatNumber) : nature.value == 'BAT' ? isPriceFocused ? price.value : (price.value | percentage) : price.value "
+            (focus)="isPriceFocused = true"
+            (blur)="isPriceFocused = false"
+            type="text" id="prix" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
         @if(price.errors && (price.dirty || price.touched)){
           @if(price.getError("required")){
@@ -158,9 +169,10 @@
             </div>
           }
         } 
+
         <div class="mt-5 flex w-full items-center">
           <label for="valeur_nom" class="w-1/2 text-sm font-medium text-gray-900">Valeur Nominale Unitaire :</label>
-          <input type="text" [value]="unitaryValueName.value | formatNumber" readonly id="valeur_nom" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+          <input type="text" (input)="onUnitaryValueNameChange($event)" [value]="unitaryValueName.value | formatNumber" readonly id="valeur_nom" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
         </div>
         <!--@if(unitaryValueName.errors && (unitaryValueName.dirty || unitaryValueName.touched)){
           @if(unitaryValueName.getError("required")){
@@ -301,15 +313,15 @@
         <div class="border border-gray-400 p-3 rounded-md">
           <div class="flex justify-center">
             <h3 class="text-xl font-semibold text-gray-900">
-              Résumé de l'offre
+              Résumé de l'offre - <span [ngClass]="resumeAsset?.nature == 'OAT'? 'text-red-600' : 'text-green-500'">{{resumeAsset?.nature}}</span>
             </h3>
           </div>
           <div class="flex mb-2 max-w-full justify-center">
             <div class="mx-auto mt-2" style="width: 48%;">
-              <div class="w-full flex">
+              <!--<div class="w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">N° transaction :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{resumeAsset?.transactionNumber}}</p>
-              </div>
+              </div>-->
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Date offre :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{ resumeAsset?.date | date: 'dd/MM/yyyy' }}</p>
@@ -343,7 +355,7 @@
             <div class="mx-auto mt-2" style="width: 48%;">
               <div class="w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Sens transaction :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.operationSens}}</p>
+                <p [ngClass]="resumeAsset?.operationSens == 'ACHAT'? 'text-red-600 !bg-red-300' : 'text-green-500 !bg-green-300'" class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.operationSens}}</p>
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Date de valeur :</p>

@@ -9,6 +9,7 @@ import { ResponseVerificationResponseDto } from '../../models/validation/respons
 import { isPlatformBrowser } from '@angular/common';
 import { UserDto } from '../../models/user/user-dto';
 import { Router } from '@angular/router';
+import { RestResponse } from '../../models/rest-response';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,14 @@ export class SecurityServiceImpl implements SecurityService {
 
   constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private plateformId:any) { 
     this.isBrowser = isPlatformBrowser(plateformId);
+  }
+
+  initchangePassword(): Observable<RestResponse<any>> {
+    return this.http.post<RestResponse<any>>(`${this.apiUrl}/auth/init-change-password`,{});
+  }
+
+  changePassword(data: any): Observable<RestResponse<any>> {
+    return this.http.post<RestResponse<any>>(`${this.apiUrl}/auth/change-password`,data);
   }
 
   validation(requestId: string, code: string): Observable<ResponseVerificationResponseDto> {

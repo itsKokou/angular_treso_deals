@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import {MatPaginatorIntl, MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import { RestResponse } from '../../../../core/models/rest-response';
+import { UserStandard } from '../../../../core/models/user/user-standard';
 
 @Component({
     selector: 'app-utilisateurs',
@@ -20,8 +21,8 @@ export class UtilisateursComponent implements AfterViewInit {
   totalElements: number = 0;  
 
   isLoading: boolean = false;
-  allDatas: InstituteUserDTO[] = []; 
-  datasPaginated: InstituteUserDTO[] = []; 
+  allDatas: UserStandard[] = []; 
+  datasPaginated: UserStandard[] = []; 
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
 
   constructor(
@@ -43,12 +44,12 @@ export class UtilisateursComponent implements AfterViewInit {
   ngOnInit(): void {
     initFlowbite();
     this.isLoading = true;
-    this.userService.getUserByInstitutionId(1037).subscribe((res: RestResponse<InstituteUserDTO[]>)=>{
+    this.userService.getAllUser().subscribe((res: RestResponse<UserStandard[]>)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {
-        this.allDatas = res.data!;
+        this.allDatas = res.data!.reverse();
         this.totalElements = this.allDatas.length;
-        this.datasPaginated = this.allDatas.slice(0*5, (0 + 1)*5);
+        this.datasPaginated = this.allDatas.slice(0*20, (0 + 1)*20);
       }
     });
   }

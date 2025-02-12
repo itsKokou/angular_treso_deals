@@ -5,6 +5,7 @@ import { UserService } from '../user.service';
 import { Injectable } from '@angular/core';
 import { RestResponse } from '../../models/rest-response';
 import { InstituteUserDTO } from '../../models/institution/institute-user-dto';
+import { UserStandard } from '../../models/user/user-standard';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,10 @@ export class UserServiceImpl implements UserService {
   private apiUrl = `${environment.APIURL}`
 
   constructor(private http: HttpClient) { 
+  }
+
+  getAllUser(): Observable<RestResponse<UserStandard[]>> {
+    return this.http.get<RestResponse<UserStandard[]>>(`${this.apiUrl}/users`);
   }
 
   activateUserInstitut(userId: any, data:any): Observable<RestResponse<any>> {

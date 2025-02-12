@@ -92,7 +92,7 @@ export class UtilisateursComponent implements AfterViewInit {
       if (res.statusCode == 200) {
         this.allDatas = res.data!.reverse();
         this.totalElements = this.allDatas.length;
-        this.datasPaginated = this.allDatas.slice(0*5, (0 + 1)*5);
+        this.datasPaginated = this.allDatas.slice(0*20, (0 + 1)*20);
       }
     });
   }
@@ -126,11 +126,12 @@ export class UtilisateursComponent implements AfterViewInit {
       closeSpinner?.click();
       if (res.statusCode==204) {
         this.snackBar.open("Utilisateur ajouté avec succès","Ok",{
-        duration: 5000,
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-      });
-      this.formProfil.reset();
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+        this.formProfil.reset();
+        this.ngOnInit();
       } else {
         this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
           duration: 5000,

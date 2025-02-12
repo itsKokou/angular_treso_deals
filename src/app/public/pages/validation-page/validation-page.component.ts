@@ -49,27 +49,31 @@ export class ValidationPageComponent {
       if (res.statusCode==200){
         this.error = "";
         let profil = res.data?.user?.profile;
+        let next = res.data?.nexTransition
         localStorage.setItem("connectedUser", JSON.stringify(res.data?.user!));
-        if (profil=="ADMIN_GESTION"){
-          this.router.navigateByUrl('/gestion/dashboard')
-        }else if (profil=="TRADER"){
-          localStorage.setItem("trader","Dashboard");
-          this.router.navigateByUrl('/trader/dashboard')
-        }else if (profil=="INSTITUTE_ADMIN"){
-          this.router.navigateByUrl('/institut/dashboard')
-        }else if (profil=="SUPER_ADMIN"){
-          this.router.navigateByUrl('/admin/dashboard')
+        if(next == "HOME"){
+          if (profil=="ADMIN_GESTION"){
+            this.router.navigateByUrl('/gestion/dashboard')
+          }else if (profil=="TRADER"){
+            localStorage.setItem("trader","Dashboard");
+            this.router.navigateByUrl('/trader/dashboard')
+          }else if (profil=="INSTITUTE_ADMIN"){
+            this.router.navigateByUrl('/institut/dashboard')
+          }else if (profil=="SUPER_ADMIN"){
+            this.router.navigateByUrl('/admin/dashboard')
+          }
+        }else if(next == "CHANGE_PASSWORD"){
+          this.router.navigateByUrl('/change/password')
+        }else if (next == "ACCEPT_CGU"){
+          this.router.navigateByUrl('conditions/generales')
         }
       }else{
         this.error = "Le code de vérification est invalide";
       }
     }, (error)=>{
       this.isLoading = false;
-      this.error = "Le code de vérification est invalide";
+      this.error = "Requête Non aboutie. Code de vérification est invalide";
     });
-    //EN cas d'erreur
-    // this.isLoading = false;
-    // this.error = "Le code de vérification est invalide";
   }
 
 }

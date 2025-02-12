@@ -10,11 +10,12 @@ import { ResumeAssetResponse } from '../../../../core/models/carnet-ordre/resume
 import { RestResponse } from '../../../../core/models/rest-response';
 import { CountryDto } from '../../../../core/models/country/country-dto';
 import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
+import { PercentagePipe } from '../../../../core/pipes/percentage.pipe';
 
 @Component({
   standalone: true,
   selector: 'app-add-carnet-ordre',
-  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, FormatNumberPipe],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, FormatNumberPipe, PercentagePipe],
   templateUrl: './add-carnet-ordre.component.html',
   styleUrl: './add-carnet-ordre.component.css'
 })
@@ -29,6 +30,8 @@ export class AddCarnetOrdreComponent {
   sensLabel : String = "";
   resumeAsset?: ResumeAssetResponse ;
   countries: CountryDto[] = [];
+  isCouponFocused: boolean = false;
+  isPriceFocused: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -42,10 +45,12 @@ export class AddCarnetOrdreComponent {
 
     this.nature.valueChanges.subscribe((value)=>{
       if (value=="BAT"){
-        this.label = "Taux"
+        this.label = "Taux";
+        this.price.reset();
         this.unitaryValueName.setValue(1000000);
       }else{
-        this.label = "Prix"
+        this.label = "Prix";
+        this.price.reset();
         this.unitaryValueName.setValue(10000);
       }
     });
@@ -63,7 +68,13 @@ export class AddCarnetOrdreComponent {
         this.canDelete = true;
       }
     });
+
+     this.amount.valueChanges.subscribe((value)=>{
+      console.log(value);
+      
+    });
   }
+
 
   form : FormGroup = this.fb.group({
     //transactionNumber: ["", [Validators.required]],
@@ -160,6 +171,35 @@ export class AddCarnetOrdreComponent {
       return { isnotdigit: true };
     }
     return null; 
+  }
+
+  onAmountChange(event: any) {
+    let rawValue = event.target.value.replace(/\s/g, ''); // Supprime les espaces pour garder la vraie valeur
+    this.amount.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
+    console.log(this.amount.value);
+  }
+
+  onUnitaryValueNameChange(event: any) {
+    let rawValue = event.target.value.replace(/\s/g, ''); // Supprime les espaces pour garder la vraie valeur
+    this.unitaryValueName.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
+    console.log(this.unitaryValueName.value);
+  }
+
+  onPriceChange(event: any) {
+    let rawValue = event.target.value;
+    if(this.nature.value == "OAT"){
+      rawValue = event.target.value.replace(/\s/g, ''); 
+    }else if(this.nature.value == "BAT"){
+      rawValue = event.target.value.replace(" %", '');
+    }
+    this.price.setValue(rawValue, { emitEvent: false }); 
+    console.log(this.price.value);
+  }
+
+  onCouponRateChange(event: any) {
+    let rawValue = event.target.value.replace(" %", ''); // supprimer % pour garder la vraie valeur
+    this.couponRate.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
+    console.log(this.couponRate.value);
   }
 
 

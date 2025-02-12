@@ -1,0 +1,104 @@
+<div class="w-full h-screen px-8 py-4 flex justify-center items-center">
+    <div class="flex w-full h-full justify-center items-center max-w-screen-2xl">
+       <div class="w-3/5 max-w-4xl pt-6 max-h-full overflow-y-auto mx-auto bg-white rounded-lg shadow-md">
+            <div class="px-8 py-4 text-base text-gray-900">
+                <h3 class="text-center">Conditions Générales d'Utilisation</h3>
+                <p class="mt-4">Bienvenue sur Treso Link ! <br>
+                    En accédant et en utilisant notre plateforme, vous acceptez les conditions 
+                    générales d'utilisation décrites ci-dessous.
+                </p>
+
+                <h5 class="mt-4">1. Acceptation des conditions</h5>
+                <p>L'accès et l'utilisation de ce site sont soumis à l'acceptation et au respect des 
+                    présentes Conditions Générales d'Utilisation (CGU). En utilisant nos services, 
+                    vous reconnaissez avoir pris connaissance de ces conditions et les accepter sans 
+                    réserve.
+                </p>
+
+                <h5 class="mt-4">2. Description des services</h5>
+                <p>
+                    Treso Link fournit une plateforme de gestion d'actifs pour les différents profils 
+                    d'utilisateurs : Super Admin, Admin de gestion, Trader, Opérateur et Validateur.
+                </p>
+
+                <h5 class="mt-4">3. Utilisation du site</h5>
+                <p>
+                    Vous vous engagez à utiliser ce site de manière légale, respectueuse et conforme 
+                    aux lois et réglementations en vigueur. Vous acceptez de ne pas :
+                </p>
+                <ul class=" list-disc ml-8 font-medium">
+                    <li>Utiliser le site pour des activités frauduleuses ou illégales.</li>
+                    <li>Tenter d'accéder à des informations ou des systèmes auxquels vous n'êtes pas autorisé.</li>
+                    <li> Partager des informations confidentielles avec des tiers non autorisés.</li>
+                </ul>
+
+                <h5 class="mt-4">4. Responsabilité</h5>
+                <p>
+                    Treso Link s'efforce d'assurer la disponibilité et le bon fonctionnement de la 
+                    plateforme. Toutefois, nous ne pouvons être tenus responsables en cas de :
+                </p>
+                <ul class=" list-disc ml-8 font-medium">
+                    <li>Interruption temporaire ou permanente du site.</li>
+                    <li>Perte de données ou dommages liés à l'utilisation du site.</li>
+                </ul>
+
+                <h5 class="mt-4">5. Modifications des CGU</h5>
+                <p>
+                    Treso Link se réserve le droit de modifier ces CGU à tout moment. Les utilisateurs 
+                    seront informés de toute mise à jour par le biais de notifications sur le site.
+                </p>
+
+                <h5 class="mt-4">6. Protection des données personnelles</h5>
+                <p>
+                    Vos informations personnelles sont protégées conformément à notre <a href="#" class=" text-blue-800 font-semibold">Politique de 
+                    confidentialité</a>. Nous nous engageons à respecter les lois applicables en matière 
+                    de protection des données.
+                </p>
+
+                <h5 class="mt-4">7. Loi applicable</h5>
+                <p>
+                    Les présentes CGU sont régies par la loi applicable au Sénégal. Tout litige relatif 
+                    à leur interprétation ou à leur exécution sera soumis à la compétence des tribunaux 
+                    compétents.
+                </p>
+
+                <h5 class="mt-4">8. Contact</h5>
+                <p>
+                    Pour toute question concernant ces CGU, vous pouvez nous contacter à l'adresse 
+                    suivante : <a href="mailto:support@tresodeal.com" class=" text-blue-800 font-semibold">support&#64;tresodeal.com</a>
+                </p>
+
+                <div class="mt-6">
+                    <input id="accepte-checkbox" #myCheckbox (click)="onCheckboxChange()"  type="checkbox" class="w-4 h-4 text-purple-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-0">
+                    <label for="accepte-checkbox" class="ms-2 text-base font-medium text-gray-900"> J'ai lu et j'accepte les conditions générales.</label>
+                </div>
+
+                <div *ngIf="isChecked" class="mt-5 mb-4 flex justify-end">
+                    <button (click)="onContinuer()" type="button" class="ml-4 text-white !bg-blue-700 hover:!bg-blue-900 font-medium rounded-lg text-sm px-5 py-2 text-center">
+                        Continuer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SPINNER  -->
+<button id="openSpinner" data-modal-target="spinner-modal" data-modal-toggle="spinner-modal" class="hidden" type="button">
+  Toggle Spinner
+</button>
+
+<button  id="closeSpinner" data-modal-hide="spinner-modal" type="button" class="hidden">
+  Fermer
+</button>
+
+<div id="spinner-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-2xl max-h-full">
+    <div class="relative bg-transparent">
+      <div class="flex justify-center items-center p-4">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+  </div>
+</div>
+
