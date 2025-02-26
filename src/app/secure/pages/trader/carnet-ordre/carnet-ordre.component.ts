@@ -18,11 +18,12 @@ import { RestResponse } from '../../../../core/models/rest-response';
 import { FormatNumberPipe } from '../../../../core/pipes/format-number.pipe';
 import { CountryDto } from '../../../../core/models/country/country-dto';
 import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
+import { PercentagePipe } from '../../../../core/pipes/percentage.pipe';
 
 @Component({
   standalone: true,
   selector: 'app-carnet-ordre',
-  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, MatProgressSpinnerModule, FormatNumberPipe ],
+  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, MatProgressSpinnerModule, FormatNumberPipe, PercentagePipe ],
   templateUrl: './carnet-ordre.component.html',
   styleUrl: './carnet-ordre.component.css'
 })
@@ -50,6 +51,8 @@ export class CarnetOrdreComponent implements AfterViewInit {
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   private fb = inject(FormBuilder);
+  isCouponFocused: boolean = false;
+  isPriceFocused: boolean = false;
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
@@ -109,7 +112,7 @@ export class CarnetOrdreComponent implements AfterViewInit {
     codeIsin: ["", [Validators.required]],
     price: ["", [Validators.required, this.validateDigit]],
     nature: ["", [Validators.required]],
-    couponRate: [0],
+    couponRate: [],
     amount : ["", [Validators.required, this.validateQte]],
     emissionDate: ["", [Validators.required]],
     // interet: [0],
@@ -198,6 +201,45 @@ export class CarnetOrdreComponent implements AfterViewInit {
     return null; 
   }
 
+  onAmountChange(event: any) {
+    let rawValue = event.target.value.replace(/\s/g, ''); // Supprime les espaces pour garder la vraie valeur
+    this.amount.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
+    console.log(this.amount.value);
+  }
+
+  onUnitaryValueNameChange(event: any) {
+    let rawValue = event.target.value.replace(/\s/g, ''); // Supprime les espaces pour garder la vraie valeur
+    this.unitaryValueName.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
+    console.log(this.unitaryValueName.value);
+  }
+
+  onPriceChange(event: any) {
+    let rawValue = event.target.value;
+    if(this.nature.value == "OAT"){
+      rawValue = event.target.value.replace(/\s/g, ''); 
+    }else if(this.nature.value == "BAT"){
+      rawValue = event.target.value.replace(" %", '');
+    }
+    this.price.setValue(rawValue, { emitEvent: false }); 
+    console.log(this.price.value);
+  }
+
+  onCouponRateChange(event: any) {
+    let rawValue = event.target.value.replace(" %", ''); // supprimer % pour garder la vraie valeur
+    this.couponRate.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
+    console.log(this.couponRate.value);
+  }
+
+  onChangeNature(){
+    this.price.reset();
+    if (this.nature.value=="BAT"){
+      this.couponRate.removeValidators([Validators.required, this.validateDigit]);
+    }else{
+      this.couponRate.addValidators([Validators.required, this.validateDigit]);
+      this.couponRate.markAllAsTouched();
+    }
+  }
+
   rechercherOffres() {
     console.log(this.formRecherche.value);
     const {... data} = this.formRecherche.value
@@ -226,9 +268,11 @@ export class CarnetOrdreComponent implements AfterViewInit {
     this.matPaginatorIntl.lastPageLabel = "Dernière page";
     this.matPaginatorIntl.nextPageLabel = "Page suivante";
     this.matPaginatorIntl.previousPageLabel = "Page précédente";
+
   }
 
   ngOnInit(): void {
+    
     this.isLoading = true;
     
     this.transactionService.getAllCarnetOrdre().subscribe((res: RestResponse<AssetResponse[]>)=>{
@@ -316,19 +360,24 @@ export class CarnetOrdreComponent implements AfterViewInit {
   openUpdateModal(btnUpdate: HTMLButtonElement,carnet: AssetResponse) {
     this.selectedCarnet = carnet;
     this.form.reset();
+    if (this.selectedCarnet.nature=="OAT"){
+      this.couponRate.addValidators([Validators.required, this.validateDigit]);
+      // this.isCouponFocused = false;
+    }
+    const pays = this.countries.find((value)=>value.name == carnet.issuerCountry);
     
     this.form.setValue({
       transactionNumber: carnet.transactionNumber,
-      issuerCountry: carnet.issuerCountry,
-      echeanceDate: carnet.echeanceDate,
       operationSens: carnet.operationSens,
+      nature: carnet.nature,
+      issuerCountry: pays?.code,
+      echeanceDate: carnet.echeanceDate,
       codeIsin: carnet.codeIsin,
       price: carnet.nature == "OAT" ? carnet.proposedPrice?.toString() : carnet.proposedRate?.toString(),
-      nature: carnet.nature,
       couponRate: carnet.nature == "OAT" ? carnet.couponRate?.toString() : 0,
       amount : carnet.amount?.toString(),
       // interet: carnet.interet?.toString(),
-      unitaryValueName: 0,
+      unitaryValueName: carnet.nature == "OAT" ? 10000 : 1000000,
       emissionDate: carnet.valueDate?.toString()
       // transactionValue: carnet.totalTransactionValue?.toString(),
       // residualDuration: carnet.residualDuration?.toString(),
@@ -352,24 +401,28 @@ export class CarnetOrdreComponent implements AfterViewInit {
       var data = {
         id: this.selectedCarnet.id,
         transactionNumber: this.transactionNumber.getRawValue(),
+        operationSens: this.operationSens.getRawValue(),
+        nature: this.nature.getRawValue(),
         countryCode: this.issuerCountry.getRawValue(),
         echeanceDate: this.echeanceDate.getRawValue(),
-        emissionDate: this.emissionDate.getRawValue(),
-        operationSens: this.operationSens.getRawValue(),
+        amount : Number.parseFloat(this.amount.getRawValue()),
         codeIsin: this.codeIsin.getRawValue(),
+        emissionDate: this.emissionDate.getRawValue(),
         proposedPrice: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.price.getRawValue()) : null,
         proposedRate: this.nature.getRawValue() == "BAT" ? Number.parseFloat(this.price.getRawValue()) : null,
-        couponRate: Number.parseFloat(this.couponRate.getRawValue()),
-        nature: this.nature.getRawValue(),
-        amount : Number.parseFloat(this.amount.getRawValue()),
+        couponRate: this.nature.getRawValue() == "OAT" ?  Number.parseFloat(this.couponRate.getRawValue()) : null,
         // interet: Number.parseFloat(this.interet.getRawValue()),
         unitaryNominalValue: Number.parseFloat(this.unitaryValueName.getRawValue()),
         // transactionValue: Number.parseFloat(this.transactionValue.getRawValue()),
         // residualDuration: Number.parseFloat(this.residualDuration.getRawValue()),
       }
 
+      console.log(data);
+
       this.transactionService.updateCarnetOrdre(data).subscribe((res : any) => {
         closeSpinner?.click();
+        console.log(res);
+        
         if (res.statusCode==200) {
           this.snackBar.open("Carnet d'ordre mis à jour avec succès","Ok",{
             duration: 5000,

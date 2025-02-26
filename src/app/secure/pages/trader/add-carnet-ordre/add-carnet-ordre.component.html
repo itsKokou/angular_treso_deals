@@ -39,6 +39,21 @@
           }
         } 
         <div class="mt-5 flex w-full items-center">
+          <label for="nature" class="w-1/2 text-sm font-medium text-gray-900">Nature instrument :</label>
+          <select formControlName="nature" (change)="onChangeNature()" id="nature" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+            <option disabled [selected]="true">Indiquez nature</option>
+            <option value="OAT">OAT</option>
+            <option value="BAT">BAT</option>
+          </select>                    
+        </div>
+        @if(nature.errors && (nature.dirty || nature.touched)){
+          @if(nature.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">La nature est obligatoire</p>
+            </div>
+          }
+        }
+        <div class="mt-5 flex w-full items-center">
           <label for="countries" class="w-1/2 text-sm font-medium text-gray-900">Emetteur :</label>
           <select formControlName="countryCode" id="countries" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
             <option disabled [selected]="true">Indiquez pays</option>
@@ -54,7 +69,7 @@
             </div>
           }
         }
-        <div class=" mt-5 flex w-full items-center">
+        <div *ngIf="nature.value == 'OAT'" class=" mt-5 flex w-full items-center">
           <label for="taux" class="w-1/2 text-sm font-medium text-gray-900">Taux / Coupon :</label>
           <input formControlName="couponRate" 
             (input)="onCouponRateChange($event)" 
@@ -120,21 +135,7 @@
             </div>
           }
         }
-        <div class="mt-5 flex w-full items-center">
-          <label for="nature" class="w-1/2 text-sm font-medium text-gray-900">Nature instrument :</label>
-          <select formControlName="nature" id="nature" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-            <option disabled [selected]="true">Indiquez nature</option>
-            <option value="OAT">OAT</option>
-            <option value="BAT">BAT</option>
-          </select>                    
-        </div>
-        @if(nature.errors && (nature.dirty || nature.touched)){
-          @if(nature.getError("required")){
-            <div class="flex justify-end">
-              <p class="text-left text-sm " style="color: red;">La nature est obligatoire</p>
-            </div>
-          }
-        }
+        
         <div class="mt-5 flex w-full items-center">
           <label for="code_sin" class="w-1/2 text-sm font-medium text-gray-900">Code ISIN :</label>
           <input formControlName="codeIsin" type="text" id="code_sin" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">              
@@ -322,7 +323,7 @@
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">N° transaction :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{resumeAsset?.transactionNumber}}</p>
               </div>-->
-              <div class="mt-2 w-full flex">
+              <div class="w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Date offre :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{ resumeAsset?.date | date: 'dd/MM/yyyy' }}</p>
               </div>

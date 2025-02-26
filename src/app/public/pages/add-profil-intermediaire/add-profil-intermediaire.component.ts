@@ -29,7 +29,7 @@ export class AddProfilIntermediaireComponent implements OnInit {
 
     form: FormGroup = this.fb.group({
         denomination : ["", [Validators.required, Validators.minLength(2)]],
-        statut : ["", [Validators.required, Validators.minLength(2)]],
+        statut : ["", [Validators.required]],
         pays : ["", [Validators.required]],
         ville : ["", [Validators.required, Validators.minLength(2)]],
         adresse : ["", [Validators.required, Validators.minLength(2)]],

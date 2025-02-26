@@ -91,7 +91,7 @@ export class TransactionComponent implements AfterViewInit {
 
     
     this.totalElements = this.allDatasFiltered.length;
-    this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
+    this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
   }
 
   ngAfterViewInit() {
@@ -110,7 +110,7 @@ export class TransactionComponent implements AfterViewInit {
       if (res.statusCode == 200) {
         this.allDatas = res.data!;
         this.allDatasFiltered = this.allDatas;
-        this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
+        this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
         this.totalElements = this.allDatasFiltered.length;
       }
     });
@@ -160,7 +160,7 @@ export class TransactionComponent implements AfterViewInit {
       }
     }
     this.totalElements = this.allDatasFiltered.length;
-    this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
+    this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
   }
 
   filterBySensTransaction(sens: string) {

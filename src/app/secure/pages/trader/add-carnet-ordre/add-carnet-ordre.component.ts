@@ -85,7 +85,7 @@ export class AddCarnetOrdreComponent {
     codeIsin: ["", [Validators.required]],
     price: ["", [Validators.required, this.validateDigit]],
     nature: ["", [Validators.required]],
-    couponRate: ["", [Validators.required, this.validateDigit]],
+    couponRate: [""],
     amount : ["", [Validators.required, this.validateQte]],
     interet: [""],
     unitaryValueName: [0],
@@ -202,6 +202,15 @@ export class AddCarnetOrdreComponent {
     console.log(this.couponRate.value);
   }
 
+  onChangeNature(){
+    this.price.reset();
+    if (this.nature.value=="BAT"){
+      this.couponRate.removeValidators([Validators.required, this.validateDigit]);
+    }else{
+      this.couponRate.addValidators([Validators.required, this.validateDigit]);
+      this.couponRate.markAllAsTouched();
+    }
+  }
 
   onSubmit(){
     if (this.form.invalid) {
@@ -224,7 +233,7 @@ export class AddCarnetOrdreComponent {
         proposedPrice: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.price.getRawValue()) : null,
         proposedRate: this.nature.getRawValue() == "BAT" ? Number.parseFloat(this.price.getRawValue()) : null,
       }
-
+      
 
       this.transactionService.getResumeOrdre(data).subscribe((res : RestResponse<ResumeAssetResponse>) => {
         closeSpinner?.click();

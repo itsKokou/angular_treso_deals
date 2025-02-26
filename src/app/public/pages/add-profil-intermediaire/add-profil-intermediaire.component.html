@@ -15,13 +15,14 @@
                     }
                 </div>  
                 <div class="mb-4">  
-                    <input type="text" formControlName="statut" name="statut" required class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Statuts Juridiques (Banque, SGI, Autre)"> 
+                    <select formControlName="statut" name="statut" class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3">
+                        <option value="" selected disabled>Selectionnez un statut</option>
+                        <option value="BANK">Banque</option>
+                        <option value="SGI">SGI</option>
+                    </select>
                     @if(statut.errors && (statut.dirty || statut.touched)){
                         @if(statut.getError("required")){
                             <p class="text-left text-sm " style="color: red;">Le statut est obligatoire</p>
-                        }
-                        @if(statut.getError("minlength")){
-                            <p class="text-left text-sm " style="color: red;">Minimum 2 caractères</p>
                         }
                     } 
                 </div>  

@@ -279,7 +279,7 @@ export class TradingComponent implements AfterViewInit{
       }
     }
     this.totalElements = this.allDatasFiltered.length;
-    this.datasPaginated = this.allDatasFiltered.slice(0*5, (0 + 1)*5)
+    this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
   }
 
   filterBySensTransaction(sens: string) {

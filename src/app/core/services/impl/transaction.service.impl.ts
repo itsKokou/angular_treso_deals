@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -42,6 +42,18 @@ export class TransactionServiceImpl implements TransactionService {
 
   getAllCarnetOrdre(): Observable<RestResponse<AssetResponse[]>> {
     return this.http.get<RestResponse<AssetResponse[]>>(`${this.apiUrl}/assets/mine`);
+  }
+
+  rechercherCarnetOrdre(params: { [key: string]: string | number }): Observable<RestResponse<AssetResponse[]>> {
+    let httpParams = new HttpParams();
+  
+    if (params) {
+      Object.keys(params).forEach(key => {
+        httpParams = httpParams.set(key, params[key].toString());
+      });
+    }
+
+    return this.http.get<RestResponse<AssetResponse[]>>(`${this.apiUrl}/assets/search`, { params: httpParams });
   }
 
 }
