@@ -14,11 +14,12 @@ import { RestResponse } from '../../../../core/models/rest-response';
 import { FormatNumberPipe } from '../../../../core/pipes/format-number.pipe';
 import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
 import { CountryDto } from '../../../../core/models/country/country-dto';
+import { PercentagePipe } from '../../../../core/pipes/percentage.pipe';
 
 @Component({
   standalone: true,
   selector: 'app-transaction',
-  imports: [CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, FormatNumberPipe ],
+  imports: [CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, FormatNumberPipe, PercentagePipe ],
   templateUrl: './transaction.component.html',
   styleUrl: './transaction.component.css'
 })
@@ -36,6 +37,7 @@ export class TransactionComponent implements AfterViewInit {
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
   private fb = inject(FormBuilder);
   countries: CountryDto[] = [];
+  isSearch: Boolean = false;
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
@@ -45,58 +47,92 @@ export class TransactionComponent implements AfterViewInit {
   ){
   }
   
-  form = this.fb.group({
+  formRecherche = this.fb.group({
     num_transaction: "",
-    date: "",
+    dateD: "",
+    dateF: "",
     emetteur: "",
-    nature: "",
+    natureC: "",
     code: "",
-    taux: "",
   })
 
   get num_transaction(){
-    return this.form.controls["num_transaction"] as FormControl;
+    return this.formRecherche.controls["num_transaction"] as FormControl;
   }
-  get date(){
-    return this.form.controls["date"] as FormControl;
+  get dateD(){
+    return this.formRecherche.controls["dateD"] as FormControl;
+  }
+  get dateF(){
+    return this.formRecherche.controls["dateF"] as FormControl;
   }
   get emetteur(){
-    return this.form.controls["emetteur"] as FormControl;
+    return this.formRecherche.controls["emetteur"] as FormControl;
   }
-  get nature(){
-    return this.form.controls["nature"] as FormControl;
+  get natureC(){
+    return this.formRecherche.controls["natureC"] as FormControl;
   }
   get code(){
-    return this.form.controls["code"] as FormControl;
+    return this.formRecherche.controls["code"] as FormControl;
   }
-  get taux(){
-    return this.form.controls["taux"] as FormControl;
+
+  reinitialiserRecherche(){
+    this.formRecherche.setValue({
+      num_transaction: "",
+      dateD: "",
+      dateF: "",
+      emetteur: "",
+      natureC: "",
+      code: ""
+    })
+    this.isSearch = false;
+    this.ngOnInit();
   }
 
   rechercherOffres() {
-    console.log(this.form.value);
-    const {... data} = this.form.value
-    this.allDatasFiltered = this.allDatas.filter(item => item.codeIsin?.includes(data.code!) && item.issuerCountry?.includes(data.emetteur!) 
-    && item.nature?.includes(data.nature!) && item.echeanceDate?.includes(data.date!));
+    const {... data} = this.formRecherche.value
+    
+    if ((data.code != null && data.code.toString().trim() != "") 
+      || (data.dateD != null && data.dateD.toString().trim() != "") 
+      || (data.dateF != null && data.dateF.toString().trim() != "") 
+      || (data.emetteur != null && data.emetteur.toString().trim() != "") 
+      || (data.natureC != null && data.natureC.toString().trim() != "") 
+      || (data.num_transaction != null && data.num_transaction.toString().trim() != "")
+    ){
+      this.isSearch = true;
+    } else {
+      this.isSearch = false;
+    }
+
+    this.allDatasFiltered = this.allDatas.filter(item => item.codeIsin?.toLowerCase().includes(data.code!.toLowerCase()) && item.issuerCountry?.includes(data.emetteur!) 
+    && item.nature?.includes(data.natureC!));
 
     if (data.num_transaction != null  && data.num_transaction != ""){
       var num = Number.parseInt(data.num_transaction);
       this.allDatasFiltered = this.allDatasFiltered.filter(item => item.id ==num);
     }
 
-    if (data.taux != null  && data.taux != ""){
-      var taux = Number.parseFloat(data.taux);
-      // this.allDatasFiltered = this.allDatasFiltered.filter(item => item.transactionRate ==taux);
+    if(data.dateD != null && data.dateD.toString().trim() != ""){
+      const debut = new Date(data.dateD);
+      if (data.dateF != null && data.dateF.toString().trim() != "") {
+        const fin = new Date(data.dateF);
+        this.allDatasFiltered = this.allDatasFiltered.filter(item => debut <= new Date(item.date!) && new Date(item.date!) <= fin );
+      } else {
+        this.allDatasFiltered = this.allDatasFiltered.filter(item => debut <= new Date(item.date!));
+      }
+    }else{
+      if (data.dateF != null && data.dateF.toString().trim() != "") {
+        const fin = new Date(data.dateF);
+        this.allDatasFiltered = this.allDatasFiltered.filter(item => new Date(item.date!) <= fin );
+      }
     }
 
-    
     this.totalElements = this.allDatasFiltered.length;
     this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
   }
 
   ngAfterViewInit() {
      initFlowbite();
-    this.matPaginatorIntl.itemsPerPageLabel="Utilisateurs par page";
+    this.matPaginatorIntl.itemsPerPageLabel="Offres par page";
     this.matPaginatorIntl.firstPageLabel = "Première page";
     this.matPaginatorIntl.lastPageLabel = "Dernière page";
     this.matPaginatorIntl.nextPageLabel = "Page suivante";
@@ -105,6 +141,7 @@ export class TransactionComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.isLoading = true;
+    this.isSearch = false;
     this.transactionService.getHistoriqueTransaction().subscribe((res: RestResponse<AssetResponse[]>)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {

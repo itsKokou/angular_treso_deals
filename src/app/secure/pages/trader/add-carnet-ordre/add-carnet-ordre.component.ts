@@ -11,6 +11,7 @@ import { RestResponse } from '../../../../core/models/rest-response';
 import { CountryDto } from '../../../../core/models/country/country-dto';
 import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
 import { PercentagePipe } from '../../../../core/pipes/percentage.pipe';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -38,6 +39,7 @@ export class AddCarnetOrdreComponent {
     private transactionService : TransactionServiceImpl,
     private countryService : CountryServiceImpl,
     private snackBar:MatSnackBar,
+    private router: Router
   ){
     const tomorrow = new Date();
     tomorrow.setDate(this.today.getDate() + 1)
@@ -79,13 +81,13 @@ export class AddCarnetOrdreComponent {
   form : FormGroup = this.fb.group({
     //transactionNumber: ["", [Validators.required]],
     countryCode: ["", [Validators.required]],
-    echeanceDate: ["", [Validators.required]],
-    emissionDate: ["", [Validators.required]],
+    echeanceDate: ["", [Validators.required, this.validateEcheance]],
+    emissionDate: [""],
     operationSens: ["", [Validators.required]],
     codeIsin: ["", [Validators.required]],
     price: ["", [Validators.required, this.validateDigit]],
     nature: ["", [Validators.required]],
-    couponRate: [""],
+    couponRate: ["", [this.validateDigit]],
     amount : ["", [Validators.required, this.validateQte]],
     interet: [""],
     unitaryValueName: [0],
@@ -145,6 +147,19 @@ export class AddCarnetOrdreComponent {
     return this.form.controls["residualDuration"] as FormControl;
   }
 
+  validateEcheance(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) return null;
+    
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    const date = new Date(value);
+    if (date<tomorrow) {
+      return { invaliddate: true };
+    }
+    return null;
+  }
+
   validateDigit(control: AbstractControl): ValidationErrors | null {
     var value : string = control.value;
     if (!value) {
@@ -196,24 +211,40 @@ export class AddCarnetOrdreComponent {
     console.log(this.price.value);
   }
 
+  onPriceBlur(event: any){
+    if(this.nature.value == 'BAT'){
+      let rawValue = event.target.value.replace(",", ".");
+      this.price.setValue(rawValue, { emitEvent: false }); 
+    }
+    this.isPriceFocused = false
+  }
+
   onCouponRateChange(event: any) {
     let rawValue = event.target.value.replace(" %", ''); // supprimer % pour garder la vraie valeur
     this.couponRate.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
-    console.log(this.couponRate.value);
+  }
+
+  onCouponRateBlur(event: any){
+    let rawValue = event.target.value.replace(",", ".");
+    this.couponRate.setValue(rawValue, { emitEvent: false }); 
+    this.isCouponFocused = false
   }
 
   onChangeNature(){
     this.price.reset();
     if (this.nature.value=="BAT"){
-      this.couponRate.removeValidators([Validators.required, this.validateDigit]);
+      this.couponRate.removeValidators([Validators.required]);
+      this.couponRate.reset();
     }else{
-      this.couponRate.addValidators([Validators.required, this.validateDigit]);
-      this.couponRate.markAllAsTouched();
+      this.couponRate.reset();
+      this.couponRate.setValue(0);
+      this.couponRate.setValidators([Validators.required]);
     }
   }
 
   onSubmit(){
     if (this.form.invalid) {
+      this.couponRate.markAsDirty();
       this.form.markAllAsTouched();
     }else{
       const openSpinner = document.getElementById("openSpinner");
@@ -229,7 +260,7 @@ export class AddCarnetOrdreComponent {
         codeIsin: this.codeIsin.getRawValue(),
         emissionDate: this.emissionDate.getRawValue(),
         unitaryNominalValue: Number.parseFloat(this.unitaryValueName.getRawValue()),
-        couponRate: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.couponRate.getRawValue()) : null,
+        couponRate: this.couponRate.value != null ? Number.parseFloat(this.couponRate.getRawValue()) : 0.0 ,
         proposedPrice: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.price.getRawValue()) : null,
         proposedRate: this.nature.getRawValue() == "BAT" ? Number.parseFloat(this.price.getRawValue()) : null,
       }
@@ -302,7 +333,7 @@ export class AddCarnetOrdreComponent {
       codeIsin: this.codeIsin.getRawValue(),
       emissionDate: this.emissionDate.getRawValue(),
       unitaryNominalValue: Number.parseFloat(this.unitaryValueName.getRawValue()),
-      couponRate: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.couponRate.getRawValue()) : null,
+      couponRate: this.couponRate.value != null ? Number.parseFloat(this.couponRate.getRawValue()) : 0.0 ,
       proposedPrice: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.price.getRawValue()) : null,
       proposedRate: this.nature.getRawValue() == "BAT" ? Number.parseFloat(this.price.getRawValue()) : null,
     }
@@ -312,14 +343,16 @@ export class AddCarnetOrdreComponent {
       console.log(res);
       
       if (res.statusCode==201) {
-        this.snackBar.open("Carnet d'ordre ajouté avec succès","Ok",{
-          duration: 5000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-        });
+        // this.snackBar.open("Offre publiée avec succès","Ok",{
+        //   duration: 5000,
+        //   horizontalPosition: this.horizontalPosition,
+        //   verticalPosition: this.verticalPosition,
+        // });
+        localStorage.setItem("newCarnet","1");
+        this.router.navigateByUrl("/trader/carnet/ordre")
         this.form.reset();
       } else {
-        this.snackBar.open("Une erreur s'est produite lors de l'ajout. Veuillez rééssayer !","Ok",{
+        this.snackBar.open("Une erreur s'est produite lors de la publication de votre offre. Veuillez rééssayer !","Ok",{
           duration: 5000,
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
@@ -327,7 +360,7 @@ export class AddCarnetOrdreComponent {
       }
     }, (error)=>{
       closeSpinner?.click();
-      this.snackBar.open("Une erreur s'est produite lors de l'ajout. Veuillez rééssayer !","Ok",{
+      this.snackBar.open("Une erreur s'est produite lors de la publication. Veuillez rééssayer !","Ok",{
         duration: 5000,
         horizontalPosition: this.horizontalPosition,
         verticalPosition: this.verticalPosition,

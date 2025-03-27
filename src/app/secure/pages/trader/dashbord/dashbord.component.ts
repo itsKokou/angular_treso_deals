@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
     styleUrl: './dashbord.component.css'
 })
 export class DashbordComponent implements OnInit, AfterViewInit {
-
+	today = Date();
     chart: CanvasJSChart = new CanvasJSChart();
  
 	chartOptionsAOT = {

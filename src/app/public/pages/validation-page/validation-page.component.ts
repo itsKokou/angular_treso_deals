@@ -72,7 +72,7 @@ export class ValidationPageComponent {
       }
     }, (error)=>{
       this.isLoading = false;
-      this.error = "Requête Non aboutie. Code de vérification est invalide";
+      this.error = "Requête non aboutie. Code de vérification est invalide";
     });
   }
 

@@ -17,11 +17,12 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { RestResponse } from '../../../../core/models/rest-response';
 import { CountryDto } from '../../../../core/models/country/country-dto';
 import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
+import { PercentagePipe } from '../../../../core/pipes/percentage.pipe';
 
 @Component({
   standalone: true,
   selector: 'app-trading',
-  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, MatProgressSpinnerModule, FormatNumberPipe],
+  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, MatProgressSpinnerModule, FormatNumberPipe, PercentagePipe],
   templateUrl: './trading.component.html',
   styleUrl: './trading.component.css'
 })
@@ -39,6 +40,19 @@ export class TradingComponent implements AfterViewInit{
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   countries: CountryDto[] = [];
+  today: Date = new Date();
+  isSearch: boolean = false;
+  // ------- Proposition
+  unitaryNominalValue: number = 0;
+  totalNominalValue: number = 0;
+  interet: number = 0; 
+  rendementEstime: number = 0; 
+  prix: number = 0; 
+  tauxTransaction: number = 0; 
+  total: number = 0;
+  margeOat: number = 20;
+  margeBat: number = 0.1;
+  isTauxProposeFocused: boolean = false;
   
 
   constructor(
@@ -51,39 +65,38 @@ export class TradingComponent implements AfterViewInit{
   ){
   }
 
-  form = this.fb.group({
+  formRecherche = this.fb.group({
     num_transaction: "",
-    date: "",
+    dateD: "",
+    dateF: "",
     emetteur: "",
-    nature: "",
+    natureC: "",
     code: "",
-    taux: "",
   })
 
   get num_transaction(){
-    return this.form.controls["num_transaction"] as FormControl;
+    return this.formRecherche.controls["num_transaction"] as FormControl;
   }
-  get date(){
-    return this.form.controls["date"] as FormControl;
+  get dateD(){
+    return this.formRecherche.controls["dateD"] as FormControl;
+  }
+  get dateF(){
+    return this.formRecherche.controls["dateF"] as FormControl;
   }
   get emetteur(){
-    return this.form.controls["emetteur"] as FormControl;
+    return this.formRecherche.controls["emetteur"] as FormControl;
   }
-  get nature(){
-    return this.form.controls["nature"] as FormControl;
+  get natureC(){
+    return this.formRecherche.controls["natureC"] as FormControl;
   }
   get code(){
-    return this.form.controls["code"] as FormControl;
+    return this.formRecherche.controls["code"] as FormControl;
   }
-  get taux(){
-    return this.form.controls["taux"] as FormControl;
-  }
-
   //---------------- Form Proposition
   formProposition = this.fb.group({
     quantite: [0, [Validators.required, Validators.min(1), this.validateQte]],
-    prixPropose: [0, [Validators.required, Validators.min(1), this.validateDigit]],
-    prixTransaction: 0
+    prixPropose: [0, []],
+    tauxPropose: [0, []],
   })
 
   get quantite(){
@@ -92,53 +105,88 @@ export class TradingComponent implements AfterViewInit{
   get prixPropose(){
     return this.formProposition.controls["prixPropose"] as FormControl;
   }
-  get prixTransaction(){
-    return this.formProposition.controls["prixTransaction"] as FormControl;
+  get tauxPropose(){
+    return this.formProposition.controls["tauxPropose"] as FormControl;
   }
+  
 
   validateDigit(control: AbstractControl): ValidationErrors | null {
-      var value : string = control.value;
-      if (!value) {
-        return null; 
-      }
-      const normalizedValue = value.replace(',', '.');
-      const numberRegex = /^(\d+(\.\d+)?|\d+(\,\d+)?|\.\d+)$/;
-      if (!numberRegex.test(normalizedValue)) {
-        return { isnotdigit: true };
-      }
+    var value : string = control.value;
+    if (!value) {
       return null; 
     }
+    const normalizedValue = value.replace(',', '.');
+    const numberRegex = /^(\d+(\.\d+)?|\d+(\,\d+)?|\.\d+)$/;
+    if (!numberRegex.test(normalizedValue)) {
+      return { isnotdigit: true };
+    }
+    return null; 
+  }
   
-    validateQte(control: AbstractControl): ValidationErrors | null {
-      var value : string = control.value;
-      if (!value) {
-        return null; 
-      }
-      if(value.includes(',') || value.includes('.')){
-        return { isnotdigit: true };
-      }
-      const numberRegex = /^(\d+(\.\d+)?|\d+(\,\d+)?|\.\d+)$/;
-      if (!numberRegex.test(value)) {
-        return { isnotdigit: true };
-      }
+  validateQte(control: AbstractControl): ValidationErrors | null {
+    var value : string = control.value;
+    if (!value) {
       return null; 
     }
+    if(value.includes(',') || value.includes('.')){
+      return { isnotdigit: true };
+    }
+    const numberRegex = /^(\d+(\.\d+)?|\d+(\,\d+)?|\.\d+)$/;
+    if (!numberRegex.test(value)) {
+      return { isnotdigit: true };
+    }
+    return null; 
+  }
 
+    reinitialiserRecherche(){
+    this.formRecherche.setValue({
+      num_transaction: "",
+      dateD: "",
+      dateF: "",
+      emetteur: "",
+      natureC: "",
+      code: ""
+    })
+    this.isSearch = false;
+    this.ngOnInit();
+  }
 
   rechercherOffres() {
-    console.log(this.form.value);
-    const {... data} = this.form.value
-    this.allDatasFiltered = this.allDatas.filter(item => item.codeIsin?.includes(data.code!) && item.issuerCountry?.includes(data.emetteur!) 
-    && item.nature?.includes(data.nature!) && item.createdAt?.includes(data.date!));
+    const {... data} = this.formRecherche.value
+    
+    if ((data.code != null && data.code.toString().trim() != "") 
+      || (data.dateD != null && data.dateD.toString().trim() != "") 
+      || (data.dateF != null && data.dateF.toString().trim() != "") 
+      || (data.emetteur != null && data.emetteur.toString().trim() != "") 
+      || (data.natureC != null && data.natureC.toString().trim() != "") 
+      || (data.num_transaction != null && data.num_transaction.toString().trim() != "")
+    ){
+      this.isSearch = true;
+    } else {
+      this.isSearch = false;
+    }
+
+    this.allDatasFiltered = this.allDatas.filter(item => item.codeIsin?.toLowerCase().includes(data.code!.toLowerCase()) && item.issuerCountry?.includes(data.emetteur!) 
+    && item.nature?.includes(data.natureC!));
 
     if (data.num_transaction != null  && data.num_transaction != ""){
       var num = Number.parseInt(data.num_transaction);
       this.allDatasFiltered = this.allDatasFiltered.filter(item => item.id ==num);
     }
 
-    if (data.taux != null  && data.taux != ""){
-      var taux = Number.parseFloat(data.taux);
-      // this.allDatasFiltered = this.allDatasFiltered.filter(item => item.transactionRate ==taux);
+    if(data.dateD != null && data.dateD.toString().trim() != ""){
+      const debut = new Date(data.dateD);
+      if (data.dateF != null && data.dateF.toString().trim() != "") {
+        const fin = new Date(data.dateF);
+        this.allDatasFiltered = this.allDatasFiltered.filter(item => debut <= new Date(item.date!) && new Date(item.date!) <= fin );
+      } else {
+        this.allDatasFiltered = this.allDatasFiltered.filter(item => debut <= new Date(item.date!));
+      }
+    }else{
+      if (data.dateF != null && data.dateF.toString().trim() != "") {
+        const fin = new Date(data.dateF);
+        this.allDatasFiltered = this.allDatasFiltered.filter(item => new Date(item.date!) <= fin );
+      }
     }
 
     this.totalElements = this.allDatasFiltered.length;
@@ -156,6 +204,7 @@ export class TradingComponent implements AfterViewInit{
 
   ngOnInit(): void {
     this.isLoading = true;
+    this.isSearch = false;
     this.transactionService.getTransactionEncours().subscribe((res: RestResponse<AssetResponse[]>)=>{
       this.isLoading = false;
       if (res.statusCode == 200) {
@@ -176,92 +225,6 @@ export class TradingComponent implements AfterViewInit{
   
   onPageChange(event: PageEvent) {
     this.datasPaginated = this.allDatasFiltered.slice(event.pageIndex*event.pageSize, (event.pageIndex + 1)*event.pageSize)
-  }
-
-  voirDetail(btnDetail: HTMLButtonElement,carnet: AssetResponse) {
-    //charger les données de item sur le modal
-    this.allProposals = []; 
-    this.selectedCarnet = carnet;
-    this.propositionService.getAllProposalsByAssetId(carnet.id!).subscribe((res)=>{
-      this.allProposals = res.data!;
-    });
-    btnDetail.click();
-  }
-
-  faireProposition(btnProposition: HTMLButtonElement,carnet: AssetResponse) {
-    this.selectedCarnet = carnet;
-    this.quantite.addValidators(Validators.max(carnet.amount!))
-    btnProposition.click();
-  }
-
-  abortProposition(){
-    this.formProposition.reset();
-  }
-
-  onQuantiteChange(event: any) {
-    let rawValue = event.target.value.replace(/\s/g, ''); // Supprime les espaces pour garder la vraie valeur
-    this.quantite.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
-
-    if(!isNaN(Number(this.quantite.value))){
-      this.prixTransaction.setValue(this.quantite.value*this.prixPropose.value)
-    }
-  }
-
-  onPrixChange(event: any) {
-    let rawValue = event.target.value.replace(/\s/g, ''); // Supprime les espaces pour garder la vraie valeur
-    this.prixPropose.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
-
-    if(!isNaN(Number(this.quantite.value))){
-      this.prixTransaction.setValue(this.quantite.value*this.prixPropose.value)
-    }
-  }
-
-
-  addProposition(){
-    if(this.formProposition.invalid){
-     this.formProposition.markAllAsTouched();
-     return; 
-    }
-
-    const openSpinner = document.getElementById("openSpinner");
-    const closeSpinner = document.getElementById("closeSpinner");
-    openSpinner?.click();
-    let val = this.prixTransaction.getRawValue();
-    var data = {
-      assetId: this.selectedCarnet.id,
-      price: Number.parseFloat(this.prixPropose.getRawValue()),
-      amount: Number.parseFloat(this.quantite.getRawValue()),
-      transactionValue: Number.parseFloat(val.toString().replace(/\s/g, '')),
-      interet: 100000
-    }
-
-    this.propositionService.addProposaltoAsset(data).subscribe((res) => {
-      closeSpinner?.click();
-      if (res.statusCode==200) {
-        this.snackBar.open("Proposition effectuée avec succès","Ok",{
-          duration: 5000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-        });
-        this.formProposition.reset();
-        document.getElementById('closeProposition')?.click();
-      } else {
-        this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
-          duration: 5000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-        });
-      }
-    }, (error)=>{
-      closeSpinner?.click();
-      this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
-        duration: 5000,
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-      });
-      console.log(error);
-    });
-
   }
 
   filter() {
@@ -290,6 +253,226 @@ export class TradingComponent implements AfterViewInit{
   filterByNature(nature: string) {
     this.selectedNature = nature;
     this.filter();
+  }
+
+
+  voirDetail(btnDetail: HTMLButtonElement,carnet: AssetResponse) {
+    //charger les données de item sur le modal
+    this.allProposals = []; 
+    this.selectedCarnet = carnet;
+    this.propositionService.getAllProposalsByAssetId(carnet.id!).subscribe((res)=>{
+      this.allProposals = res.data!;
+    });
+    btnDetail.click();
+  }
+
+  faireProposition(btnProposition: HTMLButtonElement,carnet: AssetResponse) {
+    this.selectedCarnet = carnet;
+    if(this.selectedCarnet.nature == "BAT"){
+      this.unitaryNominalValue = 1000000;
+      this.tauxPropose.addValidators([Validators.required, this.validateDigit])
+    }else{
+      this.unitaryNominalValue = 10000;
+      this.prixPropose.addValidators([Validators.required, Validators.min(1), this.validateDigit])
+    }
+    this.quantite.addValidators(Validators.max(carnet.amount!))
+    btnProposition.click();
+  }
+
+  abortProposition(){
+    this.quantite.clearValidators();
+    this.quantite.reset();
+    this.formProposition.reset();
+    this.unitaryNominalValue = 0;
+    this.totalNominalValue = 0;
+    this.interet = 0; 
+    this.rendementEstime = 0; 
+    this.prix = 0; 
+    this.tauxTransaction = 0; 
+    this.total = 0;
+    this.margeOat = 20;
+    this.margeBat = 0.1;
+    this.isTauxProposeFocused = false;
+  }
+
+  onQuantiteChange(event: any) {
+    let rawValue = event.target.value.replace(/\s/g, ''); // Supprime les espaces pour garder la vraie valeur
+    this.quantite.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
+
+    if(!isNaN(Number(this.quantite.value))){
+      this.totalNominalValue = this.quantite.value*this.unitaryNominalValue;
+    }
+
+    //total
+    if(Number(this.quantite.value) > 0){
+      if (this.selectedCarnet.nature == "OAT") {
+        this.calculInteretOat();
+        this.total = (this.prix * Number.parseInt(this.quantite.value)) + this.interet;
+      } else {
+        if(this.tauxTransaction > 0){
+          this.calculInteretEtTotalBat();
+        }
+      }
+    }
+  }
+
+  onPrixChange(event: any) {
+    let rawValue = event.target.value.replace(/\s/g, ''); // Supprime les espaces pour garder la vraie valeur
+    this.prixPropose.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
+
+    if(!isNaN(Number(this.prixPropose.value)) && this.prixPropose.value.toString().trim().length > 0){
+      if(this.selectedCarnet.nature == 'OAT'){
+        // Considerer sens contraire pour proposition
+        if(this.selectedCarnet.operationSens == 'ACHAT'){
+          this.prix = Number.parseInt(this.prixPropose.value) - this.margeOat;
+        }else{
+          this.prix = Number.parseInt(this.prixPropose.value) + this.margeOat;
+        }
+      }
+    }
+    //total
+    if(Number(this.quantite.value) > 0){
+      this.calculInteretOat();
+      this.total = (this.prix * Number.parseInt(this.quantite.value)) + this.interet;
+    }
+  }
+
+  onTauxProposeChange(event: any) {
+    let rawValue = event.target.value.replace(" %", ''); 
+    this.tauxPropose.setValue(rawValue, { emitEvent: false });
+
+    if(!isNaN(Number(this.tauxPropose.value)) && this.tauxPropose.value.toString().trim().length > 0){
+      if(this.selectedCarnet.nature == 'BAT'){
+        // Considerer sens contraire pour proposition
+        if(this.selectedCarnet.operationSens == 'ACHAT'){
+          this.tauxTransaction = Number.parseFloat(this.tauxPropose.value) - this.margeBat;
+        }else{
+          this.tauxTransaction = Number.parseFloat(this.tauxPropose.value) + this.margeBat;
+        }
+        // calcul rendement
+        if(this.selectedCarnet.echeanceDate != null && this.selectedCarnet.date != null){
+          const dateOffre = new Date(this.selectedCarnet.date);
+          const echeance = new Date(this.selectedCarnet.echeanceDate);
+
+          const diffInDays = this.dateDiffInDays(dateOffre, echeance) + 1;
+          const denominator = 1 - ((this.tauxTransaction/100) * diffInDays / 360);
+          const result = 100*((this.tauxTransaction/100) / denominator);
+          
+          this.rendementEstime = Number.parseFloat(result.toFixed(4));
+          
+          if(Number(this.quantite.value) > 0){
+            this.calculInteretEtTotalBat();
+          }
+        }
+      }
+    }
+
+  }
+
+  onTauxProposeBlur(event: any){
+    let rawValue = event.target.value.replace(",", ".");
+    this.tauxPropose.setValue(rawValue, { emitEvent: false }); 
+    this.isTauxProposeFocused = false
+  }
+
+
+  addProposition(){
+    if(this.formProposition.invalid){
+     this.formProposition.markAllAsTouched();
+     return; 
+    }
+
+    const openSpinner = document.getElementById("openSpinner");
+    const closeSpinner = document.getElementById("closeSpinner");
+    openSpinner?.click();
+    var data = {
+      assetId: this.selectedCarnet.id,
+      price: this.prix,
+      amount: Number.parseFloat(this.quantite.getRawValue()),
+      transactionValue: this.total,
+      interet: this.interet
+    }
+
+    this.propositionService.addProposaltoAsset(data).subscribe((res) => {
+      closeSpinner?.click();
+      if (res.statusCode==200) {
+        this.snackBar.open("Proposition envoyée avec succès","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+        this.formProposition.reset();
+        document.getElementById('closeProposition')?.click();
+      } else {
+        this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      }
+    }, (error)=>{
+      closeSpinner?.click();
+      this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+        duration: 5000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+      console.log(error);
+    });
+
+  }
+
+  calculInteretEtTotalBat(){
+    if(this.selectedCarnet.echeanceDate != null && this.selectedCarnet.date != null){
+      //total 
+      const echeance = new Date(this.selectedCarnet.echeanceDate);
+      const today = new Date();
+      today.setHours(0, 0,0,0);
+      const nbreJours = this.dateDiffInDays(today, echeance) + 1;
+
+      const valeur = ( this.totalNominalValue * (100/(1 + (this.rendementEstime/100) * nbreJours/360))  ) / 100
+      this.total = Math.floor(valeur);
+
+      this.interet = this.totalNominalValue - this.total;
+    }
+  }
+
+  calculInteretOat(){
+    //Si couponRate et echeance existe
+    if(this.selectedCarnet.couponRate != null && this.selectedCarnet.echeanceDate != null && this.selectedCarnet.echeanceDate.trim().length >= 8){
+      const today = new Date();
+      const maturity = new Date(this.selectedCarnet.echeanceDate);
+
+      // Assumer un seul coupon par an : fréquence = 1
+      const couponDay = maturity.getDate();
+      const couponMonth = maturity.getMonth(); // 0-based (0 = janvier)
+
+      // Dernier coupon
+      let lastCoupon = new Date(today.getFullYear(), couponMonth, couponDay);
+      if (lastCoupon > today) {
+        lastCoupon.setFullYear(today.getFullYear() - 1);
+      }
+
+      // Prochain coupon
+      let nextCoupon = new Date(lastCoupon);
+      nextCoupon.setFullYear(lastCoupon.getFullYear() + 1);
+
+      const daysSinceLastCoupon = this.dateDiffInDays(lastCoupon, today);
+      const totalDaysBetweenCoupons = this.dateDiffInDays(lastCoupon, nextCoupon);
+
+      const couponAmount = this.totalNominalValue * (this.selectedCarnet.couponRate/100);
+      const interest = (couponAmount * daysSinceLastCoupon) / totalDaysBetweenCoupons;
+
+      this.interet = Math.floor(interest);
+    }else{
+      this.interet = 0;
+    }
+  }
+
+
+  private dateDiffInDays(startDate: Date, endDate: Date): number {
+    const diffTime = endDate.getTime() - startDate.getTime();
+    return (diffTime / (1000 * 60 * 60 * 24));
   }
 
 }

@@ -6,6 +6,9 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { initFlowbite } from 'flowbite';
 import {Select2Data,Select2Module, Select2UpdateEvent, Select2UpdateValue } from 'ng-select2-component';
 import { InstitutServiceImpl } from '../../../core/services/impl/institut.service.impl';
+import { CountryServiceImpl } from '../../../core/services/impl/country.service.impl';
+import { CountryDto } from '../../../core/models/country/country-dto';
+import { RestResponse } from '../../../core/models/rest-response';
 
 
 @Component({
@@ -24,6 +27,7 @@ export class AddProfilInstitutComponent implements OnInit{
 
   constructor(
     private snackBar:MatSnackBar,
+    private countryService : CountryServiceImpl,
   ){
     
   }
@@ -141,28 +145,13 @@ export class AddProfilInstitutComponent implements OnInit{
   
   ngOnInit(): void {
     initFlowbite();
-    const paysAfriqueOuest = [
-      { code: "BJ", nom: "Bénin" },
-      { code: "BF", nom: "Burkina Faso" },
-      { code: "CV", nom: "Cap-Vert" },
-      { code: "CI", nom: "Côte d'Ivoire" },
-      { code: "GM", nom: "Gambie" },
-      { code: "GH", nom: "Ghana" },
-      { code: "GN", nom: "Guinée" },
-      { code: "GW", nom: "Guinée-Bissau" },
-      { code: "LR", nom: "Liberia" },
-      { code: "ML", nom: "Mali" },
-      { code: "NE", nom: "Niger" },
-      { code: "NG", nom: "Nigeria" },
-      { code: "SN", nom: "Sénégal" },
-      { code: "SL", nom: "Sierra Leone" },
-      { code: "TG", nom: "Togo" },
-    ];
-
-
-    for (let index = 0; index < paysAfriqueOuest.length; index++) {
-      this.dataPays.push({value: paysAfriqueOuest[index].code, label: paysAfriqueOuest[index].nom})
-    }
+    this.countryService.getCountries().subscribe((res : RestResponse<CountryDto[]>)=>{
+      if(res.statusCode==200){
+        for (let index = 0; index < res.data!.length; index++) {
+          this.dataPays.push({value: res.data![index].code, label: res.data![index].name})
+        }
+      }
+    });  
 
   }
 
