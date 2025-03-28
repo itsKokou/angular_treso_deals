@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject } from '@angular/core';
+import { AfterViewInit, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { AssetResponse } from '../../../../core/models/carnet-ordre/asset-response';
@@ -18,6 +18,7 @@ import { RestResponse } from '../../../../core/models/rest-response';
 import { CountryDto } from '../../../../core/models/country/country-dto';
 import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
 import { PercentagePipe } from '../../../../core/pipes/percentage.pipe';
+import { Subscription, switchMap, timer } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -26,7 +27,7 @@ import { PercentagePipe } from '../../../../core/pipes/percentage.pipe';
   templateUrl: './trading.component.html',
   styleUrl: './trading.component.css'
 })
-export class TradingComponent implements AfterViewInit{
+export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
   totalElements: number = 0; 
   selectedCarnet: AssetResponse = {}; 
   selectedNature: String = "TOUT";
@@ -54,6 +55,7 @@ export class TradingComponent implements AfterViewInit{
   margeBat: number = 0.1;
   isTauxProposeFocused: boolean = false;
   
+  private refreshSubscription!: Subscription;
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
@@ -61,7 +63,7 @@ export class TradingComponent implements AfterViewInit{
     private propositionService: PropositionServiceImpl,
     private countryService : CountryServiceImpl,
     private fb: FormBuilder,
-    private snackBar:MatSnackBar,
+    private snackBar:MatSnackBar
   ){
   }
 
@@ -138,7 +140,7 @@ export class TradingComponent implements AfterViewInit{
     return null; 
   }
 
-    reinitialiserRecherche(){
+  reinitialiserRecherche(){
     this.formRecherche.setValue({
       num_transaction: "",
       dateD: "",
@@ -205,12 +207,16 @@ export class TradingComponent implements AfterViewInit{
   ngOnInit(): void {
     this.isLoading = true;
     this.isSearch = false;
-    this.transactionService.getTransactionEncours().subscribe((res: RestResponse<AssetResponse[]>)=>{
+    this.refreshSubscription = timer(0, 3000) // exécute immédiatement puis toutes les 10s
+    .pipe(
+      switchMap(() => this.transactionService.getTransactionEncours())
+    )
+    .subscribe((res: RestResponse<AssetResponse[]>) => {
       this.isLoading = false;
       if (res.statusCode == 200) {
-        this.allDatas = res.data!;
-        this.allDatasFiltered = this.allDatas.reverse();
-        this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
+        this.allDatas = res.data!.reverse();
+        this.allDatasFiltered = this.allDatas;
+        this.datasPaginated = this.allDatasFiltered.slice(0 * 20, (0 + 1) * 20);
         this.totalElements = this.allDatasFiltered.length;
       }
     });
@@ -222,6 +228,12 @@ export class TradingComponent implements AfterViewInit{
     });
   }
 
+  ngOnDestroy(): void {
+    // Très important pour éviter les fuites mémoire
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+    }
+  }
   
   onPageChange(event: PageEvent) {
     this.datasPaginated = this.allDatasFiltered.slice(event.pageIndex*event.pageSize, (event.pageIndex + 1)*event.pageSize)
