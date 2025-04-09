@@ -49,7 +49,7 @@ export class ValidationPageComponent {
       if (res.statusCode==200){
         this.error = "";
         let profil = res.data?.user?.profile;
-        let next = res.data?.nexTransition
+        let next = res.data?.nexTransition;
         localStorage.setItem("connectedUser", JSON.stringify(res.data?.user!));
         if(next == "HOME"){
           if (profil=="ADMIN_GESTION"){
@@ -72,7 +72,7 @@ export class ValidationPageComponent {
       }
     }, (error)=>{
       this.isLoading = false;
-      this.error = "Requête non aboutie. Code de vérification est invalide";
+      this.error = "Requête non aboutie. Code de vérification invalide";
     });
   }
 

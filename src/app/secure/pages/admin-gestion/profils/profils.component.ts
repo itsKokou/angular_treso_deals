@@ -1,23 +1,24 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
 import { MatPaginatorIntl, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { RouterLink } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { ProfilResponse } from '../../../../core/models/profil/profil-response';
 import { ProfilServiceImpl } from '../../../../core/services/impl/profil.service.impl';
-import { RestResponse } from '../../../../core/models/rest-response';
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProposalEnum } from '../../../../core/models/enum/proposal-enum';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserDto } from '../../../../core/models/user/user-dto';
 import { SecurityServiceImpl } from '../../../../core/services/impl/security.service.impl';
 import { InvitationServiceImpl } from '../../../../core/services/impl/invitation.service.impl';
+import { AngularEditorConfig, AngularEditorModule } from '@kolkov/angular-editor';
+import { InvitationComponent } from './invitation/invitation.component';
 
 @Component({
     selector: 'app-profils',
-    imports: [ReactiveFormsModule, CommonModule, MatProgressBarModule, MatPaginatorModule, MatProgressSpinnerModule],
+    imports: [ReactiveFormsModule, CommonModule, MatProgressBarModule, MatPaginatorModule, MatProgressSpinnerModule, MatDialogModule],
     templateUrl: './profils.component.html',
     styleUrl: './profils.component.css'
 })
@@ -32,17 +33,21 @@ export class ProfilsComponent implements AfterViewInit {
   allDatasInstitut: ProfilResponse[] = []; 
   allDatasIntermediaire: ProfilResponse[] = []; 
   datasPaginatedInstitut: ProfilResponse[] = []; 
-  datasPaginatedIntermediaire: ProfilResponse[] = []; 
+  datasPaginatedIntermediaire: ProfilResponse[] = []; ;
+  allDatasInstitutFiltered: ProfilResponse[] = [];
+  allDatasIntermediaireFiltered: ProfilResponse[] = [];
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
-
+  selectedEtat: String = "TOUT";
+  
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
     private profilService: ProfilServiceImpl,
     private snackBar: MatSnackBar,
     private invitationService : InvitationServiceImpl,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public dialog: MatDialog,
   ){
     this.institutionType.valueChanges.subscribe((value)=>{
       if (value == "BANK") {
@@ -73,6 +78,14 @@ export class ProfilsComponent implements AfterViewInit {
     return this.form.controls["message"] as FormControl;
   }
 
+  //Editer
+  invitationForm = this.fb.group({
+    observation : ["", [Validators.required]],
+  });
+
+  get observation(){
+    return this.invitationForm.controls["observation"] as FormControl;
+  }
 
   ngAfterViewInit() {
     this.matPaginatorIntl.itemsPerPageLabel="Profils par page";
@@ -90,8 +103,8 @@ export class ProfilsComponent implements AfterViewInit {
         const datas : ProfilResponse[] = res.data.reverse();
         this.allDatasInstitut = datas.filter((value) => value.type === 'BANK');
         this.allDatasIntermediaire = datas.filter((value) => value.type === 'SGI');
-        this.datasPaginatedInstitut = this.allDatasInstitut.slice(0*5, (0 + 1)*5)
-        this.datasPaginatedIntermediaire = this.allDatasIntermediaire.slice(0*5, (0 + 1)*5)
+        this.datasPaginatedInstitut = this.allDatasInstitut.slice(0*20, (0 + 1)*20)
+        this.datasPaginatedIntermediaire = this.allDatasIntermediaire.slice(0*20, (0 + 1)*20)
         this.totalElementsInstitut = this.allDatasInstitut.length;
         this.totalElementsIntermediaire = this.allDatasIntermediaire.length;
       }
@@ -128,7 +141,7 @@ export class ProfilsComponent implements AfterViewInit {
     this.profilService.updateProfil(this.selectedProfil.id!, this.selectedStatut).subscribe((res : any) => {
         closeSpinner?.click();
         if (res.statusCode==200) {
-          this.snackBar.open("Profil accepté avec succès","Ok",{
+          this.snackBar.open(msg,"Ok",{
             duration: 5000,
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
@@ -151,21 +164,30 @@ export class ProfilsComponent implements AfterViewInit {
     });
   }
 
-  onSubmitInvitation(){
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-    }else{
-      const openSpinner = document.getElementById("openSpinner");
-      const closeSpinner = document.getElementById("closeSpinner");
-      openSpinner?.click();
-      const {... data} = this.form.getRawValue();
-      
-      this.invitationService.sendInvitation(data).subscribe((res : any) => {
-        closeSpinner?.click();
-        document.getElementById("closeInvitationModal")?.click();
 
-        
-        if (res.statusCode==204) {
+
+  filterByEtat(etat: string) {
+    this.selectedEtat = etat;
+    if(this.selectedEtat == "TOUT"){
+        this.allDatasInstitutFiltered = this.allDatasInstitut.filter((value) => value.type === 'BANK');
+        this.allDatasIntermediaireFiltered = this.allDatasIntermediaire.filter((value) => value.type === 'SGI');
+      }else{
+        this.allDatasInstitutFiltered = this.allDatasInstitut.filter((value) => value.type === 'BANK' && value.status == etat);
+        this.allDatasIntermediaireFiltered = this.allDatasIntermediaire.filter((value) => value.type === 'SGI' && value.status == etat);
+      }
+      this.totalElementsInstitut = this.allDatasInstitutFiltered.length;
+      this.totalElementsIntermediaire = this.allDatasIntermediaireFiltered.length;
+      this.datasPaginatedInstitut = this.allDatasInstitutFiltered.slice(0*20, (0 + 1)*20)
+      this.datasPaginatedIntermediaire = this.allDatasIntermediaireFiltered.slice(0*20, (0 + 1)*20)
+  }
+
+  openDialogInvitation(){
+    const dialogRef = this.dialog.open(InvitationComponent,{width:'70%', disableClose: true});
+    dialogRef.afterClosed().subscribe((result:any)=>{
+      if(result){
+        console.log("Type", result);
+
+        if (result.statusCode==204) {
           this.snackBar.open("Votre invitation a été envoyée avec succès! \nNous vous remercions pour votre marque de confiance","Ok",{
             duration: 8000,
             horizontalPosition: this.horizontalPosition,
@@ -179,17 +201,8 @@ export class ProfilsComponent implements AfterViewInit {
             verticalPosition: this.verticalPosition,
           });
         }
-      }, (error)=>{
-        closeSpinner?.click();
-        this.snackBar.open("Une erreur s'est produite lors de l'envoi SMTP. Veuillez rééssayer !","Ok",{
-          duration: 5000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-        });
-        console.log(error);
-      });
-
-    }
+      }
+    })
   }
 
 }

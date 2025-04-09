@@ -1,11 +1,37 @@
 <div class="w-full px-6 py-6 mx-auto">
-  <div class="mt-4 flex justify-end">
-    <a id="btnAddProfil" data-modal-target="profil-modal" data-modal-toggle="profil-modal" class="px-6 py-2 flex bg-blue-700 text-white font-medium rounded-md hover:bg-blue-800">
-      <svg class="w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-      </svg>
-      <span>Nouveau</span>
-    </a>
+  <div class="flex space-between w-full">
+    <div class="w-1/2 bg-white rounded-md px-4 py-3 shadow"> 
+      <div  class="inline-flex mt-1 w-full justify-center">
+        <div style="width: 38%; margin-right:80px;" class="text-sm px-4 py-1 border border-gray-300 rounded-md">
+            <label for="select-nature" class="block mb-1 font-medium text-gray-900">Etat :</label>
+            <select id="select-nature" #etatRecherche (change)="filterByEtat(etatRecherche.value)" style="width:80%;" class="bg-gray-50  border border-gray-300 focus:ring-0 focus:border-gray-300 text-gray-900 rounded  block py-1 px-2">
+              <option value="TOUT" [selected]="selectedEtat == 'TOUT'">Tout</option>
+              <option value="ENABLED" [selected]="selectedEtat == 'ENABLED'">Actif</option>
+              <option value="LOCKED" [selected]="selectedEtat == 'LOCKED'">Bloqué</option>
+              <option value="DELETED" [selected]="selectedEtat == 'DELETED'">Archivé</option>
+            </select>
+        </div>
+        <div style="width: 38%;" class="text-sm px-4 py-1 border border-gray-300 rounded-md">
+          <label for="select-sens" class="block mb-1 font-medium text-gray-900 ">Profil :</label>
+          <select  id="select-sens" #profilRecherche (change)="filterByProfil(profilRecherche.value)" style="width:80%;" class="bg-gray-50  border border-gray-300 text-gray-900 rounded focus:ring-0 focus:border-gray-300 block py-1 px-2 ">
+            <option value="TOUT" [selected]="selectedProfil == 'TOUT'">Tout</option>
+            <option value="Trader" [selected]="selectedProfil == 'Trader'">Trader</option>
+            <option value="Validateur" [selected]="selectedProfil == 'Validateur'">Validateur</option>
+            <option value="Opérateur" [selected]="selectedProfil == 'Opérateur'">Opérateur</option>
+            <option value="Admin Institution" [selected]="selectedProfil == 'Admin Institution'">Admin Institution</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-1/2 mt-4 flex justify-end items-center">
+      <button type="button" id="btnAddProfil" data-modal-target="profil-modal" data-modal-toggle="profil-modal" class="px-6 cursor-pointer w-fit py-2 flex bg-blue-700 text-white font-medium rounded-md hover:bg-blue-800">
+        <svg class="w-4 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        <span>Nouveau</span>
+      </button>
+    </div>
   </div>
 
   <div class="flex flex-wrap mt-6">
@@ -20,7 +46,7 @@
               <th class="px-4 py-3 font-bold text-left uppercase text-xs whitespace-nowrap text-slate-400">Id</th>
               <th class="px-4 py-3 font-bold text-left uppercase text-xs whitespace-nowrap text-slate-400">Nom Complet</th>
               <th class="px-4 py-3 font-bold text-left uppercase text-xs whitespace-nowrap text-slate-400">Email</th>
-              <th class="px-4 py-3 font-bold text-center uppercase text-xs whitespace-nowrap text-slate-400">Date d’adhesion</th>
+              <th class="px-4 py-3 font-bold text-center uppercase text-xs whitespace-nowrap text-slate-400">Date de <br>création profil</th>
               <th class="px-4 py-3 font-bold text-center uppercase text-xs whitespace-nowrap text-slate-400">Profil</th>
               <!--<th class="px-4 py-3 font-bold text-center uppercase text-xs whitespace-nowrap text-slate-400">Département</th>-->
               <th class="px-4 py-3 font-bold text-center uppercase text-xs whitespace-nowrap text-slate-400">Contact</th>
@@ -37,7 +63,7 @@
               <td class="px-4 text-left">
                 <p class="text-sm leading-normal">{{item.firstName + " " + item.lastName}}</p>
               </td>
-              <td class="px-4 text-left">
+              <td class="px-4 truncate text-left">
                 <p class="text-sm leading-normal">{{item.email }}</p>
               </td>
               <td class="px-4 text-center">
@@ -160,6 +186,11 @@
 
             <div class="mb-4 px-8">
               <input formControlName="secondEmail" type="email" name="second_mail" id="second_mail" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Email secondaire :">
+              @if(secondEmail.errors && (secondEmail.dirty || secondEmail.touched)){
+                @if(secondEmail.getError("email")){
+                    <p class="text-left text-sm " style="color: red;">L'e-mail n'est pas valide</p>
+                }
+              }
             </div>
             
             <div class="mb-4 px-8">
@@ -221,8 +252,6 @@
             </div>
           </div>
         </div>
-        
-        
 
         <!-- Modal footer -->
         <div class="flex items-center justify-end py-3 px-8 border-t border-gray-200 rounded-b">
@@ -334,7 +363,7 @@
                 <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedUser.firstName}}</p>
               </div>
               <div class="mt-2 w-full flex">
-                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Date d'adhésion :</p>
+                <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Date création profil :</p>
                 <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedUser.createdAt | date:'dd/MM/YYYY'}}</p>
               </div>
               <div class="mt-2 w-full flex">
@@ -370,7 +399,7 @@
               </div>
               <div class="mt-2 w-full flex">
                 <p class="w-1/3 bg-gray-300 text-black font-medium py-2 px-4 rounded">Etat :</p>
-                <p class="w-2/3 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">
+                <p [ngClass]="selectedUser.status == 'ENABLED' ? 'bg-green-300' : selectedUser.status == 'LOCKED' ? 'bg-red-300' : 'bg-gray-300'" class="w-2/3 ml-2 text-black text-left font-bold py-2 px-4 rounded">
                   {{selectedUser.status == 'ENABLED' ? "Actif" : selectedUser.status == 'LOCKED' ? "Bloqué" : "Archivé" }}
                 </p>
               </div>

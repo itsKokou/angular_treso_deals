@@ -23,12 +23,16 @@ export class UtilisateursComponent implements AfterViewInit {
   isLoading: boolean = false;
   allDatas: InstituteUserDTO[] = []; 
   datasPaginated: InstituteUserDTO[] = [];
+  allDatasFiltered: InstituteUserDTO[] = [];
   selectedUser: InstituteUserDTO = {};
   selectedAction: String = "";
+  selectedProfil: String = "TOUT";
+  selectedEtat: String = "TOUT";
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
   private fb = inject(FormBuilder); 
+
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
@@ -41,7 +45,7 @@ export class UtilisateursComponent implements AfterViewInit {
     firstName: ["", [Validators.required, Validators.minLength(2)]],
     lastName: ["", [Validators.required, Validators.minLength(2)]],
     email: ["", [Validators.required, Validators.email]],
-    secondEmail: ["", [Validators.required, Validators.email]],
+    secondEmail: ["", [Validators.email]],
     phoneNumber: ["", [Validators.required]],
     fixeNumber: ["", [Validators.required]],
     job: ["", [Validators.required, Validators.minLength(2)]],
@@ -58,6 +62,9 @@ export class UtilisateursComponent implements AfterViewInit {
   }
   get email(){
     return this.formProfil.controls["email"] as FormControl;
+  }
+  get secondEmail(){
+    return this.formProfil.controls["secondEmail"] as FormControl;
   }
   get phoneNumber(){
     return this.formProfil.controls["phoneNumber"] as FormControl;
@@ -88,6 +95,7 @@ export class UtilisateursComponent implements AfterViewInit {
     this.isLoading = true;
     this.userService.getUserByInstitutionId(this.connectedUser.institutionId!).subscribe((res: RestResponse<InstituteUserDTO[]>)=>{
     //this.userService.getUserAdminInstitut().subscribe((res: RestResponse<any>)=>{
+    
       this.isLoading = false;
       if (res.statusCode == 200) {
         this.allDatas = res.data!.reverse();
@@ -254,6 +262,34 @@ export class UtilisateursComponent implements AfterViewInit {
         verticalPosition: this.verticalPosition,
       });
     });
+  }
+
+  filter() {
+    if (this.selectedProfil == "TOUT"){
+      if(this.selectedEtat == "TOUT"){
+        this.allDatasFiltered = this.allDatas;
+      }else{
+        this.allDatasFiltered = this.allDatas.filter(item => item.status == this.selectedEtat);
+      }
+    }else{
+      if(this.selectedEtat == "TOUT"){
+        this.allDatasFiltered = this.allDatas.filter(item => item.profile == this.selectedProfil);
+      }else{
+        this.allDatasFiltered = this.allDatas.filter(item => item.status == this.selectedEtat && item.profile == this.selectedProfil);
+      }
+    }
+    this.totalElements = this.allDatasFiltered.length;
+    this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
+  }
+
+  filterByEtat(etat: string) {
+    this.selectedEtat = etat;
+    this.filter();
+  }
+
+  filterByProfil(profil: string) {
+    this.selectedProfil = profil;
+    this.filter();
   }
 
 }

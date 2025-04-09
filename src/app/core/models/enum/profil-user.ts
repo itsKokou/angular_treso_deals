@@ -1,12 +1,14 @@
 
 
 export namespace ProfilUser {
-    export type ProfileEnum = 'APPLICAN' | 'TRADER' | 'SGI_OPERATOR' | 'BANK_OPERATOR' | 'SGI_VALIDATOR' | 'BANK_VALIDATOR' | 'INSTITUTE_ADMIN' | 'SGI_ADMIN' | 'BANK_ADMIN' | 'ADMIN_GESTION' | 'SUPER_ADMIN';
+    export type ProfileEnum = 'APPLICAN' | 'TRADER' | 'OPERATOR' | 'SGI_OPERATOR' | 'BANK_OPERATOR' | 'VALIDATOR' | 'SGI_VALIDATOR' | 'BANK_VALIDATOR' | 'INSTITUTE_ADMIN' | 'SGI_ADMIN' | 'BANK_ADMIN' | 'ADMIN_GESTION' | 'SUPER_ADMIN';
     export const ProfileEnum = {
         Applican: 'APPLICAN' as ProfileEnum,
         Trader: 'TRADER' as ProfileEnum,
+        Operator: 'OPERATOR' as ProfileEnum,
         SgiOperator: 'SGI_OPERATOR' as ProfileEnum,
         BankOperator: 'BANK_OPERATOR' as ProfileEnum,
+        Validator: 'VALIDATOR' as ProfileEnum,
         SgiValidator: 'SGI_VALIDATOR' as ProfileEnum,
         BankValidator: 'BANK_VALIDATOR' as ProfileEnum,
         InstituteAdmin: 'INSTITUTE_ADMIN' as ProfileEnum,

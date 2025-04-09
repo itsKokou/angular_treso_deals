@@ -35,7 +35,7 @@ export class AddProfilIntermediaireComponent implements OnInit {
         denomination : ["", [Validators.required, Validators.minLength(2)]],
         statut : ["", [Validators.required]],
         pays : ["", [Validators.required]],
-        ville : ["", [Validators.required, Validators.minLength(2)]],
+        // ville : ["", [Validators.required, Validators.minLength(2)]],
         adresse : ["", [Validators.required, Validators.minLength(2)]],
         email : ["", [Validators.required, Validators.email]],
         fixe : ["", [Validators.required, Validators.minLength(2)]],
@@ -80,9 +80,9 @@ export class AddProfilIntermediaireComponent implements OnInit {
     get pays(){
     return this.form.controls["pays"] as FormControl;
     }
-    get ville(){
-    return this.form.controls["ville"] as FormControl;
-    }
+    // get ville(){
+    // return this.form.controls["ville"] as FormControl;
+    // }
     get adresse(){
     return this.form.controls["adresse"] as FormControl;
     }
@@ -205,7 +205,7 @@ export class AddProfilIntermediaireComponent implements OnInit {
         },
         sgiRequest: {
           address: this.adresse.getRawValue(),
-          city: this.ville.getRawValue(),
+          // city: this.ville.getRawValue(),
           countryCode: this.pays.getRawValue(),
           email: this.email.getRawValue(),
           juridicStatus: this.statut.getRawValue(),

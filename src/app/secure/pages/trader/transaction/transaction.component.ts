@@ -15,6 +15,7 @@ import { FormatNumberPipe } from '../../../../core/pipes/format-number.pipe';
 import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
 import { CountryDto } from '../../../../core/models/country/country-dto';
 import { PercentagePipe } from '../../../../core/pipes/percentage.pipe';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   standalone: true,
@@ -34,6 +35,8 @@ export class TransactionComponent implements AfterViewInit {
   allDatasFiltered: AssetResponse[] = []; 
   allProposals: ProposalResponse[] = []; 
   datasPaginated: AssetResponse[] = []; 
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
   private fb = inject(FormBuilder);
   countries: CountryDto[] = [];
@@ -43,7 +46,8 @@ export class TransactionComponent implements AfterViewInit {
     private matPaginatorIntl:MatPaginatorIntl,
     private transactionService: TransactionServiceImpl,
     private countryService : CountryServiceImpl,
-    private propositionService: PropositionServiceImpl
+    private propositionService: PropositionServiceImpl,
+    private snackBar: MatSnackBar
   ){
   }
   
@@ -90,19 +94,6 @@ export class TransactionComponent implements AfterViewInit {
 
   rechercherOffres() {
     const {... data} = this.formRecherche.value
-    
-    if ((data.code != null && data.code.toString().trim() != "") 
-      || (data.dateD != null && data.dateD.toString().trim() != "") 
-      || (data.dateF != null && data.dateF.toString().trim() != "") 
-      || (data.emetteur != null && data.emetteur.toString().trim() != "") 
-      || (data.natureC != null && data.natureC.toString().trim() != "") 
-      || (data.num_transaction != null && data.num_transaction.toString().trim() != "")
-    ){
-      this.isSearch = true;
-    } else {
-      this.isSearch = false;
-    }
-
     this.allDatasFiltered = this.allDatas.filter(item => item.codeIsin?.toLowerCase().includes(data.code!.toLowerCase()) && item.issuerCountry?.includes(data.emetteur!) 
     && item.nature?.includes(data.natureC!));
 
@@ -128,6 +119,26 @@ export class TransactionComponent implements AfterViewInit {
 
     this.totalElements = this.allDatasFiltered.length;
     this.datasPaginated = this.allDatasFiltered.slice(0*20, (0 + 1)*20)
+
+    if ((data.code != null && data.code.toString().trim() != "") 
+      || (data.dateD != null && data.dateD.toString().trim() != "") 
+      || (data.dateF != null && data.dateF.toString().trim() != "") 
+      || (data.emetteur != null && data.emetteur.toString().trim() != "") 
+      || (data.natureC != null && data.natureC.toString().trim() != "") 
+      || (data.num_transaction != null && data.num_transaction.toString().trim() != "")
+    ){
+      this.isSearch = true;
+      
+      if (this.totalElements == 0) {
+        this.snackBar.open("Information(s) non retrouvée(s) suivant critères indiqués","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      }
+    } else {
+      this.isSearch = false;
+    }
   }
 
   ngAfterViewInit() {

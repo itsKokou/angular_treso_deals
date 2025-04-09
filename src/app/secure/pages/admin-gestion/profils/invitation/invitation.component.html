@@ -1,0 +1,87 @@
+<div *ngIf="!isLoading">
+    <div mat-dialog-title class="!flex align-middle bg-blue-800 items-center justify-between px-4 !py-2 border-b rounded-t ">
+        <h3 class="text-xl mb-0 font-medium text-white ">
+            TRESO LINK : Lien d'invitation
+        </h3>
+        <button type="button" mat-button mat-dialog-close class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="invitation-modal">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+        </button>
+    </div>
+
+    <mat-dialog-content class="mat-typography">
+        <div  style="padding-top: 10px;">
+
+            <form class="pt-6 w-full" [formGroup]="form" method="post">
+                <div class="flex justify-center items-start w-full">
+                    <div class="pl-8 pr-4 w-full">
+                        <div class="mb-4">
+                            <input formControlName="name" type="text" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Dénomination de l'institution :" required>
+                            @if(name.errors && (name.dirty || name.touched)){
+                                @if(name.getError("required")){
+                                <p class="text-left text-sm " style="color: red;">La dénomination est obligatoire</p>
+                                }
+                                @if(name.getError("minlength")){
+                                <p class="text-left text-sm " style="color: red;">Minimum 2 caractères</p>
+                                }
+                            } 
+                        </div>
+                        <div class="mb-4">
+                            <select formControlName="institutionType" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3">
+                                <option disabled [selected]="1">Sélectionnez le type</option>
+                                <option value="BANK">Institution</option>
+                                <option value="SGI">Intermédiaire</option>
+                            </select>
+                            @if(institutionType.errors && (institutionType.dirty || institutionType.touched)){
+                                @if(institutionType.getError("required")){
+                                    <p class="text-left text-sm " style="color: red;">Veuillez sélectionner le type d'entité</p>
+                                }
+                            }   
+                        </div>
+                    </div>
+
+                    <div class="mb-4 pr-8 pl-4 w-full">
+                        <input formControlName="email" type="email" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Adresse email du destinataire :" required>
+                        @if(email.errors && (email.dirty || email.touched)){
+                            @if(email.getError("required")){
+                                <p class="text-left text-sm " style="color: red;">L'email du destinataire est obligatoire</p>
+                            }
+                            @if(email.getError("email")){
+                                <p class="text-left text-sm " style="color: red;">L'email du destinataire n'est pas valide</p>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="w-full px-8">
+                    <angular-editor formControlName="message" [ngModel]="messageContent" [config]="editorConfig"></angular-editor>
+                    @if(message.errors && (message.dirty || message.touched)){
+                        @if(message.getError("required")){
+                            <p class="text-left text-sm " style="color: red;">Le message du mail est requis</p>
+                        }
+                    }   
+                </div>
+            </form>
+
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <div class="flex w-full items-center justify-end py-3 px-8 border-t border-gray-300 rounded-b">
+            <button mat-button mat-dialog-close type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
+            <button cdkFocusInitial (click)="onSubmitInvitation()"  type="button" class="ml-5 text-white font-medium !bg-green-500 hover:!bg-green-600 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Envoyer</button>
+        </div>
+    </mat-dialog-actions>
+</div>
+
+
+<div *ngIf="isLoading">
+  <mat-dialog-content class="mat-typography">
+    <div class="p-4 overflow-y-auto overflow-x-hidden justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class=" bg-transparent">
+            <div class="flex justify-center items-center p-4">
+                <mat-spinner></mat-spinner>
+            </div>
+        </div>
+    </div>
+  </mat-dialog-content>
+</div>

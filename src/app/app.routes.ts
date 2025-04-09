@@ -11,26 +11,26 @@ export const routes: Routes = [
     {
         path: 'admin',
         loadChildren : ()=>import("./secure/pages/super-admin/super-admin.module").then(mod=>mod.SuperAdminModule),
-        canMatch:[AuthenticationGuard]
+        // canMatch:[AuthenticationGuard]
     },
     {
         path: 'gestion',
         loadChildren : ()=>import("./secure/pages/admin-gestion/admin-gestion.module").then(mod=>mod.AdminGestionModule),
-        canMatch:[AuthenticationGuard]
+        // canMatch:[AuthenticationGuard]
     },
     {
         path: 'institut',
         loadChildren : ()=>import("./secure/pages/admin-institut/admin-institut.module").then(mod=>mod.AdminInstitutModule),
-        canMatch:[AuthenticationGuard]
+        // canMatch:[AuthenticationGuard]
     },
     {
         path: 'trader',
         loadChildren : ()=>import("./secure/pages/trader/trader.module").then(mod=>mod.TraderModule),
-        canMatch:[AuthenticationGuard]
+        // canMatch:[AuthenticationGuard]
     },
     {
         path: 'validateur',
         loadChildren : ()=>import("./secure/pages/validateur/validateur.module").then(mod=>mod.ValidateurModule),
-        canMatch:[AuthenticationGuard]
+        // canMatch:[AuthenticationGuard]
     },
 ];

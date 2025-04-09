@@ -1,254 +1,28 @@
 <div class="w-full px-6 py-6 mx-auto">  
-  <div class="mt-4 flex justify-end">
-    <a id="btnInvitation" data-modal-target="invitation-modal" data-modal-toggle="invitation-modal" class="cursor-pointer px-6 py-2 flex bg-blue-700 text-white font-medium rounded-md hover:bg-blue-800">
-      <span>Invitation</span>
-    </a>
-  </div>
-       
-  <div class="flex flex-wrap mt-2">
-    <!-- <div class="flex-none w-full max-w-full px-3">
-      <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-        <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-          <h6>Profil</h6>
-        </div>
-        <div class="flex-auto px-0 pt-0 pb-2">
-          <div class="p-0 overflow-x-auto">
-            <table class="items-center justify-center w-full mb-0 align-top border-gray-200 text-slate-500">
-              <thead class="align-bottom">
-                <tr>
-                  <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Demandeur</th>
-                  <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Institution</th>
-                  <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Date  de Demande</th>
-                  <th class="px-6 py-3 pl-2 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Profil</th>
-                  <th class="px-6 py-3 pl-2 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Admin</th>
-                  <th class="px-6 py-3 pl-2 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Action</th>
-                  <th class="px-6 py-3 pl-2 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">Voir Plus</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                    <div class="flex px-2">
-                        <div class="my-auto">
-                        <h6 class="mb-0 text-sm leading-normal">Samanta William</h6>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                    <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                      <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                    </button>
-                  </td>
-                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                    <p class="mb-0 text-sm font-semibold leading-normal">March 25, 2021</p>
-                  </td>
-                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                    <span class="text-xs font-semibold leading-tight">Admin_Institution</span>
-                  </td>
-                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                    <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                      <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                    </button>
-                  </td>
-                  <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                    <span class="from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" style="background-color: red;">Refuser</span>
-                    <span class="ml-2 bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Accepter</span>
 
-                  </td>
-                  
-                  <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                    <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                      <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                    </button>
-                </td>
-                </tr>
-                <tr>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <div class="flex px-2">
-                          <div class="my-auto">
-                          <h6 class="mb-0 text-sm leading-normal">Samanta William</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                        <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                      </button>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <p class="mb-0 text-sm font-semibold leading-normal">March 25, 2021</p>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <span class="text-xs font-semibold leading-tight">Admin_Institution</span>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                        <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                      </button>
-                    </td>
-                    <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <span class="from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" style="background-color: red;">Refuser</span>
-                      <span class="ml-2 bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Accepter</span>
-
-                    </td>
-                    
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                        <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                      </button>
-                  </td>
-                </tr>
-                <tr>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <div class="flex px-2">
-                          <div class="my-auto">
-                          <h6 class="mb-0 text-sm leading-normal">Samanta William</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                        <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                      </button>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <p class="mb-0 text-sm font-semibold leading-normal">March 25, 2021</p>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <span class="text-xs font-semibold leading-tight">Admin_Institution</span>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                        <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                      </button>
-                    </td>
-                    <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <span class="from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" style="background-color: red;">Refuser</span>
-                      <span class="ml-2 bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Accepter</span>
-
-                    </td>
-                    
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                        <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                      </button>
-                  </td>
-                </tr>
-                <tr>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <div class="flex px-2">
-                          <div class="my-auto">
-                          <h6 class="mb-0 text-sm leading-normal">Samanta William</h6>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                        <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                      </button>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <p class="mb-0 text-sm font-semibold leading-normal">March 25, 2021</p>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <span class="text-xs font-semibold leading-tight">Admin_Institution</span>
-                    </td>
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                        <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                      </button>
-                    </td>
-                    <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <span class="from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" style="background-color: red;">Refuser</span>
-                      <span class="ml-2 bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Accepter</span>
-
-                    </td>
-                    
-                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                      <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                        <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                      </button>
-                  </td>
-                  </tr>
-                  <tr>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <div class="flex px-2">
-                            <div class="my-auto">
-                            <h6 class="mb-0 text-sm leading-normal">Samanta William</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                          <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                        </button>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <p class="mb-0 text-sm font-semibold leading-normal">March 25, 2021</p>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <span class="text-xs font-semibold leading-tight">Admin_Institution</span>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                          <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                        </button>
-                      </td>
-                      <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <span class="from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" style="background-color: red;">Refuser</span>
-                        <span class="ml-2 bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Accepter</span>
-
-                      </td>
-                      
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                          <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                        </button>
-                    </td>
-                  </tr>
-                  <tr>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <div class="flex px-2">
-                            <div class="my-auto">
-                            <h6 class="mb-0 text-sm leading-normal">Samanta William</h6>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                          <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                        </button>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <p class="mb-0 text-sm font-semibold leading-normal">March 25, 2021</p>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <span class="text-xs font-semibold leading-tight">Admin_Institution</span>
-                      </td>
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                          <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                        </button>
-                      </td>
-                      <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <span class="from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white" style="background-color: red;">Refuser</span>
-                        <span class="ml-2 bg-gradient-to-tl from-green-600 to-lime-400 px-2.5 text-xs rounded-1.8 py-1.4 inline-block whitespace-nowrap text-center align-baseline font-bold uppercase leading-none text-white">Accepter</span>
-
-                      </td>
-                      
-                      <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                        <button class="inline-block px-6 py-3 mb-0 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border-0 rounded-lg shadow-none leading-pro ease-soft-in bg-150 tracking-tight-soft bg-x-25 text-slate-400">
-                          <i class="text-xs leading-tight fa fa-ellipsis-v"></i>
-                        </button>
-                    </td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
+  <div class="w-full flex space-between">
+    <div style="width: 30%;"  class=" bg-white rounded-md px-4 py-3 shadow"> 
+      <div class="inline-flex mt-1 w-full justify-center">
+        <div style="width: 80%;" class="text-sm px-4 py-1 border border-gray-300 rounded-md">
+            <label for="select-nature" class="block mb-1 font-medium text-gray-900">Etat :</label>
+            <select id="select-nature" #etatRecherche (change)="filterByEtat(etatRecherche.value)" style="width:80%;" class="bg-gray-50  border border-gray-300 focus:ring-0 focus:border-gray-300 text-gray-900 rounded  block py-1 px-2">
+              <option value="TOUT" [selected]="selectedEtat == 'TOUT'">Tout</option>
+              <option value="PENDING" [selected]="selectedEtat == 'PENDING'">En attente</option>
+              <option value="REJECTED" [selected]="selectedEtat == 'REJECTED'">Rejeté</option>
+              <option value="ACCEPTED" [selected]="selectedEtat == 'ACCEPTED'">Validé</option>
+            </select>
         </div>
       </div>
-    </div> -->
+    </div>
+
+    <div class="w-full mt-4 flex justify-end items-center">
+      <button (click)="openDialogInvitation()" type="button" id="btnInvitation" class="cursor-pointer px-6 py-2 flex bg-blue-700 text-white font-medium rounded-md hover:bg-blue-800">
+        <span>Invitation</span>
+      </button>
+    </div>
   </div>
+       
+  
       
   <div class="mb-4 border-b border-gray-200" >
     <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
@@ -264,9 +38,9 @@
     <div class="hidden pt-2 rounded-lg bg-gray-50 w-full" id="profile" role="tabpanel" aria-labelledby="profile-tab">
       <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-lg bg-clip-border">
         <div class="flex-auto px-0 pt-0 pb-2">
-          <div class="p-0 overflow-x-auto">
-            <table class="items-center justify-center w-full mb-0 align-top border-gray-200 text-slate-500">
-              <thead class="align-bottom">
+          <div class="p-0 overflow-x-auto overflow-y-auto max-h-96">
+            <table class="items-center border-collapse justify-center w-full mb-0 align-top border-gray-200 text-slate-500">
+              <thead class="align-middle bg-white sticky top-0">
                 <tr>
                   <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Demandeur</th>
                   <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Institution</th>
@@ -277,9 +51,9 @@
                   <!--<th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Voir Plus</th>-->
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="overflow-y-auto">
                 @for (item of datasPaginatedInstitut; track $index) {
-                  <tr>
+                  <tr class="text-gray-700 border-b border-gray-200 odd:bg-gray-100 even:bg-white">
                     <td class="px-4 border-b text-left">
                       <p class="text-sm leading-normal">{{item.applicant}}</p>
                     </td>
@@ -295,7 +69,7 @@
                     <td class="px-4 border-b text-center">
                       <p class="text-sm leading-normal">{{item.adminName}}</p>
                     </td>
-                    <td class="p-2 text-sm flex flex-col items-center leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                    <td class="px-2 py-0.5 text-sm flex flex-col items-center leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                       <p *ngIf="item.status == 'ACCEPTED'" class="px-3 my-1 w-fit text-sm text-green-600 font-semibold bg-green-200 rounded-full">Validé</p>
                       <div *ngIf="item.status == 'PENDING'" class="flex justify-center items-center">
                         <button (click)="openTreatmentModal(item,'REJECTED', 'le refus')" type="button" class="px-2.5 text-xs rounded-md py-1.4 text-center font-bold uppercase leading-none text-white hover:!bg-red-600" style="background-color: red;">Refuser</button>
@@ -318,8 +92,8 @@
           <div>
           <mat-paginator showFirstLastButtons
                 [length] ="totalElementsInstitut"
-                [pageSize]="5"
-                [pageSizeOptions]="[5, 10, 25, 50]"
+                [pageSize]="20"
+                [pageSizeOptions]="[20, 30, 50]"
                 aria-label="Select page"
                 (page)="onPageChangeInstitut($event)">
           </mat-paginator>
@@ -331,9 +105,9 @@
     <div class="hidden pt-2 rounded-lg bg-gray-50 w-full" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
       <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-lg bg-clip-border">
         <div class="flex-auto px-0 pt-0 pb-2">
-          <div class="p-0 overflow-x-auto">
-            <table class="items-center justify-center w-full mb-0 align-top border-gray-200 text-slate-500">
-              <thead class="align-bottom">
+          <div class="p-0 overflow-x-auto overflow-y-auto max-h-96">
+            <table class="items-center border-collapse justify-center w-full mb-0 align-top border-gray-200 text-slate-500">
+              <thead class="align-middle bg-white sticky top-0">
                 <tr>
                   <!--<th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Demandeur</th>-->
                   <th class="px-4 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Institution</th>
@@ -344,9 +118,9 @@
                   <!--<th class="px-4 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 text-xs border-b-solid whitespace-nowrap text-slate-400">Voir Plus</th>-->
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="overflow-y-auto">
                  @for (item of datasPaginatedIntermediaire; track $index) {
-                  <tr>
+                  <tr class="text-gray-700 border-b border-gray-200 odd:bg-gray-100 even:bg-white">
                     <!--<td class="px-4 border-b text-left">
                       <p class="text-sm leading-normal">{{item.applicant}}</p>
                     </td>-->
@@ -362,7 +136,7 @@
                     <td class="px-4 border-b text-center">
                       <p class="text-sm leading-normal">{{item.adminName}}</p>
                     </td>
-                    <td class="p-2 text-sm flex flex-col items-center leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                    <td class="px-2 py-0.5 text-sm flex flex-col items-center leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                       <p *ngIf="item.status == 'ACCEPTED'" class="px-3 my-1 w-fit text-sm text-green-600 font-semibold bg-green-200 rounded-full">Validé</p>
                       <div *ngIf="item.status == 'PENDING'" class="flex justify-center items-center">
                         <button (click)="openTreatmentModal(item,'REJECTED', 'le refus')" type="button" class="px-2.5 text-xs rounded-md py-1.4 text-center font-bold uppercase leading-none text-white hover:!bg-red-600" style="background-color: red;">Refuser</button>
@@ -385,8 +159,8 @@
           <div>
           <mat-paginator showFirstLastButtons
                 [length] ="totalElementsIntermediaire"
-                [pageSize]="5"
-                [pageSizeOptions]="[5, 10, 25, 50]"
+                [pageSize]="20"
+                [pageSizeOptions]="[20, 30, 50]"
                 aria-label="Select page"
                 (page)="onPageChangeIntermediaire($event)">
           </mat-paginator>
@@ -437,94 +211,6 @@
   </div>
 </div>
 
-
-
-<!-- INVITATION  -->
-
-<div id="invitation-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-  <div class="relative p-4 w-full max-w-3xl max-h-full">
-    <!-- Modal content -->
-    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-      <!-- Modal header -->
-      <div class="flex align-middle bg-blue-800 items-center justify-between px-4 py-2 border-b rounded-t-lg ">
-        <h3 class="text-xl mb-0 font-medium text-white ">
-         TRESO LINK : Lien d'invitation
-        </h3>
-        <button type="button" id="closeInvitationModal" class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="invitation-modal">
-          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-          </svg>
-        </button>
-      </div>
-      <!-- Modal body -->
-      <form class="pt-6 w-full" [formGroup]="form" (ngSubmit)="onSubmitInvitation()" method="post">
-        <div class="flex justify-center items-start w-full">
-          <div class="pl-8 pr-4 w-full">
-            <div class="mb-4">
-              <input formControlName="name" type="text" name="n_transaction" id="n_transaction" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Dénomination de l'institution :" required>
-              @if(name.errors && (name.dirty || name.touched)){
-                @if(name.getError("required")){
-                  <p class="text-left text-sm " style="color: red;">La dénomination est obligatoire</p>
-                }
-                @if(name.getError("minlength")){
-                  <p class="text-left text-sm " style="color: red;">Minimum 2 caractères</p>
-                }
-              } 
-            </div>
-            <div class="mb-4">
-              <select formControlName="institutionType" id="type_profil" name="type_profil" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3">
-                <option disabled [selected]="1">Sélectionnez le type</option>
-                <option value="BANK">Institution</option>
-                <option value="SGI">Intermédiaire</option>
-              </select>
-              @if(institutionType.errors && (institutionType.dirty || institutionType.touched)){
-                @if(institutionType.getError("required")){
-                  <p class="text-left text-sm " style="color: red;">Veuillez sélectionner le type d'entité</p>
-                }
-              }   
-            </div>
-          </div>
-
-          <div class="mb-4 pr-8 pl-4 w-full">
-            <input formControlName="email" type="email" name="phone" id="phone" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Adresse email du destinataire :" required>
-            @if(email.errors && (email.dirty || email.touched)){
-              @if(email.getError("required")){
-                <p class="text-left text-sm " style="color: red;">L'email du destinataire est obligatoire</p>
-              }
-              @if(email.getError("email")){
-                <p class="text-left text-sm " style="color: red;">L'email du destinataire n'est pas valide</p>
-              }
-            }
-          </div>
-        </div>
-        <div class="w-full px-8">
-          <p>Message : </p>
-          <p *ngIf="institutionType.value == 'SGI'" class="w-full border bg-gray-50 border-gray-300 text-gray-900 text-base rounded-md block py-1.5 px-3">
-            Bonjour, <br/>
-            Nous avons l'honneur de vous inviter à rejoindre la 
-            plateforme TRESO LINK, en qualité d'Intermédiaire 
-            Financier.<br/>
-            Nous vous remercions d'avance pour votre marque de 
-            confiance.<br/> 
-            Team TRESO LINK
-          </p>
-          <p *ngIf="institutionType.value == 'BANK'" class="w-full border bg-gray-50 border-gray-300 text-gray-900 text-base rounded-md block py-1.5 px-3">
-            Bonjour, <br/>
-            {{connectedUser.firstName + " " + connectedUser.lastName}} vous invite à 
-            rejoindre la plateforme TRESO LINK, afin de 
-            rapprocher vos opportunités d'investissement.
-          </p>
-        </div>
-      
-        <!-- Modal footer -->
-        <div class="flex mt-4 items-center justify-end py-3 px-8 border-t border-gray-200 rounded-b">
-          <button data-modal-hide="profil-modal" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
-          <button type="submit" class="ml-5 text-white font-medium !bg-green-500 hover:!bg-green-600 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Envoyer</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
 
 <!-- SPINNER  -->
