@@ -11,12 +11,11 @@ import {MatPaginatorIntl, MatPaginatorModule, PageEvent} from '@angular/material
 import { RestResponse } from '../../../../core/models/rest-response';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { InstitutionEnum } from '../../../../core/models/enum/institution-enum';
-import { ProfilUser } from '../../../../core/models/enum/profil-user';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     selector: 'app-utilisateurs',
-    imports: [CommonModule, MatProgressBar, MatPaginatorModule, MatProgressSpinnerModule],
+    imports: [CommonModule, MatProgressBar, MatPaginatorModule, MatProgressSpinnerModule, MatTooltipModule],
     templateUrl: './utilisateurs.component.html',
     styleUrl: './utilisateurs.component.css'
 })
@@ -42,12 +41,11 @@ export class UtilisateursComponent implements AfterViewInit {
     private userService: UserServiceImpl,
     private snackBar:  MatSnackBar
   ){
-    localStorage.setItem("gestion","Utilisateurs");
   }
 
 
   ngAfterViewInit() {
-    this.matPaginatorIntl.itemsPerPageLabel="Utilisateurs par page";
+    this.matPaginatorIntl.itemsPerPageLabel="Profils par page";
     this.matPaginatorIntl.firstPageLabel = "Première page";
     this.matPaginatorIntl.lastPageLabel = "Dernière page";
     this.matPaginatorIntl.nextPageLabel = "Page suivante";
@@ -122,7 +120,7 @@ export class UtilisateursComponent implements AfterViewInit {
 
   lockUser(){
     const closeSpinner = document.getElementById("closeSpinner");
-    this.userService.LockUserInstitut(this.selectedUser.id,this.connectedUser.institutionId,this.selectedUser).subscribe( (res)=>{
+    this.userService.lockUserInstitut(this.selectedUser.id,this.selectedUser.institutionId,this.selectedUser).subscribe( (res)=>{
       closeSpinner?.click();
       if (res.statusCode==200) {
         this.snackBar.open("Utilisateur Bloqué avec succès","Ok",{
@@ -150,7 +148,7 @@ export class UtilisateursComponent implements AfterViewInit {
 
   deleteUser(){
     const closeSpinner = document.getElementById("closeSpinner");
-    this.userService.DeleteUserInstitut(this.selectedUser.id,this.connectedUser.institutionId).subscribe( (res)=>{
+    this.userService.deleteUserInstitut(this.selectedUser.id,this.selectedUser.institutionId).subscribe( (res)=>{
       closeSpinner?.click();
       if (res.statusCode==200) {
         this.snackBar.open("Utilisateur archivé avec succès","Ok",{

@@ -65,37 +65,36 @@ export class InvitationComponent {
   ){
     this.institutionType.valueChanges.subscribe((value)=>{
       if (value == "BANK") {
-        this.messageContent = `
-        <div style="color: black; font-family: 'times new roman';">
-          <p>Bonjour,</p>
-          <p>Nous vous invitons à rejoindre la plateforme TRESO LINK, en qualité d’Institution Trader, afin de saisir en temps réels les opportunités d'investissement sur titres.</p>
-          <br>
-          <p><a href='#' style="margin-right: 20px;"><span style="font-weight:700; font-size: 16px;">Rejoindre maintenant</span></a> | <a href='#' style="margin-left: 20px;"><span style="font-weight:700; font-size: 16px;">Présentation</span></a></p>
-          <br>
-          <p>A très bientôt !</p>
-          <p>Equipe support _ TRESO LINK</p>
-          <p>Téléphone : </p>
-          <p>Adresse mail : </p>
-          <br>
-          <p>© 2025 Treso link. Tous droits réservés.</p>
-        </div>`;
+        this.messageContent = 
+        `<div style="color: black; font-family: 'times new roman';">`+
+          `<p>Bonjour,</p>`+
+          `<p>Nous vous invitons à rejoindre la plateforme TRESO LINK, en qualité d’Institution Trader, afin de saisir en temps réels les opportunités d'investissement sur titres.</p>`+
+          `<br>`+
+          `<p><a href='#' style="margin-right: 20px;"><span style="font-weight:700; font-size: 16px;">Rejoindre maintenant</span></a> | <a href='#' style="margin-left: 20px;"><span style="font-weight:700; font-size: 16px;">Présentation</span></a></p>`+
+          `<br>`+
+          `<p>A très bientôt !</p>`+
+          `<p>Equipe support _ TRESO LINK</p>`+
+          `<p>Téléphone : </p>`+
+          `<p>Adresse mail : </p>`+
+          `<br>`+
+          `<p>© 2025 Treso link. Tous droits réservés.</p>`+
+       `</div>`;
 
       } else if(value == "SGI") {
-        this.messageContent = `
-        <div style="color: black; font-family: 'times new roman';">
-          <p>Bonjour,</p>
-          <p>Nous vous invitons à rejoindre la plateforme TRESO LINK, en qualité d’Institution Trader, afin de saisir en temps réels les opportunités d'investissement sur titres.</p>
-          <br>
-          <p><a href='#' style="margin-right: 20px;"><span style="font-weight:700; font-size: 16px;">Rejoindre maintenant</span></a> | <a href='#' style="margin-left: 20px;"><span style="font-weight:700; font-size: 16px;">Présentation</span></a></p>
-          <br>
-          <p>A très bientôt !</p>
-          <p>Equipe support _ TRESO LINK</p>
-          <p>Téléphone : </p>
-          <p>Adresse mail : </p>
-          <br>
-          <p>© 2025 Treso link. Tous droits réservés.</p>
-        </div>`
-        ;
+        this.messageContent =
+        `<div style="color: black; font-family: 'times new roman';">`+
+          `<p>Bonjour,</p>`+
+          `<p>Nous vous invitons à rejoindre la plateforme TRESO LINK, en qualité d’Institution Intermédiaire, pour faciliter le dénouement des transactions de nos utilisateurs</p>`+
+          `<br>`+
+          `<p><a href='#' style="margin-right: 20px;"><span style="font-weight:700; font-size: 16px;">Rejoindre maintenant</span></a> | <a href='#' style="margin-left: 20px;"><span style="font-weight:700; font-size: 16px;">Présentation</span></a></p>`+
+          `<br>`+
+          `<p>A très bientôt !</p>`+
+          `<p>Equipe support _ TRESO LINK</p>`+
+          `<p>Téléphone : </p>`+
+          `<p>Adresse mail : </p>`+
+          `<br>`+
+          `<p>© 2025 Treso link. Tous droits réservés.</p>`+
+        `</div>`;
       }
     });
   }
@@ -126,7 +125,8 @@ export class InvitationComponent {
     }else{
       this.isLoading = true;
       const {... data} = this.form.getRawValue();
-
+      console.log(data);
+      
       this.invitationService.sendInvitation(data).subscribe((res : any) => {
         this.isLoading = false;
 

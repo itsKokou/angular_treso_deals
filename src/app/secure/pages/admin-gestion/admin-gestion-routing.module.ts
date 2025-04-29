@@ -15,11 +15,11 @@ const routes: Routes = [
         component: DashbordComponent
       },
       {
-        path: 'profils',
+        path: 'adhesions',
         component: ProfilsComponent
       },
       {
-        path: 'utilisateurs',
+        path: 'profils',
         component: UtilisateursComponent
       }
     ]

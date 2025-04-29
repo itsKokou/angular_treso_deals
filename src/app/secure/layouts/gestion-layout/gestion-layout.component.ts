@@ -22,10 +22,10 @@ export class GestionLayoutComponent implements OnInit {
         const url = event.url.split('/')[2]
         if(url=="dashboard"){
           this.page = "Dashboard";
+        }else if(url=="adhesions"){
+          this.page = "Adhésions";
         }else if(url=="profils"){
           this.page = "Profils";
-        }else if(url=="utilisateurs"){
-          this.page = "Utilisateurs";
         }
       }
     });

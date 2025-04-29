@@ -203,6 +203,8 @@ export class AddProfilInstitutComponent implements OnInit{
   
       this.institutService.addProfilInstitut(data).subscribe((res ) => {
         closeSpinner?.click();
+        console.log(res);
+        
         if (res.statusCode==204) {
           this.snackBar.open("Votre requête a bien été soumise. Elle sera bientôt examinée.","Ok",{
             duration: 5000,
@@ -211,15 +213,16 @@ export class AddProfilInstitutComponent implements OnInit{
           });
           this.form.reset();
         } else {
-          this.snackBar.open("Une erreur s'est produite lors de l'envoi. Veuillez rééssayer !","Ok",{
-            duration: 5000,
+          this.snackBar.open("Une erreur s'est produite : L'e-mail du responsable informatique/demandeur est déjà utilisé !","Ok",{
+            duration: 6000,
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
           });
         }
       }, (error)=>{
         closeSpinner?.click();
-        this.snackBar.open("Une erreur s'est produite lors de l'envoi. Veuillez rééssayer !","Ok",{
+        console.log(error);
+        this.snackBar.open("Une erreur s'est produite lors de l'envoi. Veuillez rééssayer plus tard!","Ok",{
           duration: 5000,
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,

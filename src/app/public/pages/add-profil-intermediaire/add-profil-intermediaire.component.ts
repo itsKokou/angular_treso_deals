@@ -248,7 +248,7 @@ export class AddProfilIntermediaireComponent implements OnInit {
           });
           this.form.reset();
         } else {
-          this.snackBar.open("Une erreur s'est produite lors de l'envoi. Veuillez rééssayer !","Ok",{
+          this.snackBar.open("Une erreur s'est produite : L'e-mail du responsable informatique/opérateur est déjà utilisé !","Ok",{
             duration: 5000,
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,

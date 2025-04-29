@@ -8,8 +8,9 @@ import { RestResponse } from "../models/rest-response";
 export interface SecurityService{
   login(request: LoginRequest):Observable<ResponseLoginResponseDTO>;
   validation(requestId: string, code: string):Observable<ResponseVerificationResponseDto>;
+  resendValidationCode(requestId: string):Observable<RestResponse<any>>;
   getAuthToken():string|null;
   getConnectedUser():any;
   changePassword(data:any):Observable<RestResponse<any>>;
-  initchangePassword():Observable<RestResponse<any>>;
+  // initchangePassword():Observable<RestResponse<any>>;
 }

@@ -6,11 +6,12 @@ import { ResponseVerificationResponseDto } from '../../../core/models/validation
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarModule, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   standalone: true,
   selector: 'app-validation-page',
-  imports: [CommonModule, ReactiveFormsModule, MatProgressBarModule],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressBarModule, MatSnackBarModule],
   templateUrl: './validation-page.component.html',
   styleUrl: './validation-page.component.css'
 })
@@ -19,10 +20,13 @@ export class ValidationPageComponent {
   private fb = inject(FormBuilder);
   form : FormGroup = this.fb.group({});
   isLoading: boolean = false;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(
     private router: Router,
-    private securityService: SecurityServiceImpl
+    private securityService: SecurityServiceImpl,
+    private snackBar: MatSnackBar
   ){}
 
   ngOnInit(): void {
@@ -72,7 +76,37 @@ export class ValidationPageComponent {
       }
     }, (error)=>{
       this.isLoading = false;
-      this.error = "Requête non aboutie. Code de vérification invalide";
+      this.error = "Le code de vérification est invalide";
+    });
+  }
+
+  resendValidationCode(){
+    this.isLoading = true;
+    this.error = "";
+    let requesId = localStorage.getItem("requesId")!;
+    
+    this.securityService.resendValidationCode(requesId).subscribe((res: any)=>{
+      this.isLoading = false;
+      
+      if (res.statusCode==200){
+        this.snackBar.open("Un code de vérification vous a été envoyé par mail !","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      }else{
+        this.snackBar.open("Une erreur s'est produite lors de l'envoi de votre code de vérification, veuillez réessayer !","Ok",{
+          duration: 6000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      }
+    }, (error)=>{
+      this.snackBar.open("Une erreur s'est produite lors de l'envoi de votre code de vérification, veuillez réessayer plus tard !","Ok",{
+        duration: 6000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
     });
   }
 

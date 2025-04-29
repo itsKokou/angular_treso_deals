@@ -37,9 +37,9 @@ export class CguPageComponent implements OnInit{
 
   ngOnInit(): void {
     initFlowbite();
-    document.getElementById("openSpinner")?.click();
+    // document.getElementById("openSpinner")?.click();
     this.cguService.getCgu().subscribe((res: RestResponse<any>)=>{
-      document.getElementById("closeSpinner")?.click();
+      // document.getElementById("closeSpinner")?.click();
       if(res.statusCode == 200){
         this.cgu = res.data!.content;
         this.code= res.data!.code;

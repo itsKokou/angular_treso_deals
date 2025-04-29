@@ -45,50 +45,14 @@ export class ProfilsComponent implements AfterViewInit {
     private matPaginatorIntl:MatPaginatorIntl,
     private profilService: ProfilServiceImpl,
     private snackBar: MatSnackBar,
-    private invitationService : InvitationServiceImpl,
     private fb: FormBuilder,
     public dialog: MatDialog,
   ){
-    this.institutionType.valueChanges.subscribe((value)=>{
-      if (value == "BANK") {
-        this.message.setValue("Bonjour,\nNous avons l'honneur de vous inviter à rejoindre la plateforme TRESO LINK, en qualité d'Intermédiaire Financier.\nNous vous remercions d'avance pour votre marque de confiance.\nTeam TRESO LINK");
-      } else if(value == "SGI") {
-         this.message.setValue("Bonjour,\n"+ this.connectedUser.firstName + " " + this.connectedUser.lastName + " vous invite à rejoindre la plateforme TRESO LINK, afin de rapprocher vos opportunités d'investissement.");
-      }
-    });
   }
 
-  form = this.fb.group({
-    name : ["", [Validators.required, Validators.minLength(2)]],
-    email : ["", [Validators.required, Validators.email]],
-    institutionType : ["", [Validators.required]],
-    message : [""]
-  });
-
-  get name(){
-    return this.form.controls["name"] as FormControl;
-  }
-  get email(){
-    return this.form.controls["email"] as FormControl;
-  }
-  get institutionType(){
-    return this.form.controls["institutionType"] as FormControl;
-  }
-  get message(){
-    return this.form.controls["message"] as FormControl;
-  }
-
-  //Editer
-  invitationForm = this.fb.group({
-    observation : ["", [Validators.required]],
-  });
-
-  get observation(){
-    return this.invitationForm.controls["observation"] as FormControl;
-  }
 
   ngAfterViewInit() {
-    this.matPaginatorIntl.itemsPerPageLabel="Profils par page";
+    this.matPaginatorIntl.itemsPerPageLabel="Adhésions par page";
     this.matPaginatorIntl.firstPageLabel = "Première page";
     this.matPaginatorIntl.lastPageLabel = "Dernière page";
     this.matPaginatorIntl.nextPageLabel = "Page suivante";
@@ -193,7 +157,6 @@ export class ProfilsComponent implements AfterViewInit {
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
           });
-          this.form.reset();
         } else {
           this.snackBar.open("Une erreur s'est produite lors de l'envoi. Veuillez rééssayer !","Ok",{
             duration: 5000,

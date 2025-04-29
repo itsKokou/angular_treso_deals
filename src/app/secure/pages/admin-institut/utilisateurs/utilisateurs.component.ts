@@ -11,10 +11,11 @@ import { RestResponse } from '../../../../core/models/rest-response';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-utilisateurs',
-  imports: [CommonModule, ReactiveFormsModule, MatProgressBar, MatPaginatorModule, MatProgressSpinnerModule],
+  imports: [CommonModule, ReactiveFormsModule, MatProgressBar, MatPaginatorModule, MatProgressSpinnerModule, MatTooltipModule],
   templateUrl: './utilisateurs.component.html',
   styleUrl: './utilisateurs.component.css'
 })
@@ -177,6 +178,8 @@ export class UtilisateursComponent implements AfterViewInit {
       this.lockUser();
     }else if(this.selectedAction=="delete") {
       this.deleteUser();
+    }if(this.selectedAction=="reinit-password") {
+      this.reinitUserPassword();
     }
   }
 
@@ -210,7 +213,7 @@ export class UtilisateursComponent implements AfterViewInit {
 
   lockUser(){
     const closeSpinner = document.getElementById("closeSpinner");
-    this.userService.LockUserInstitut(this.selectedUser.id,this.connectedUser.institutionId,this.selectedUser).subscribe( (res)=>{
+    this.userService.lockUserInstitut(this.selectedUser.id,this.connectedUser.institutionId,this.selectedUser).subscribe( (res)=>{
       closeSpinner?.click();
       if (res.statusCode==200) {
         this.snackBar.open("Utilisateur Bloqué avec succès","Ok",{
@@ -238,7 +241,7 @@ export class UtilisateursComponent implements AfterViewInit {
 
   deleteUser(){
     const closeSpinner = document.getElementById("closeSpinner");
-    this.userService.DeleteUserInstitut(this.selectedUser.id,this.connectedUser.institutionId).subscribe( (res)=>{
+    this.userService.deleteUserInstitut(this.selectedUser.id,this.connectedUser.institutionId).subscribe( (res)=>{
       closeSpinner?.click();
       if (res.statusCode==200) {
         this.snackBar.open("Utilisateur archivé avec succès","Ok",{
@@ -257,6 +260,38 @@ export class UtilisateursComponent implements AfterViewInit {
     }, (error)=>{
       closeSpinner?.click();
       this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+        duration: 5000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+    });
+  }
+
+  reinitUserPassword(){
+    const closeSpinner = document.getElementById("closeSpinner");
+    this.userService.reinitUserPassword(this.selectedUser.id, this.selectedUser).subscribe( (res)=>{
+      closeSpinner?.click();
+      console.log(res);
+      
+      if (res.statusCode==204) {
+        this.snackBar.open("Mot de passe rénitialisé avec succès ! Le nouveau mot de passe a été envoyé à l'utilisateur par mail","Ok",{
+          duration: 6000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+        this.ngOnInit();
+      } else {
+        this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      }
+    }, (error)=>{
+      closeSpinner?.click();
+      console.log(error);
+      
+      this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer plus tard !","Ok",{
         duration: 5000,
         horizontalPosition: this.horizontalPosition,
         verticalPosition: this.verticalPosition,

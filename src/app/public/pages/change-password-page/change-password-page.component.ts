@@ -144,7 +144,6 @@ export class ChangePasswordPageComponent implements OnInit {
             verticalPosition: this.verticalPosition,
           });
           this.form.reset();
-          document.getElementById('closeProposition')?.click();
           this.isPasswordChanged = true;
         } else {
           this.snackBar.open("Une erreur s'est produite lors de la mise à jour. Veuillez rééssayer !","Ok",{

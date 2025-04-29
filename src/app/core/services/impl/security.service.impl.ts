@@ -23,9 +23,9 @@ export class SecurityServiceImpl implements SecurityService {
     this.isBrowser = isPlatformBrowser(plateformId);
   }
 
-  initchangePassword(): Observable<RestResponse<any>> {
-    return this.http.post<RestResponse<any>>(`${this.apiUrl}/auth/init-change-password`,{});
-  }
+  // initchangePassword(): Observable<RestResponse<any>> {
+  //   return this.http.post<RestResponse<any>>(`${this.apiUrl}/auth/init-change-password`,{});
+  // }
 
   changePassword(data: any): Observable<RestResponse<any>> {
     return this.http.post<RestResponse<any>>(`${this.apiUrl}/auth/change-password`,data);
@@ -33,6 +33,10 @@ export class SecurityServiceImpl implements SecurityService {
 
   validation(requestId: string, code: string): Observable<ResponseVerificationResponseDto> {
     return this.http.post<ResponseVerificationResponseDto>(`${this.apiUrl}/auth/validate-verification/${requestId}/${code}`,{});
+  }
+
+  resendValidationCode(requestId: string): Observable<RestResponse<any>> {
+    return this.http.post<RestResponse<any>>(`${this.apiUrl}/auth/resend-verification/${requestId}`,{});
   }
   
   login(request: LoginRequest): Observable<ResponseLoginResponseDTO> {

@@ -16,6 +16,10 @@ export class UserServiceImpl implements UserService {
   constructor(private http: HttpClient) { 
   }
 
+  reinitUserPassword(userId: any, data:any): Observable<RestResponse<any>> {
+    return this.http.post<RestResponse<any[]>>(`${this.apiUrl}/auth/reinit-password/${userId}`, data);
+  }
+
   getAllUser(): Observable<RestResponse<UserDto[]>> {
     return this.http.get<RestResponse<UserDto[]>>(`${this.apiUrl}/users`);
   }
@@ -24,11 +28,11 @@ export class UserServiceImpl implements UserService {
     return this.http.patch<RestResponse<any[]>>(`${this.apiUrl}/users/activate-account/${userId}`, data);
   }
 
-  LockUserInstitut(userId: any, institutionId: any, data:any): Observable<RestResponse<any>> {
+  lockUserInstitut(userId: any, institutionId: any, data:any): Observable<RestResponse<any>> {
     return this.http.patch<RestResponse<any[]>>(`${this.apiUrl}/users/${institutionId}/block/${userId}`, data);
   }
 
-  DeleteUserInstitut(userId: any, institutionId: any): Observable<RestResponse<any>> {
+  deleteUserInstitut(userId: any, institutionId: any): Observable<RestResponse<any>> {
     return this.http.delete<RestResponse<any[]>>(`${this.apiUrl}/users/${institutionId}/delete/${userId}`);
   }
 

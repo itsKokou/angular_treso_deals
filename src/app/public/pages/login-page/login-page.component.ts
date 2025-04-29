@@ -60,21 +60,24 @@ export class LoginPageComponent {
     let data = this.form.getRawValue();
     this.securityService.login(data).subscribe((res: ResponseLoginResponseDTO) => {
       this.isLoading = false;
-      
       if (res.statusCode==200) {
-        this.error=""
+        this.error="";
         this.loginReponse = res.data;
         this.securityService.isAuthenticated = true;
         localStorage.setItem("token", res.data!.token!);
-        localStorage.setItem("requesId", res.data!.verificationDTO!.requesId!.toString())
-        this.router.navigateByUrl("/validation")
-      } else {
+        localStorage.setItem("requesId", res.data!.verificationDTO!.requesId!.toString());
+        this.router.navigateByUrl("/validation");
+      } else{
         this.securityService.isAuthenticated = false;
-        this.error="Identifiant ou mot de passe incorrect"
+        this.error="Une erreur s'est produit, veuillez réessayer !";
       }
     }, (err)=>{
       this.isLoading = false;
-      this.error="Erreur lors de la connexion, veuillez réessayer !"
+      if(err.status==401){
+        this.error="Votre compte est bloqué. Veuillez contacter votre administrateur";
+      }else {
+        this.error="Identifiant ou mot de passe incorrect";
+      }
     });
   }
   
