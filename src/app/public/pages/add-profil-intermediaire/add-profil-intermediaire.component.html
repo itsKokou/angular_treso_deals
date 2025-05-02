@@ -74,7 +74,15 @@
                     }
                 </div>  
                 <div class="mb-4">  
-                    <input type="text" formControlName="fixe" name="tel_fixe_institution" required class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone Fixe :">  
+                    <div class="flex items-center">
+                        <button class="shrink-0 inline-flex items-center py-1.5 px-2 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-md focus:ring-0 focus:outline-none " type="button">
+                            <img [src]="flag.flag" alt="" class="h-3 w-4 me-2" />
+                            +{{flag.areaCode}}
+                        </button>
+                        <div class="relative w-full">
+                            <input formControlName="fixe" type="text" name="tel_fixe_institution" class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-e-md border-l-0 focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone fixe :" />
+                        </div>
+                    </div>  
                     @if(fixe.errors && (fixe.dirty || fixe.touched)){
                         @if(fixe.getError("required")){
                             <p class="text-left text-sm " style="color: red;">Le téléphone fixe est obligatoire</p>
@@ -193,7 +201,15 @@
                         }
                     </div>  
                     <div class="mb-4">  
-                        <input type="text" formControlName="op1_fixe" name="op1_fixe" required class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone Fixe :">  
+                        <div class="flex items-center">
+                            <button class="shrink-0 inline-flex items-center py-1.5 px-2 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-md focus:ring-0 focus:outline-none " type="button">
+                                <img [src]="flag.flag" alt="" class="h-3 w-4 me-2" />
+                                +{{flag.areaCode}}
+                            </button>
+                            <div class="relative w-full">
+                                <input formControlName="op1_fixe" type="text" name="op1_fixe" class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-e-md border-l-0 focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone fixe :" />
+                            </div>
+                        </div> 
                         @if(op1_fixe.errors && (op1_fixe.dirty || op1_fixe.touched)){
                             @if(op1_fixe.getError("required")){
                                 <p class="text-left text-sm " style="color: red;">Le téléphone fixe est obligatoire</p>
@@ -204,7 +220,15 @@
                         }
                     </div>  
                     <div>  
-                        <input type="text" formControlName="op1_portable" name="op1_portable" required class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone portable :">  
+                        <div class="flex items-center">
+                            <button class="shrink-0 inline-flex items-center py-1.5 px-2 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-md focus:ring-0 focus:outline-none " type="button">
+                                <img [src]="flag.flag" alt="" class="h-3 w-4 me-2" />
+                                +{{flag.areaCode}}
+                            </button>
+                            <div class="relative w-full">
+                                <input formControlName="op1_portable" type="text" name="op1_portable" class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-e-md border-l-0 focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone portable :" />
+                            </div>
+                        </div>
                         @if(op1_portable.errors && (op1_portable.dirty || op1_portable.touched)){
                             @if(op1_portable.getError("required")){
                                 <p class="text-left text-sm " style="color: red;">Le téléphone portable est obligatoire</p>
@@ -263,7 +287,15 @@
                         }
                     </div>  
                     <div class="mb-4">  
-                        <input type="text" formControlName="op2_fixe" name="op2_fixe" required class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone Fixe :">  
+                        <div class="flex items-center">
+                            <button class="shrink-0 inline-flex items-center py-1.5 px-2 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-md focus:ring-0 focus:outline-none " type="button">
+                                <img [src]="flag.flag" alt="" class="h-3 w-4 me-2" />
+                                +{{flag.areaCode}}
+                            </button>
+                            <div class="relative w-full">
+                                <input formControlName="op2_fixe" type="text" name="op2_fixe" class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-e-md border-l-0 focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone fixe :" />
+                            </div>
+                        </div>
                         @if(op2_fixe.errors && (op2_fixe.dirty || op2_fixe.touched)){
                             @if(op2_fixe.getError("required")){
                                 <p class="text-left text-sm " style="color: red;">Le téléphone fixe est obligatoire</p>
@@ -274,7 +306,15 @@
                         }
                     </div>  
                     <div>  
-                        <input type="text" formControlName="op2_portable" name="op2_portable" required class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone portable :">  
+                        <div class="flex items-center">
+                            <button class="shrink-0 inline-flex items-center py-1.5 px-2 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-md focus:ring-0 focus:outline-none " type="button">
+                                <img [src]="flag.flag" alt="" class="h-3 w-4 me-2" />
+                                +{{flag.areaCode}}
+                            </button>
+                            <div class="relative w-full">
+                                <input formControlName="op2_portable" type="text" name="op2_portable" class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-e-md border-l-0 focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone portable :" />
+                            </div>
+                        </div> 
                         @if(op2_portable.errors && (op2_portable.dirty || op2_portable.touched)){
                             @if(op2_portable.getError("required")){
                                 <p class="text-left text-sm " style="color: red;">Le téléphone portable est obligatoire</p>
@@ -333,7 +373,15 @@
                         }
                     </div>  
                     <div class="mb-4">  
-                        <input type="text" formControlName="admin_fixe" name="tel_fixe" required class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone Fixe :">  
+                        <div class="flex items-center">
+                            <button class="shrink-0 inline-flex items-center py-1.5 px-2 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-md focus:ring-0 focus:outline-none " type="button">
+                                <img [src]="flag.flag" alt="" class="h-3 w-4 me-2" />
+                                +{{flag.areaCode}}
+                            </button>
+                            <div class="relative w-full">
+                                <input formControlName="admin_fixe" type="text" name="admin_fixe" class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-e-md border-l-0 focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone fixe :" />
+                            </div>
+                        </div>  
                         @if(admin_fixe.errors && (admin_fixe.dirty || admin_fixe.touched)){
                             @if(admin_fixe.getError("required")){
                                 <p class="text-left text-sm " style="color: red;">Le téléphone fixe est obligatoire</p>
@@ -344,7 +392,15 @@
                         }
                     </div>  
                     <div>  
-                        <input type="text" formControlName="admin_portable" name="tel_portable" required class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone portable :">  
+                        <div class="flex items-center">
+                            <button class="shrink-0 inline-flex items-center py-1.5 px-2 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-md focus:ring-0 focus:outline-none " type="button">
+                                <img [src]="flag.flag" alt="" class="h-3 w-4 me-2" />
+                                +{{flag.areaCode}}
+                            </button>
+                            <div class="relative w-full">
+                                <input formControlName="admin_portable" type="text" name="admin_portable" class="bg-gray-50 border border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-e-md border-l-0 focus:ring-blue-500 focus:border-blue-500 block w-full py-1.5 px-3" placeholder="Téléphone portable :" />
+                            </div>
+                        </div> 
                         @if(admin_portable.errors && (admin_portable.dirty || admin_portable.touched)){
                             @if(admin_portable.getError("required")){
                                 <p class="text-left text-sm " style="color: red;">Le téléphone portable est obligatoire</p>

@@ -3,6 +3,7 @@ import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { InstitutService } from '../institut.service';
+import { RestResponse } from '../../models/rest-response';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,10 @@ export class InstitutServiceImpl implements InstitutService {
   private apiUrl = `${environment.APIURL}`
 
   constructor(private http: HttpClient) { 
+  }
+
+  getInstitutionById(id: number): Observable<RestResponse<any>> {
+    return this.http.get(`${this.apiUrl}/institutions/${id}`)
   }
 
   addProfilInstitut(data: any): Observable<any> {

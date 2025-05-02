@@ -12,6 +12,9 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { InstitutServiceImpl } from '../../../../core/services/impl/institut.service.impl';
+import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
+import { CountryDto } from '../../../../core/models/country/country-dto';
 
 @Component({
   selector: 'app-utilisateurs',
@@ -33,12 +36,53 @@ export class UtilisateursComponent implements AfterViewInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   connectedUser: UserDto = inject(SecurityServiceImpl).getConnectedUser();
   private fb = inject(FormBuilder); 
+  country? : CountryDto;
+  flag = {
+    code: "",
+    flag: ""
+  };
+  flagTab = [
+    {
+      code : "229",
+      flag : "https://flagcdn.com/w20/bj.png"
+    },
+    {
+      code : "226",
+      flag : "https://flagcdn.com/w20/bf.png"
+    },
+    {
+      code : "225",
+      flag : "https://flagcdn.com/w20/ci.png"
+    },
+    {
+      code : "245",
+      flag : "https://flagcdn.com/w20/gw.png"
+    },
+    {
+      code : "223",
+      flag : "https://flagcdn.com/w20/ml.png"
+    },
+    {
+      code : "227",
+      flag : "https://flagcdn.com/w20/ne.png"
+    },
+    {
+      code : "221",
+      flag : "https://flagcdn.com/w20/sn.png"
+    },
+    {
+      code : "228",
+      flag : "https://flagcdn.com/w20/tg.png"
+    }
+  ]
 
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
     private userService: UserServiceImpl,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private institutService: InstitutServiceImpl,
+    private countryService: CountryServiceImpl
   ){
   }
   
@@ -95,15 +139,27 @@ export class UtilisateursComponent implements AfterViewInit {
     initFlowbite();
     this.isLoading = true;
     this.userService.getUserByInstitutionId(this.connectedUser.institutionId!).subscribe((res: RestResponse<InstituteUserDTO[]>)=>{
-    //this.userService.getUserAdminInstitut().subscribe((res: RestResponse<any>)=>{
-    
       this.isLoading = false;
       if (res.statusCode == 200) {
         this.allDatas = res.data!.reverse();
         this.totalElements = this.allDatas.length;
         this.datasPaginated = this.allDatas.slice(0*20, (0 + 1)*20);
       }
-    });
+    });     
+
+    this.institutService.getInstitutionById(this.connectedUser.institutionId!).subscribe((res:RestResponse<any>)=>{
+      if (res.statusCode == 200) {
+        const pays = res.data.country || "";
+
+        this.countryService.getCountries().subscribe((res : RestResponse<CountryDto[]>)=>{
+          if(res.statusCode==200){
+            this.country = res.data?.find((value)=>value.name == pays)
+            this.flag = this.flagTab.find((value)=> value.code == this.country!.areaCode!.toString())!;
+            
+          }
+        }); 
+      }
+    })
   }
 
   
@@ -130,6 +186,8 @@ export class UtilisateursComponent implements AfterViewInit {
     openSpinner?.click();
 
     const {... data} = this.formProfil.getRawValue();
+    data.phoneNumber = "+"+this.flag.code+ " "+data.phoneNumber;
+    data.fixeNumber = "+"+this.flag.code+ " "+data.fixeNumber;
     data.institutionId = this.connectedUser.institutionId!;
     this.userService.addUser(data).subscribe( (res)=>{
       closeSpinner?.click();
@@ -142,13 +200,15 @@ export class UtilisateursComponent implements AfterViewInit {
         this.formProfil.reset();
         this.ngOnInit();
       } else {
-        this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+        console.log(res);
+        this.snackBar.open("Oupsss! Le/Les e-mail(s) saisi(s) existe(nt) déjà dans le système","Ok",{
           duration: 5000,
           horizontalPosition: this.horizontalPosition,
           verticalPosition: this.verticalPosition,
         });
       }
     }, (error)=>{
+      console.log(error);
         closeSpinner?.click();
         this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
           duration: 5000,

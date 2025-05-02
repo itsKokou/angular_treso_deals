@@ -24,6 +24,53 @@ export class AddProfilInstitutComponent implements OnInit{
   dataPays:Select2Data = []
   private fb = inject(FormBuilder);
   private institutService = inject(InstitutServiceImpl);
+  flag = {
+    code : "SN",
+    areaCode : 221,
+    flag : "https://flagcdn.com/w20/sn.png"
+  };
+  flagTab = [
+    {
+      code : "BJ",
+      areaCode : 229,
+      flag : "https://flagcdn.com/w20/bj.png"
+    },
+    {
+      code : "BF",
+      areaCode : 226,
+      flag : "https://flagcdn.com/w20/bf.png"
+    },
+    {
+      code : "CI",
+      areaCode : 225,
+      flag : "https://flagcdn.com/w20/ci.png"
+    },
+    {
+      "code": "GW",
+      areaCode : 245,
+      flag : "https://flagcdn.com/w20/gw.png"
+    },
+    {
+      code : "ML",
+      areaCode : 223,
+      flag : "https://flagcdn.com/w20/ml.png"
+    },
+    {
+      code : "NE",
+      areaCode : 227,
+      flag : "https://flagcdn.com/w20/ne.png"
+    },
+    {
+      code : "SN",
+      areaCode : 221,
+      flag : "https://flagcdn.com/w20/sn.png"
+    },
+    {
+      code : "TG",
+      areaCode : 228,
+      flag : "https://flagcdn.com/w20/tg.png"
+    }
+  ]
 
   constructor(
     private snackBar:MatSnackBar,
@@ -137,6 +184,7 @@ export class AddProfilInstitutComponent implements OnInit{
   //SELECT2
   paysSelected(event:Select2UpdateEvent<Select2UpdateValue>){
     if(event.value != null){
+      this.flag = this.flagTab.find((value)=> value.code == event.value) || this.flag;
       this.pays.setValue(event.value);
       this.pays.removeValidators(Validators.required);
     }
@@ -175,17 +223,17 @@ export class AddProfilInstitutComponent implements OnInit{
           email: this.admin_email.getRawValue(),
           firstName: this.admin_prenom.getRawValue(),
           lastName: this.admin_nom.getRawValue(),
-          fixeNumber: this.admin_fixe.getRawValue(),
           job: this.admin_fonction.getRawValue(),
-          phoneNumber: this.admin_portable.getRawValue()
+          fixeNumber: "+"+this.flag.areaCode.toString()+" "+this.admin_fixe.getRawValue(),
+          phoneNumber: "+"+this.flag.areaCode.toString()+" "+this.admin_portable.getRawValue()
         },
         applicant: {
           email: this.demandeur_email.getRawValue(),
           firstName: this.demandeur_prenom.getRawValue(),
           lastName: this.demandeur_nom.getRawValue(),
-          fixeNumber: this.demandeur_fixe.getRawValue(),
           job: this.demandeur_fonction.getRawValue(),
-          phoneNumber: this.demandeur_portable.getRawValue()
+          fixeNumber: "+"+this.flag.areaCode.toString()+" "+this.demandeur_fixe.getRawValue(),
+          phoneNumber: "+"+this.flag.areaCode.toString()+" "+this.demandeur_portable.getRawValue()
         },
         bankRequest: {
           address: this.adresse.getRawValue(),
@@ -197,7 +245,7 @@ export class AddProfilInstitutComponent implements OnInit{
           managerLastName: this.nom_dirigeant.getRawValue(),
           managerTitle: this.titre_dirigeant.getRawValue(),
           name: this.denomination.getRawValue(),
-          phoneNumber: this.fixe.getRawValue()
+          phoneNumber: "+"+this.flag.areaCode.toString()+" "+this.fixe.getRawValue()
         }
       }
   
