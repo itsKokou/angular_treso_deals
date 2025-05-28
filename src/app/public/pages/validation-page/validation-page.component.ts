@@ -102,7 +102,7 @@ export class ValidationPageComponent {
         });
       }
     }, (error)=>{
-      this.snackBar.open("Une erreur s'est produite lors de l'envoi de votre code de vérification, veuillez réessayer plus tard !","Ok",{
+      this.snackBar.open("Une erreur requête s'est produite lors de l'envoi de votre code de vérification, veuillez réessayer plus tard !","Ok",{
         duration: 6000,
         horizontalPosition: this.horizontalPosition,
         verticalPosition: this.verticalPosition,

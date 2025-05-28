@@ -8,6 +8,7 @@ import { ProfilDetailComponent } from './profil-detail/profil-detail.component';
 import { CarnetOrdreComponent } from './carnet-ordre/carnet-ordre.component';
 import { AddCarnetOrdreComponent } from './add-carnet-ordre/add-carnet-ordre.component';
 import { ChatComponent } from './chat/chat.component';
+import { PropositionComponent } from './proposition/proposition.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
       {
         path: 'chat',
         component: ChatComponent
+      },
+      {
+        path: 'proposition',
+        component: PropositionComponent
       }
 
     ]

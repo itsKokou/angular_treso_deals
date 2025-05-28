@@ -19,11 +19,12 @@ import { FormatNumberPipe } from '../../../../core/pipes/format-number.pipe';
 import { CountryDto } from '../../../../core/models/country/country-dto';
 import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
 import { PercentagePipe } from '../../../../core/pipes/percentage.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   standalone: true,
   selector: 'app-carnet-ordre',
-  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, MatProgressSpinnerModule, FormatNumberPipe, PercentagePipe ],
+  imports: [RouterLink, CommonModule, MatProgressBar, MatPaginatorModule, ReactiveFormsModule, MatProgressSpinnerModule, FormatNumberPipe, PercentagePipe, MatTooltipModule ],
   templateUrl: './carnet-ordre.component.html',
   styleUrl: './carnet-ordre.component.css',
 })
@@ -116,7 +117,7 @@ export class CarnetOrdreComponent implements AfterViewInit {
     nature: ["", [Validators.required]],
     couponRate: ["", [this.validateDigit]],
     amount : ["", [Validators.required, this.validateQte]],
-    emissionDate: ["", [Validators.required]],
+    // emissionDate: ["", [Validators.required]],
     unitaryValueName: [0],
   });
 
@@ -156,9 +157,9 @@ export class CarnetOrdreComponent implements AfterViewInit {
     return this.form.controls["amount"] as FormControl;
   }
 
-  get emissionDate(){
-    return this.form.controls["emissionDate"] as FormControl;
-  }
+  // get emissionDate(){
+  //   return this.form.controls["emissionDate"] as FormControl;
+  // }
   
   get unitaryValueName(){
     return this.form.controls["unitaryValueName"] as FormControl;
@@ -438,7 +439,7 @@ export class CarnetOrdreComponent implements AfterViewInit {
       couponRate: carnet.couponRate != null ? carnet.couponRate.toString() : 0.0 ,
       amount : carnet.amount?.toString(),
       unitaryValueName: carnet.nature == "OAT" ? 10000 : 1000000,
-      emissionDate: carnet.valueDate?.toString()
+      // emissionDate: carnet.valueDate?.toString()
     });
     
     btnUpdate.click();
@@ -466,7 +467,7 @@ export class CarnetOrdreComponent implements AfterViewInit {
         echeanceDate: this.echeanceDate.getRawValue(),
         amount : Number.parseFloat(this.amount.getRawValue()),
         codeIsin: this.codeIsin.getRawValue(),
-        emissionDate: this.emissionDate.getRawValue(),
+        // emissionDate: this.emissionDate.getRawValue(),
         proposedPrice: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.price.getRawValue()) : null,
         proposedRate: this.nature.getRawValue() == "BAT" ? Number.parseFloat(this.price.getRawValue()) : null,
         couponRate: this.couponRate.value != null ? Number.parseFloat(this.couponRate.getRawValue()) : 0.0 ,

@@ -90,7 +90,7 @@ export class UtilisateursComponent implements AfterViewInit {
     firstName: ["", [Validators.required, Validators.minLength(2)]],
     lastName: ["", [Validators.required, Validators.minLength(2)]],
     email: ["", [Validators.required, Validators.email]],
-    secondEmail: ["", [Validators.email]],
+    // secondEmail: ["", [Validators.email]],
     phoneNumber: ["", [Validators.required]],
     fixeNumber: ["", [Validators.required]],
     job: ["", [Validators.required, Validators.minLength(2)]],
@@ -108,9 +108,9 @@ export class UtilisateursComponent implements AfterViewInit {
   get email(){
     return this.formProfil.controls["email"] as FormControl;
   }
-  get secondEmail(){
-    return this.formProfil.controls["secondEmail"] as FormControl;
-  }
+  // get secondEmail(){
+  //   return this.formProfil.controls["secondEmail"] as FormControl;
+  // }
   get phoneNumber(){
     return this.formProfil.controls["phoneNumber"] as FormControl;
   }

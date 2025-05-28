@@ -3,6 +3,7 @@ import { Proposal } from "./proposal";
 
 export interface AssetResponse { 
     id?: number;
+    userId?: number;
     transactionNumber?: string;
     date?: string;
     nature?: OperationEnum.NatureEnum;

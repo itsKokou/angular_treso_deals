@@ -5,6 +5,8 @@ import { ProposalResponse } from "../models/carnet-ordre/proposal-response";
 
 export interface PropositionService{
   getAllProposalsByAssetId(id: number):Observable<RestResponse<ProposalResponse[]>>;
-  addProposaltoAsset(data:any):Observable<any>;
+  addProposalToAsset(data:any):Observable<any>;
   treatProposal(id:any, statut:ProposalEnum.StatusEnum, proposal: any):Observable<any>;
+  getTraderProposals():Observable<RestResponse<ProposalResponse[]>>;
+  deleteProposition(id:number):Observable<any>;
 }

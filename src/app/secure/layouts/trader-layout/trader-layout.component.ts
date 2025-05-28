@@ -32,6 +32,8 @@ export class TraderLayoutComponent implements OnInit {
           this.page = "Carnet d'ordres";
         }else if(url=="chat"){
           this.page = "Messagerie";
+        }else if(url=="proposition"){
+          this.page = "Mes Propositions";
         }
       }
     });

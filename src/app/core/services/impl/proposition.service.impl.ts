@@ -20,11 +20,19 @@ export class PropositionServiceImpl implements PropositionService {
     return this.http.put(`${this.apiUrl}/proposals/response-at-proposal/${id}/${statut}`, proposal);
   }
 
-  addProposaltoAsset(data: any): Observable<any> {
+  addProposalToAsset(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/proposals/add`, data);
   }
 
   getAllProposalsByAssetId(id: number): Observable<RestResponse<ProposalResponse[]>> {
     return this.http.get<RestResponse<ProposalResponse[]>>(`${this.apiUrl}/proposals/${id}?idAsset=${id}`);
+  }
+
+  getTraderProposals(): Observable<RestResponse<ProposalResponse[]>> {
+    return this.http.get<RestResponse<ProposalResponse[]>>(`${this.apiUrl}/proposals/my-proposals`);
+  }
+
+  deleteProposition(id:number):Observable<any>{
+    return this.http.delete(`${this.apiUrl}/proposals/${id}`);
   }
 }

@@ -254,7 +254,7 @@ export class AddProfilInstitutComponent implements OnInit{
         console.log(res);
         
         if (res.statusCode==204) {
-          this.snackBar.open("Votre requête a bien été soumise. Elle sera bientôt examinée.","Ok",{
+          this.snackBar.open("Votre requête a bien été soumise et est prise en charge","Ok",{
             duration: 5000,
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,

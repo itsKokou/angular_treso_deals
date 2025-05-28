@@ -164,13 +164,17 @@ export class UtilisateursComponent implements AfterViewInit {
           verticalPosition: this.verticalPosition,
         });
       }
+      console.log(res);
+      
     }, (error)=>{
       closeSpinner?.click();
-      this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+      this.snackBar.open("Une erreur requête s'est produite. Veuillez rééssayer !","Ok",{
         duration: 5000,
         horizontalPosition: this.horizontalPosition,
         verticalPosition: this.verticalPosition,
       });
+      console.log(error);
+      
     });
   }
 

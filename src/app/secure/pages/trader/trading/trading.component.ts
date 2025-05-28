@@ -226,6 +226,13 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
         this.allDatasFiltered = this.allDatas;
         this.datasPaginated = this.allDatasFiltered.slice(0 * 20, (0 + 1) * 20);
         this.totalElements = this.allDatasFiltered.length;
+        if (this.selectedNature != "TOUT" || this.selectedSens != "TOUT"){
+          this.filter();
+        }
+        if (this.isSearch){
+          this.rechercherOffres();
+        }
+        
       }
     });
 
@@ -290,9 +297,11 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedCarnet = carnet;
     if(this.selectedCarnet.nature == "BAT"){
       this.unitaryNominalValue = 1000000;
+      this.prixPropose.clearValidators();
       this.tauxPropose.addValidators([Validators.required, this.validateDigit])
     }else{
       this.unitaryNominalValue = 10000;
+      this.tauxPropose.clearValidators();
       this.prixPropose.addValidators([Validators.required, Validators.min(1), this.validateDigit])
     }
     this.quantite.addValidators(Validators.max(carnet.amount!))
@@ -300,7 +309,6 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   abortProposition(){
-    this.quantite.clearValidators();
     this.quantite.reset();
     this.formProposition.reset();
     this.unitaryNominalValue = 0;
@@ -375,11 +383,14 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
           const echeance = new Date(this.selectedCarnet.echeanceDate);
 
           const diffInDays = this.dateDiffInDays(dateOffre, echeance) + 1;
+
           const denominator = 1 - ((this.tauxTransaction/100) * diffInDays / 360);
+
           const result = 100*((this.tauxTransaction/100) / denominator);
           
-          this.rendementEstime = Number.parseFloat(result.toFixed(4));
-          
+          this.rendementEstime = Number.parseFloat(result.toString());
+          // this.rendementEstime = (this.tauxTransaction/100)/(1-(this.tauxTransaction/100)*diffInDays/360);
+          //  =AH21/(1-AH21*((I15-I9)+1)/360)
           if(Number(this.quantite.value) > 0){
             this.calculInteretEtTotalBat();
           }
@@ -407,13 +418,13 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
     openSpinner?.click();
     var data = {
       assetId: this.selectedCarnet.id,
-      price: this.prix,
+      price: this.selectedCarnet.nature == "OAT" ? Number.parseFloat(this.prixPropose.value) : Number.parseFloat(this.tauxPropose.value),
       amount: Number.parseFloat(this.quantite.getRawValue()),
-      transactionValue: this.total,
-      interet: this.interet
+      // transactionValue: this.total,
+      // interet: this.interet
     }
 
-    this.propositionService.addProposaltoAsset(data).subscribe((res) => {
+    this.propositionService.addProposalToAsset(data).subscribe((res) => {
       closeSpinner?.click();
       if (res.statusCode==200) {
         this.snackBar.open("Proposition envoyée avec succès","Ok",{
@@ -448,9 +459,11 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
       const echeance = new Date(this.selectedCarnet.echeanceDate);
       const today = new Date();
       today.setHours(0, 0,0,0);
-      const nbreJours = this.dateDiffInDays(today, echeance) + 1;
+      const nbreJours = this.dateDiffInDays(today, echeance)+1;
+      console.log(nbreJours);
+      
 
-      const valeur = ( this.totalNominalValue * (100/(1 + (this.rendementEstime/100) * nbreJours/360))  ) / 100
+      const valeur = ( this.totalNominalValue * (100/(1 + ((this.rendementEstime/100) * nbreJours/360)))  ) / 100
       this.total = Math.floor(valeur);
 
       this.interet = this.totalNominalValue - this.total;
@@ -462,6 +475,7 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
     if(this.selectedCarnet.couponRate != null && this.selectedCarnet.echeanceDate != null && this.selectedCarnet.echeanceDate.trim().length >= 8){
       const today = new Date();
       const maturity = new Date(this.selectedCarnet.echeanceDate);
+      today.setHours(0,0,0,0);
 
       // Assumer un seul coupon par an : fréquence = 1
       const couponDay = maturity.getDate();

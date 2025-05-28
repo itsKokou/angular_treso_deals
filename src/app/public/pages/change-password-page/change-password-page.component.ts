@@ -20,6 +20,9 @@ export class ChangePasswordPageComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   isPasswordChanged: boolean = false;
+  isAncienPasswordVisible: boolean = false;
+  isNouveauPasswordVisible: boolean = false;
+  isConfirmPasswordVisible: boolean = false;
 
   constructor(
     private securityService: SecurityServiceImpl,
@@ -33,12 +36,28 @@ export class ChangePasswordPageComponent implements OnInit {
   ngOnInit(): void {
     initFlowbite();
   }
+
+  
+  toggleAncienPassword(passwordField: HTMLInputElement) {
+    this.isAncienPasswordVisible = !this.isAncienPasswordVisible;
+    passwordField.type = this.isAncienPasswordVisible ? 'text' : 'password';
+  }
+
+  toggleNouveauPassword(passwordField: HTMLInputElement) {
+    this.isNouveauPasswordVisible = !this.isNouveauPasswordVisible;
+    passwordField.type = this.isNouveauPasswordVisible ? 'text' : 'password';
+  }
+
+  toggleConfirmPassword(passwordField: HTMLInputElement) {
+    this.isConfirmPasswordVisible = !this.isConfirmPasswordVisible;
+    passwordField.type = this.isConfirmPasswordVisible ? 'text' : 'password';
+  }
   
   form = this.fb.group(
     {
       old_password : ["", [Validators.required]],
-      new_password : ["", [Validators.required, Validators.pattern(/^.{6}$/), this.validMajuscule, this.validMiniscule, this.validNumber, this.validSpecial]],
-      confirm_password : ["", [Validators.required, Validators.pattern(/^.{6}$/), this.validMajuscule, this.validMiniscule, this.validNumber, this.validSpecial]],
+      new_password : ["", [Validators.required, Validators.pattern(/^.{5,}$/), this.validMajuscule, this.validMiniscule, this.validNumber, this.validSpecial, this.validSpace]],
+      confirm_password : ["", [Validators.required, Validators.pattern(/^.{5,}$/), this.validMajuscule, this.validMiniscule, this.validNumber, this.validSpecial, this.validSpace]],
     },
     { validators: this.passwordMatchValidator('new_password', 'confirm_password') }
   );
@@ -94,9 +113,22 @@ export class ChangePasswordPageComponent implements OnInit {
     if (!value) {
       return null; 
     }
-    const regex = /^(?=.*[\W_]).+$/;
+    // const regex = /^(?=.*[\W_]).+$/;
+    const regex = /^(?=.*[@#$%^&*]).+$/;
     if (!regex.test(value)) {
       return { notspecial: true };
+    }
+    return null; 
+  }
+
+  validSpace(control: AbstractControl): ValidationErrors | null {
+    var value : string = control.value;
+    if (!value) {
+      return null; 
+    }
+    const regex = /\s/;
+    if (regex.test(value)) {
+      return { isspace: true };
     }
     return null; 
   }
@@ -106,7 +138,7 @@ export class ChangePasswordPageComponent implements OnInit {
       const password = formGroup.get(passwordField)?.value;
       const confirmPassword = formGroup.get(confirmPasswordField)?.value;
       //Ne lance pas cette validation si les autres ne sont pas OK
-      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6}$/;
+      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{5,}$/;
       if (!regex.test(password) || !regex.test(confirmPassword)) {
         return null;
       }

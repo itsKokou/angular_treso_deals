@@ -19,7 +19,11 @@ export class SecurityServiceImpl implements SecurityService {
   private isBrowser: boolean=false
   private apiUrl = `${environment.APIURL}`
 
-  constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private plateformId:any) { 
+  constructor(
+    private http: HttpClient, 
+    private router: Router, 
+    @Inject(PLATFORM_ID) private plateformId:any
+  ){ 
     this.isBrowser = isPlatformBrowser(plateformId);
   }
 
