@@ -1,0 +1,5 @@
+.col-nom, .col-email {
+  max-width: 160px; /* Ajustez selon vos besoins */
+  word-break: break-word;
+  white-space: normal;
+}

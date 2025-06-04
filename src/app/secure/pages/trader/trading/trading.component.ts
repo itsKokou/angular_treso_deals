@@ -56,6 +56,8 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
   isTauxProposeFocused: boolean = false;
   
   private refreshSubscription!: Subscription;
+  private visibilityChangeHandler = this.handleVisibilityChange.bind(this);
+  private isRefreshing = false;
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
@@ -213,28 +215,12 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    document.addEventListener('visibilitychange', this.visibilityChangeHandler);
     this.isLoading = true;
+    this.startAutoRefresh();
+    this.isLoading = false;
     this.isSearch = false;
-    this.refreshSubscription = timer(0, 3000) // exécute immédiatement puis toutes les 10s
-    .pipe(
-      switchMap(() => this.transactionService.getTransactionEncours())
-    )
-    .subscribe((res: RestResponse<AssetResponse[]>) => {
-      this.isLoading = false;
-      if (res.statusCode == 200) {
-        this.allDatas = res.data!.reverse();
-        this.allDatasFiltered = this.allDatas;
-        this.datasPaginated = this.allDatasFiltered.slice(0 * 20, (0 + 1) * 20);
-        this.totalElements = this.allDatasFiltered.length;
-        if (this.selectedNature != "TOUT" || this.selectedSens != "TOUT"){
-          this.filter();
-        }
-        if (this.isSearch){
-          this.rechercherOffres();
-        }
-        
-      }
-    });
+    
 
     this.countryService.getCountries().subscribe((res : RestResponse<CountryDto[]>)=>{
       if(res.statusCode==200){
@@ -244,10 +230,8 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Très important pour éviter les fuites mémoire
-    if (this.refreshSubscription) {
-      this.refreshSubscription.unsubscribe();
-    }
+    document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
+    this.stopAutoRefresh();
   }
   
   onPageChange(event: PageEvent) {
@@ -507,6 +491,45 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
   private dateDiffInDays(startDate: Date, endDate: Date): number {
     const diffTime = endDate.getTime() - startDate.getTime();
     return (diffTime / (1000 * 60 * 60 * 24));
+  }
+
+  private startAutoRefresh() {
+    if (this.isRefreshing) return;
+    this.isRefreshing = true;
+    this.refreshSubscription = timer(0, 3000)
+      .pipe(
+        switchMap(() => this.transactionService.getTransactionEncours())
+      )
+      .subscribe((res: RestResponse<AssetResponse[]>) => {
+        // console.log(res);
+        if (res.statusCode == 200) {
+          this.allDatas = res.data!.reverse();
+          this.allDatasFiltered = this.allDatas;
+          this.datasPaginated = this.allDatasFiltered.slice(0 * 20, (0 + 1) * 20);
+          this.totalElements = this.allDatasFiltered.length;
+          if (this.selectedNature != "TOUT" || this.selectedSens != "TOUT"){
+            this.filter();
+          }
+          if (this.isSearch){
+            this.rechercherOffres();
+          }
+        }
+      });
+  }
+
+  private stopAutoRefresh() {
+    if (this.refreshSubscription) {
+      this.refreshSubscription.unsubscribe();
+      this.isRefreshing = false;
+    }
+  }
+
+  private handleVisibilityChange() {
+    if (document.visibilityState === 'hidden') {
+      this.stopAutoRefresh();
+    } else if (document.visibilityState === 'visible') {
+      this.startAutoRefresh();
+    }
   }
 
 }

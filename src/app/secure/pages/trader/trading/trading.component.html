@@ -120,6 +120,7 @@
                 <th class="px-4 py-3 text-left shadow-none text-xs tracking-none whitespace-nowrap text-slate-400 opacity-100">Emetteur</th>
                 <th class="px-4 py-3 text-center shadow-none text-xs tracking-none whitespace-nowrap text-slate-400 opacity-100">Nature</th>
                 <th class="px-4 py-3 text-left shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Code ISIN</th>
+                <th class="px-4 py-3 text-left shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Taux / Coupon</th>
                 <th class="px-4 py-3 text-center shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Date <br>d’échéance</th>
                 <th class="px-4 py-3 text-center shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Sens<br>Transaction</th>
                 <th class="px-4 py-3 text-center shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Quantité <br> titres</th>
@@ -146,6 +147,9 @@
                 </td>
                 <td class="px-4 text-left align-middle bg-transparent whitespace-nowrap">
                   <p class="mb-0 text-sm leading-normal">{{item.codeIsin}}</p>
+                </td>
+                <td class="px-4 text-left align-middle bg-transparent whitespace-nowrap">
+                  <p class="mb-0 text-sm leading-normal">{{item.couponRate | percentage}}</p>
                 </td>
                 <td class="px-4 text-center align-middle bg-transparent whitespace-nowrap">
                   <p class="mb-0 text-sm leading-normal">{{item.echeanceDate | date : "dd/MM/yyyy" }}</p>

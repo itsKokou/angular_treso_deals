@@ -68,11 +68,14 @@ export class InvitationComponent {
         this.messageContent = 
         `<div style="color: black; font-family: 'times new roman';">`+
           `<p>Bonjour,</p>`+
-          `<p>Nous vous invitons à rejoindre la plateforme TRESO LINK, en qualité d’Institution Trader, afin de saisir en temps réels les opportunités d'investissement sur titres.</p>`+
+          `<p>Nous sommes ravis de vous inviter à rejoindre notre plateforme <strong>TRESO LINK</strong> en tant qu’<strong>Institution Trader</strong>.</p>`+
           `<br>`+
-          `<p><a href='#' style="margin-right: 20px;"><span style="font-weight:700; font-size: 16px;">Rejoindre maintenant</span></a> | <a href='#' style="margin-left: 20px;"><span style="font-weight:700; font-size: 16px;">Présentation</span></a></p>`+
+          `<p>Ce statut vous permettra de voir et partager <strong>en temps réel</strong>, des <strong>opportunités d’investissement sur titres</strong>, au sein d’un réseau dédié aux professionnels des marchés.</p>`+
+          `<br>`+
+          `<p><a href='#' style="margin-right: 20px;"><span style="font-weight:700; font-size: 16px;">Rejoindre maintenant</span></a> | <a href='#' style="margin-left: 20px;"><span style="font-weight:700; font-size: 16px;">Présentation de TRESO LINK</span></a></p>`+
           `<br>`+
           `<p>A très bientôt !</p>`+
+          `<br>`+
           `<p>Equipe support _ TRESO LINK</p>`+
           `<p>Téléphone : </p>`+
           `<p>Adresse mail : </p>`+
@@ -84,17 +87,18 @@ export class InvitationComponent {
         this.messageContent =
         `<div style="color: black; font-family: 'times new roman';">`+
           `<p>Bonjour,</p>`+
-          `<p>Nous vous invitons à rejoindre la plateforme TRESO LINK, en qualité d’Institution Intermédiaire, pour faciliter le dénouement des transactions de nos utilisateurs</p>`+
+          `<p>Nous sommes ravis de vous inviter à rejoindre notre plateforme <strong>TRESO LINK</strong> en tant qu’<strong>Institution Intermédiaire</strong>, afin de <strong>faciliter le dénouement des transactions</strong> entre les utilisateurs de notre réseau..</p>`+
           `<br>`+
-          `<p><a href='#' style="margin-right: 20px;"><span style="font-weight:700; font-size: 16px;">Rejoindre maintenant</span></a> | <a href='#' style="margin-left: 20px;"><span style="font-weight:700; font-size: 16px;">Présentation</span></a></p>`+
+          `<p><a href='#' style="margin-right: 20px;"><span style="font-weight:700; font-size: 16px;">Rejoindre maintenant</span></a> | <a href='#' style="margin-left: 20px;"><span style="font-weight:700; font-size: 16px;">Présentation de TRESO LINK</span></a></p>`+
           `<br>`+
           `<p>A très bientôt !</p>`+
+          `<br>`+
           `<p>Equipe support _ TRESO LINK</p>`+
           `<p>Téléphone : </p>`+
           `<p>Adresse mail : </p>`+
           `<br>`+
           `<p>© 2025 Treso link. Tous droits réservés.</p>`+
-        `</div>`;
+       `</div>`;
       }
     });
   }

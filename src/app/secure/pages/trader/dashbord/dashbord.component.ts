@@ -3,6 +3,9 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import { CanvasJSAngularChartsModule, CanvasJSChart } from '@canvasjs/angular-charts';
 import { RouterLink } from '@angular/router';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { InvitationComponent } from './invitation/invitation.component';
 
 @Component({
     standalone: true,
@@ -14,6 +17,10 @@ import { RouterLink } from '@angular/router';
 export class DashbordComponent implements OnInit, AfterViewInit {
 	today = Date();
     chart: CanvasJSChart = new CanvasJSChart();
+
+	
+	horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+	verticalPosition: MatSnackBarVerticalPosition = 'top';
  
 	chartOptionsAOT = {
 		animationEnabled: true,
@@ -171,7 +178,10 @@ export class DashbordComponent implements OnInit, AfterViewInit {
 		}]
 	}
    
-    constructor(){
+    constructor(
+		private dialog: MatDialog,
+		private snackBar: MatSnackBar,
+	){
     }
 
     ngAfterViewInit(): void {
@@ -184,5 +194,27 @@ export class DashbordComponent implements OnInit, AfterViewInit {
     }
 
     
+	openDialogInvitation(){
+    const dialogRef = this.dialog.open(InvitationComponent,{width:'70%', disableClose: true});
+    dialogRef.afterClosed().subscribe((result:any)=>{
+      if(result){
+        console.log("Type", result);
+
+        if (result.statusCode==204) {
+          this.snackBar.open("Votre invitation a été envoyée avec succès! \nNous vous remercions pour votre marque de confiance","Ok",{
+            duration: 8000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+        } else {
+          this.snackBar.open("Une erreur s'est produite lors de l'envoi. Veuillez rééssayer !","Ok",{
+            duration: 5000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+        }
+      }
+    })
+  }
 
 }

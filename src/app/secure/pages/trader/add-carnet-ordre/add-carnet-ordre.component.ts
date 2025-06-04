@@ -25,7 +25,6 @@ export class AddCarnetOrdreComponent {
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   label: string = "Prix";
-  canDelete:boolean = false;
   minDate!: string;
   today : Date = new Date();
   sensLabel : String = "";
@@ -33,6 +32,7 @@ export class AddCarnetOrdreComponent {
   countries: CountryDto[] = [];
   isCouponFocused: boolean = false;
   isPriceFocused: boolean = false;
+  isClean: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +56,7 @@ export class AddCarnetOrdreComponent {
         this.unitaryValueName.setValue(10000);
       }
     });
+
     this.operationSens.valueChanges.subscribe((value)=>{
       if (value=="ACHAT"){
         this.sensLabel = "d'achat"
@@ -63,18 +64,11 @@ export class AddCarnetOrdreComponent {
         this.sensLabel = "de cession"
       }
     });
+
     this.form.valueChanges.subscribe((value)=>{
-      if (!value){
-        this.canDelete = false;
-      }else{
-        this.canDelete = true;
-      }
+      this.isClean = Object.values(this.form.value).every(value => !value || value.toString().trim() === '');
     });
 
-     this.amount.valueChanges.subscribe((value)=>{
-      console.log(value);
-      
-    });
   }
 
 
@@ -298,31 +292,14 @@ export class AddCarnetOrdreComponent {
     this.form.reset();
   }
 
+  goToCarnetOrdre(){
+    this.router.navigateByUrl("/trader/carnet/ordre");
+  }
+
   confirmSubmission(){
     const openSpinner = document.getElementById("openSpinner");
     const closeSpinner = document.getElementById("closeSpinner");
     openSpinner?.click();
-    // var data = {
-    //   transactionNumber: this.transactionNumber.getRawValue(),
-    //   countryCode: this.countryCode.getRawValue(),
-    //   echeanceDate: this.echeanceDate.getRawValue(),
-    //   operationSens: this.operationSens.getRawValue(),
-    //   codeIsin: this.codeIsin.getRawValue(),
-    //   nature: this.nature.getRawValue(),
-    //   unitaryNominalValue: Number.parseFloat(this.unitaryValueName.getRawValue()),
-    //   emissionDate : this.emissionDate.getRawValue(),
-
-      
-
-    //   couponRate: Number.parseFloat(this.couponRate.getRawValue()),
-    //   price: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.price.getRawValue()) : 1,
-    //   amount : Number.parseFloat(this.amount.getRawValue()),
-    //   interet: Number.parseFloat(this.interet.getRawValue()),
-    //   unitaryValueName: Number.parseFloat(this.unitaryValueName.getRawValue()),
-    //   transactionValue: Number.parseFloat(this.transactionValue.getRawValue()),
-    //   residualDuration: Number.parseFloat(this.residualDuration.getRawValue()),
-    //   transactionRate: this.nature.getRawValue() == "BAT" ? Number.parseFloat(this.price.getRawValue()) : 1,
-    // }
     var data = {
       // transactionNumber: this.transactionNumber.getRawValue(),
       countryCode: this.countryCode.getRawValue(),
@@ -371,7 +348,7 @@ export class AddCarnetOrdreComponent {
 
   ngOnInit(): void {
     initFlowbite();
-
+    this.isClean = true;
     this.countryService.getCountries().subscribe((res : RestResponse<CountryDto[]>)=>{
       if(res.statusCode==200){
         this.countries = res.data!;
