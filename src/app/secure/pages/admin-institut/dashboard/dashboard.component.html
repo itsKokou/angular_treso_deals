@@ -1,115 +1,89 @@
-<div class="w-full px-6 py-6 mx-auto">
-    <!-- row 1  en tete overwiers-->
-    <div class="flex flex-wrap -mx-3 " style="margin-left: 10%;">
-        <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-            <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                
-                <div class="px-3 text-right basis-1/3">
-                    <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
-                    <i class="ni leading-none ni-paper-diploma text-lg relative top-3.5 text-white"></i>
-                    </div>
-                </div>
-                <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                    <p class="mb-0 font-sans text-sm font-semibold leading-normal">Profils</p>
-                    <h5 class="mb-0 font-bold">
-                    100
-                    
-                    </h5>
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-        <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-            <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-                
-                <div class="px-3 text-right basis-1/3">
-                    <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
-                    <i class="ni leading-none ni-paper-diploma text-lg relative top-3.5 text-white"></i>
-                    </div>
-                </div>
-                <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                    <p class="mb-0 font-sans text-sm font-semibold leading-normal">Traders</p>
-                    <h5 class="mb-0 font-bold">
-                    100
-                    
-                    </h5>
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-        <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-            <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-            <div class="flex-auto p-4">
-                <div class="flex flex-row -mx-3">
-            
-                <div class="px-3 text-right basis-1/3">
-                    <div class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
-                    <i class="ni leading-none ni-paper-diploma text-lg relative top-3.5 text-white"></i>
-                    </div>
-                </div>
-                <div class="flex-none w-2/3 max-w-full px-3">
-                    <div>
-                    <p class="mb-0 font-sans text-sm font-semibold leading-normal">Messages</p>
-                    <h5 class="mb-0 font-bold">
-                        100
-                    
-                    </h5>
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
+<div class="p-6 space-y-8 min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+  <!-- Statistiques -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="flex items-center p-5 rounded-xl shadow group hover:shadow-lg transition bg-blue-100 border-l-4 border-blue-400">
+      <svg class="w-8 h-8 rounded-full mr-4 bg-blue-200 text-blue-600 p-1" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
+      </svg>
+      <div>
+        <div class="text-3xl font-bold text-blue-700">{{ totalUsers }}</div>
+        <div class="text-blue-600 font-semibold">Utilisateurs</div>
+      </div>
+    </div>
+    <div class="flex items-center p-5 rounded-xl shadow group hover:shadow-lg transition bg-green-100 border-l-4 border-green-400">
+      <svg class="w-8 h-8 rounded-full mr-4 bg-green-200 text-green-600 p-1" fill="none" viewBox="0 0 24 24">
+        <path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div class="text-3xl font-bold text-green-700">{{ newUsersThisMonth }}</div>
+        <div class="text-green-600 font-semibold">Nouveaux ce mois</div>
+      </div>
+    </div>
+    <div class="flex items-center p-5 rounded-xl shadow group hover:shadow-lg transition bg-yellow-100 border-l-4 border-yellow-400">
+      <svg class="w-8 h-8 rounded-full mr-4 bg-yellow-200 text-yellow-600 p-1" fill="none" viewBox="0 0 24 24">
+        <path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div class="text-3xl font-bold text-yellow-700">{{ activeUsers }}</div>
+        <div class="text-yellow-600 font-semibold">Actifs</div>
+      </div>
+    </div>
+    <div class="flex items-center p-5 rounded-xl shadow group hover:shadow-lg transition bg-red-100 border-l-4 border-red-400">
+      <svg class="w-8 h-8 rounded-full mr-4 bg-red-200 text-red-600 p-1" fill="none" viewBox="0 0 24 24">
+        <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div class="text-3xl font-bold text-red-700">{{ inactiveUsers }}</div>
+        <div class="text-red-600 font-semibold">Inactifs</div>
+      </div>
+    </div>
+  </div>
 
-    </div>
-        <!-- row 2  Graphes-->
-    <div class="flex mt-12 " >
-        
-            <div class=" w-1/2 px-3 mt-0 lg:flex-none" >
-            <div class="border-black/12.5 shadow-soft-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
-                <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid bg-white p-6 pb-0">
-                <h6>OAT</h6>
-                <p class="text-sm leading-normal">
-                    <i class="fa fa-arrow-up text-lime-500"></i>
-                    <span class="font-semibold">4% more</span> in 2021
-                </p>
-                </div>
-                <div class="flex-auto p-4">
-                <div>
-                    <canvas height="300"></canvas>
-                </div>
-                </div>
-            </div>
-            </div>
-            <div class="w-1/2 px-3 mt-0  lg:flex-none" >
-            <div class="border-black/12.5 shadow-soft-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
-                <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid bg-white p-6 pb-0">
-                <h6>BAT</h6>
-                <p class="text-sm leading-normal">
-                    <i class="fa fa-arrow-up text-lime-500"></i>
-                    <span class="font-semibold">4% more</span> in 2021
-                </p>
-                </div>
-                <div class="flex-auto p-4">
-                <div>
-                    <canvas  height="300"></canvas>
-                </div>
-                </div>
-            </div>
-            </div>
-        
-        
-    </div>
-    
-    
-    </div>
+  <!-- Graphique de répartition des profils -->
+  <div class="bg-white rounded-xl shadow p-6 border-l-4 border-indigo-400">
+    <h3 class="font-semibold mb-4 text-lg text-indigo-700">Répartition des profils</h3>
+    <div class="flex justify-center">
+        <div style="width: fit; height: 300px;">
+            <canvas id="piechart" ></canvas>  
+        </div>
+    </div> 
+  </div>
+
+  <!-- Derniers inscrits -->
+  <div class="bg-white rounded-xl shadow p-6 border-l-4 border-blue-400">
+    <h3 class="font-semibold text-lg mb-4 text-blue-700">Derniers inscrits</h3>
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead>
+        <tr>
+          <th class="px-4 py-2 text-left border-b border-gray-200">Nom</th>
+          <th class="px-4 py-2 text-left border-b border-gray-200">Email</th>
+          <th class="px-4 py-2 text-left border-b border-gray-200">Profil</th>
+          <th class="px-4 py-2 text-left border-b border-gray-200">Date</th>
+          <th class="px-4 py-2 text-left border-b border-gray-200">Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of lastAddedUsers" class="hover:bg-blue-50 transition">
+          <td class="px-4 py-2 flex items-center">
+            <svg class="w-8 h-8 rounded-full mr-2 bg-gray-200 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
+            </svg>
+            {{ user.firstName + " " + user.lastName }}
+          </td>
+          <td class="px-4 py-2">{{ user.email }}</td>
+          <td class="px-4 py-2">
+            <span [ngClass]="profilColors[user.profile!]" class="px-2 py-1 rounded-full text-xs font-semibold">
+              {{ user.profile }}
+            </span>
+          </td>
+          <td class="px-4 py-2">{{ user.createdAt | date:'dd/MM/yyyy' }}</td>
+          <td class="px-4 py-2">
+            <span [ngClass]="user.status == 'ENABLED' ? 'bg-lime-100 text-lime-700' : 'bg-red-100 text-red-700'" class="px-2 py-1 rounded-full text-xs font-semibold">
+              {{ user.status == 'ENABLED' ? 'Actif' : 'Inactif' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

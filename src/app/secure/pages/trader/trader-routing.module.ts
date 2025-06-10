@@ -27,10 +27,10 @@ const routes: Routes = [
         path: 'trading',
         component: TradingComponent
       },
-      {
-        path: 'profil',
-        component: ProfilDetailComponent
-      },
+      // {
+      //   path: 'profil',
+      //   component: ProfilDetailComponent
+      // },
       {
         path: 'carnet/ordre',
         component: CarnetOrdreComponent
