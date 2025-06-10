@@ -5,3 +5,10 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif !important;}
+
+.col-nom, .col-email {
+  max-width: 160px; /* Ajustez selon vos besoins */
+  word-break: break-word;
+  white-space: normal;
+}
+

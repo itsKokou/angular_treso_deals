@@ -33,10 +33,10 @@
                         <input formControlName="email" type="email" class="w-full border bg-gray-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-3" placeholder="Adresse email du destinataire :" required>
                         @if(email.errors && (email.dirty || email.touched)){
                             @if(email.getError("required")){
-                                <p class="text-left text-sm " style="color: red;">L'email du destinataire est obligatoire</p>
+                                <p class="text-left text-sm " style="color: red;">L' email du destinataire est obligatoire</p>
                             }
                             @if(email.getError("email")){
-                                <p class="text-left text-sm " style="color: red;">L'email du destinataire n'est pas valide</p>
+                                <p class="text-left text-sm " style="color: red;">L' email du destinataire n'est pas valide</p>
                             }
                         }
                     </div>

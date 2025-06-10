@@ -98,9 +98,9 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   //---------------- Form Proposition
   formProposition = this.fb.group({
-    quantite: [0, [Validators.required, Validators.min(1), this.validateQte]],
-    prixPropose: [0, []],
-    tauxPropose: [0, []],
+    quantite: ["", [Validators.required, Validators.min(1), this.validateQte]],
+    prixPropose: ["", []],
+    tauxPropose: ["", []],
   })
 
   get quantite(){
@@ -335,7 +335,7 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
     if(!isNaN(Number(this.prixPropose.value)) && this.prixPropose.value.toString().trim().length > 0){
       if(this.selectedCarnet.nature == 'OAT'){
         // Considerer sens contraire pour proposition
-        if(this.selectedCarnet.operationSens == 'ACHAT'){
+        if(this.selectedCarnet.operationSens == 'VENTE'){
           this.prix = Number.parseInt(this.prixPropose.value) - this.margeOat;
         }else{
           this.prix = Number.parseInt(this.prixPropose.value) + this.margeOat;
@@ -356,7 +356,7 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
     if(!isNaN(Number(this.tauxPropose.value)) && this.tauxPropose.value.toString().trim().length > 0){
       if(this.selectedCarnet.nature == 'BAT'){
         // Considerer sens contraire pour proposition
-        if(this.selectedCarnet.operationSens == 'ACHAT'){
+        if(this.selectedCarnet.operationSens == 'VENTE'){
           this.tauxTransaction = Number.parseFloat(this.tauxPropose.value) - this.margeBat;
         }else{
           this.tauxTransaction = Number.parseFloat(this.tauxPropose.value) + this.margeBat;
@@ -400,12 +400,20 @@ export class TradingComponent implements OnInit, AfterViewInit, OnDestroy {
     const openSpinner = document.getElementById("openSpinner");
     const closeSpinner = document.getElementById("closeSpinner");
     openSpinner?.click();
-    var data = {
-      assetId: this.selectedCarnet.id,
-      price: this.selectedCarnet.nature == "OAT" ? Number.parseFloat(this.prixPropose.value) : Number.parseFloat(this.tauxPropose.value),
-      amount: Number.parseFloat(this.quantite.getRawValue()),
-      // transactionValue: this.total,
-      // interet: this.interet
+    if( this.selectedCarnet.nature == "OAT" ){
+      var data = {
+        assetId: this.selectedCarnet.id,
+        price: Number.parseFloat(this.prixPropose.value),
+        rate: 0,
+        amount: Number.parseFloat(this.quantite.getRawValue()),
+      }
+    }else{
+      var data = {
+        assetId: this.selectedCarnet.id,
+        price: 0,
+        rate: Number.parseFloat(this.tauxPropose.value),
+        amount: Number.parseFloat(this.quantite.getRawValue()),
+      }
     }
 
     this.propositionService.addProposalToAsset(data).subscribe((res) => {

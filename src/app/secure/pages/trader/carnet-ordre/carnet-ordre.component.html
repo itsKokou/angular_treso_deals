@@ -168,7 +168,7 @@
                     <p class="mb-0 text-sm leading-normal">{{item.totalTransactionValue | formatNumber}}</p>
                   </td>
                   <td class="px-4 text-center align-middle bg-transparent border-b whitespace-nowrap">
-                    <p class="mb-0 text-sm leading-normal">2</p>
+                    <p class="mb-0 text-sm leading-normal">{{item.proposalCount}}</p>
                   </td>
                   <td class="px-4 flex items-center py-1.5 justify-center leading-normal text-center align-middle border-b whitespace-nowrap">
                     <svg (click)="voirDetail(item)" matTooltip="Voir détails" [matTooltipPosition]="'above'" class="cursor-pointer h-5 mb-0 mr-2 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -301,8 +301,8 @@
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.proposedPrice | formatNumber}}</p>
               </div>
               <div *ngIf="selectedCarnet.nature == 'BAT'" class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Intérêts courus :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.interet | formatNumber}}</p>
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux de transaction :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.proposedRate | percentage}}</p>
               </div>
             </div>
 
@@ -315,14 +315,14 @@
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Durée résiduelle :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.residualDuration}}</p>
               </div>
-              <div *ngIf="selectedCarnet.nature == 'OAT'" class="mt-2 w-full flex">
+              <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Redement estimé:</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.estimatedYield | percentage}}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{( selectedCarnet.nature == 'BAT' ? selectedCarnet.yieldRate : selectedCarnet.estimatedYield) | percentage}}</p>
               </div>
-              <div *ngIf="selectedCarnet.nature == 'BAT'" class="mt-2 w-full flex">
+              <!--div *ngIf="selectedCarnet.nature == 'BAT'" class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Valeur totale:</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.totalTransactionValue| formatNumber}}</p>
-              </div>
+              </div-->
             </div>
           </div>
 
@@ -448,7 +448,7 @@
         <h3 class="text-xl mb-0 font-medium text-white ">
           Modification : Offre N° {{selectedCarnet.transactionNumber}}
         </h3>
-        <button type="button" (click)="abortUpdate()" class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="update-modal">
+        <button type="button" id="close-update" class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="update-modal">
           <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
           </svg>
@@ -462,7 +462,7 @@
               Caractéristiques du titre 
             </h3>
           </div>
-          <form [formGroup]="form" (submit)="updateCarnet()" >
+          <form [formGroup]="form" (submit)="onSubmit()" >
             <div class="flex max-w-full justify-between mb-5 px-4">
               <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 31%;">
                 <div class="mb-5 flex w-full items-center">
@@ -708,8 +708,8 @@
         
             <!-- Modal footer -->
             <div class="flex items-center justify-end py-3 px-8 border-t border-gray-200 rounded-b">
-              <button id="hideUpdate" data-modal-hide="update-modal" (click)="abortUpdate()" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
-              <button type="submit" class="ml-5 text-white font-medium !bg-green-500 hover:!bg-green-600 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Enregistrer</button>
+              <button id="hideUpdate" data-modal-hide="update-modal" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
+              <button type="submit" class="ml-5 text-white font-medium !bg-green-500 hover:!bg-green-600 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Poursuivre</button>
             </div>
           </form>
 
@@ -718,6 +718,135 @@
     </div>
   </div>
 </div>
+
+
+<button id="btnUp" data-modal-target="up-modal" data-modal-toggle="up-modal"  type="button" class="ml-4 hidden text-white !bg-green-500 hover:!bg-green-600 font-medium rounded-lg text-sm px-5 py-2 text-center">
+  Update
+</button>
+<!--Modal de Update--> 
+<div id="up-modal" tabindex="-1" aria-hidden="false" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+  <div class="relative p-4 w-full max-w-screen-xl max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+      <!-- Modal header -->
+      <div class="flex align-middle bg-blue-800 items-center justify-between px-4 py-2 border-b rounded-t-lg ">
+        <h3 class="text-xl mb-0 font-medium text-white ">
+          Confirmation de création d'une offre
+        </h3>
+        <button type="button" id="close-up" class="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="up-modal">
+          <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+          </svg>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="text-center px-8 py-5 space-y-4">
+        <div class="border border-gray-400 p-3 rounded-md">
+          <div class="flex justify-center">
+            <h3 class="text-xl font-semibold text-gray-900">
+              Résumé de l'offre _ <span class="text-red-600">{{resumeAsset?.nature}}</span> N° {{selectedCarnet.transactionNumber}}
+              <!--<span [ngClass]="resumeAsset?.nature == 'OAT'? 'text-red-600' : 'text-green-500'">{{resumeAsset?.nature}}</span>-->
+            </h3>
+          </div>
+          <div class="flex mb-2 max-w-full justify-center">
+            <div class="mx-auto mt-2" style="width: 48%;">
+              <!--<div class="w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">N° transaction :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{resumeAsset?.transactionNumber}}</p>
+              </div>
+              <div class="w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Date offre :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{ resumeAsset?.date | date: 'dd/MM/yyyy' }}</p>
+              </div>-->
+              <div class="w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Sens transaction :</p>
+                <p [ngClass]="resumeAsset?.operationSens == 'VENTE'? 'text-red-600 !bg-red-300' : 'text-green-500 !bg-green-300'" class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.operationSens}}</p>
+              </div>
+               <div class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Code ISIN :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.codeIsin}}</p>
+              </div>
+              <div class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Durée résiduelle :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.residualDuration}} </p>
+              </div>
+              <div class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Quantité titres {{sensLabel == "d'achat" ? "à acheter" : sensLabel == "de cession" ? "à vendre" :""}} :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.amount | formatNumber}}</p>
+              </div>
+               <div class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Valeur nominale totale :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.totalNominalValue | formatNumber}}</p>
+              </div>
+              <div class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Valeur totale transaction :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.totalTransactionValue | formatNumber}}</p>
+              </div>
+            </div>
+
+            <div class="mx-auto mt-2" style="width: 48%;">
+              <div class="w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Emetteur :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.issuerCountry}}</p>
+              </div>
+              <div class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Date d'échéance :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.echeanceDate| date: 'dd/MM/yyyy' }}</p>
+              </div>
+              <div class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Taux/Coupon :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.couponRate | percentage}}</p>
+              </div>
+              <div *ngIf='nature.value == "OAT"' class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Prix de transaction :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.proposedPrice| formatNumber}}</p>
+              </div>
+              <div *ngIf='nature.value == "BAT"' class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Taux de transaction (%) :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.proposedRate| percentage}}</p>
+              </div>
+              <div class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Intérêts courus :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.interet | formatNumber}}</p>
+              </div>
+              <div *ngIf='nature.value == "OAT"' class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Rendement estimé :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.estimatedYield | percentage}}</p>
+              </div>
+              <div *ngIf='nature.value == "BAT"' class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Rendement estimé :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.yieldRate | percentage}}</p>
+              </div>
+              <!--<div *ngIf='nature.value == "BAT"' class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux Transaction :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">10.5%</p>
+              </div>
+              <div class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Date de valeur :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded"> {{ resumeAsset?.valueDate| date: 'dd/MM/yyyy' }}</p>
+              </div>
+              <div *ngIf='nature.value == "BAT"' class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux de Rendement :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.yieldRate | percentage}}</p>
+              </div>-->
+            </div>
+          </div>
+        </div>
+
+        <!--<div class="text-gray-800 font-semibold">
+          <p *ngIf='nature.value == "OAT"'>Rappel : Le prix unitaire affiché sera {{ operationSens.value =="ACHAT" ? "minoré" : "majoré" }} de 20 FCFA, tenant compte des frais.</p>
+          <p *ngIf='nature.value == "BAT"'>Rappel : Le Taux {{ operationSens.value =="ACHAT" ? "d'acquisition affiché sera minoré" : "de cession affiché sera majoré" }} de 0,1%, tenant compte des frais.</p>
+        </div>-->
+      </div>
+      <!-- Modal footer -->
+      <div class="flex items-center justify-end py-3 px-8 border-t border-gray-200 rounded-b">
+        <button data-modal-hide="up-modal" type="button" class="text-white font-medium !bg-gray-400 hover:!bg-gray-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Annuler</button>
+        <button (click)="updateCarnet()" data-modal-hide="up-modal" type="button" class="ml-5 text-white font-medium !bg-green-500 hover:!bg-green-700 text-sm px-5 py-1.5 text-center rounded focus:ring-0 focus:outline-none">Valider</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 

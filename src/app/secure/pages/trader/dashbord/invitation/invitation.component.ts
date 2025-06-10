@@ -40,21 +40,22 @@ export class InvitationComponent {
     public dialogRef:MatDialogRef<DashbordComponent>,
   ){
     this.messageContent = 
-    `<div style="color: black; font-family: 'times new roman';">`+
-      `<p>Bonjour,</p>`+
-      `<p>Nous sommes ravis de vous inviter à rejoindre notre plateforme <strong>TRESO LINK</strong> en tant qu’<strong>Institution Trader</strong>.</p>`+
+    `<div style="color: black !important; font-family: 'times new roman'; font-size: 15px;">`+
+      `<p style="margin: 0px;">Bonjour,</p>`+
       `<br>`+
-      `<p>Ce statut vous permettra de voir et partager <strong>en temps réel</strong>, des <strong>opportunités d’investissement sur titres</strong>, au sein d’un réseau dédié aux professionnels des marchés.</p>`+
+      `<p style="margin: 0px;">Nous sommes ravis de vous inviter à rejoindre notre plateforme <strong>TRESO LINK</strong> en tant qu’<strong>Institution Trader</strong>.</p>`+
       `<br>`+
-      `<p><a href='#' style="margin-right: 20px;"><span style="font-weight:700; font-size: 16px;">Rejoindre maintenant</span></a> | <a href='#' style="margin-left: 20px;"><span style="font-weight:700; font-size: 16px;">Présentation de TRESO LINK</span></a></p>`+
+      `<p style="margin: 0px;">Ce statut vous permettra de voir et partager <strong>en temps réel</strong>, des <strong>opportunités d’investissement sur titres</strong>, au sein d’un réseau dédié aux professionnels des marchés.</p>`+
       `<br>`+
-      `<p>A très bientôt !</p>`+
+      `<p style="margin: 0px;"><a href='#' style="margin-right: 20px;"><span style="font-weight:700; font-size: 16px;">Rejoindre maintenant</span></a> | <a href='#' style="margin-left: 20px;"><span style="font-weight:700; font-size: 16px;">Présentation de TRESO LINK</span></a></p>`+
       `<br>`+
-      `<p>Equipe support _ TRESO LINK</p>`+
-      `<p>Téléphone : </p>`+
-      `<p>Adresse mail : </p>`+
+      `<p style="margin: 0px;">A très bientôt !</p>`+
       `<br>`+
-      `<p>© 2025 Treso link. Tous droits réservés.</p>`+
+      `<p style="margin: 0px;">Equipe support _ TRESO LINK</p>`+
+      `<p style="margin: 0px;">📞 : +221 77 000 00 00</p>`+
+      `<p style="margin: 0px;">✉️ : support@treso-link.com</p>`+
+      `<br>`+
+      `<p style="text-align: center;">© 2025 Treso link. Tous droits réservés.</p>`+
     `</div>`;
   }
 

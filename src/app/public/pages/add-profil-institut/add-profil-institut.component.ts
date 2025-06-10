@@ -190,6 +190,9 @@ export class AddProfilInstitutComponent implements OnInit{
     }
   }
 
+  abortSubmission(){
+    this.form.reset();
+  }
   
   ngOnInit(): void {
     initFlowbite();

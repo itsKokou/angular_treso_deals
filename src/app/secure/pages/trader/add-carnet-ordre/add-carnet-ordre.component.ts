@@ -76,7 +76,7 @@ export class AddCarnetOrdreComponent {
     //transactionNumber: ["", [Validators.required]],
     countryCode: ["", [Validators.required]],
     echeanceDate: ["", [Validators.required, this.validateEcheance]],
-    emissionDate: [""],
+    // emissionDate: [""],
     operationSens: ["", [Validators.required]],
     codeIsin: ["", [Validators.required]],
     price: ["", [Validators.required, this.validateDigit]],
@@ -101,9 +101,9 @@ export class AddCarnetOrdreComponent {
     return this.form.controls["echeanceDate"] as FormControl;
   }
 
-  get emissionDate(){
-    return this.form.controls["emissionDate"] as FormControl;
-  }
+  // get emissionDate(){
+  //   return this.form.controls["emissionDate"] as FormControl;
+  // }
 
   get operationSens(){
     return this.form.controls["operationSens"] as FormControl;
@@ -185,13 +185,12 @@ export class AddCarnetOrdreComponent {
   onAmountChange(event: any) {
     let rawValue = event.target.value.replace(/\s/g, ''); // Supprime les espaces pour garder la vraie valeur
     this.amount.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
-    console.log(this.amount.value);
   }
 
   onUnitaryValueNameChange(event: any) {
     let rawValue = event.target.value.replace(/\s/g, ''); // Supprime les espaces pour garder la vraie valeur
     this.unitaryValueName.setValue(rawValue, { emitEvent: false }); // Met à jour le FormControl sans modifier l'affichage
-    console.log(this.unitaryValueName.value);
+
   }
 
   onPriceChange(event: any) {
@@ -202,7 +201,6 @@ export class AddCarnetOrdreComponent {
       rawValue = event.target.value.replace(" %", '');
     }
     this.price.setValue(rawValue, { emitEvent: false }); 
-    console.log(this.price.value);
   }
 
   onPriceBlur(event: any){
@@ -231,7 +229,7 @@ export class AddCarnetOrdreComponent {
       this.couponRate.reset();
     }else{
       this.couponRate.reset();
-      this.couponRate.setValue(0);
+      // this.couponRate.setValue();
       this.couponRate.setValidators([Validators.required]);
     }
   }
@@ -252,7 +250,7 @@ export class AddCarnetOrdreComponent {
         echeanceDate: this.echeanceDate.getRawValue(),
         amount : Number.parseFloat(this.amount.getRawValue()),
         codeIsin: this.codeIsin.getRawValue(),
-        emissionDate: this.emissionDate.getRawValue(),
+        // emissionDate: this.emissionDate.getRawValue(),
         unitaryNominalValue: Number.parseFloat(this.unitaryValueName.getRawValue()),
         couponRate: this.couponRate.value != null ? Number.parseFloat(this.couponRate.getRawValue()) : 0.0 ,
         proposedPrice: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.price.getRawValue()) : null,
@@ -308,7 +306,7 @@ export class AddCarnetOrdreComponent {
       echeanceDate: this.echeanceDate.getRawValue(),
       amount : Number.parseFloat(this.amount.getRawValue()),
       codeIsin: this.codeIsin.getRawValue(),
-      emissionDate: this.emissionDate.getRawValue(),
+      // emissionDate: this.emissionDate.getRawValue(),
       unitaryNominalValue: Number.parseFloat(this.unitaryValueName.getRawValue()),
       couponRate: this.couponRate.value != null ? Number.parseFloat(this.couponRate.getRawValue()) : 0.0 ,
       proposedPrice: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.price.getRawValue()) : null,

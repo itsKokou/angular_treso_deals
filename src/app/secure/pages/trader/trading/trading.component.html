@@ -120,7 +120,7 @@
                 <th class="px-4 py-3 text-left shadow-none text-xs tracking-none whitespace-nowrap text-slate-400 opacity-100">Emetteur</th>
                 <th class="px-4 py-3 text-center shadow-none text-xs tracking-none whitespace-nowrap text-slate-400 opacity-100">Nature</th>
                 <th class="px-4 py-3 text-left shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Code ISIN</th>
-                <th class="px-4 py-3 text-left shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Taux / Coupon</th>
+                <th class="px-4 py-3 text-center shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Taux / Coupon</th>
                 <th class="px-4 py-3 text-center shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Date <br>d’échéance</th>
                 <th class="px-4 py-3 text-center shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Sens<br>Transaction</th>
                 <th class="px-4 py-3 text-center shadow-none text-xs tracking-none whitespace-nowrap text-slate-400">Quantité <br> titres</th>
@@ -148,7 +148,7 @@
                 <td class="px-4 text-left align-middle bg-transparent whitespace-nowrap">
                   <p class="mb-0 text-sm leading-normal">{{item.codeIsin}}</p>
                 </td>
-                <td class="px-4 text-left align-middle bg-transparent whitespace-nowrap">
+                <td class="px-4 text-center align-middle bg-transparent whitespace-nowrap">
                   <p class="mb-0 text-sm leading-normal">{{item.couponRate | percentage}}</p>
                 </td>
                 <td class="px-4 text-center align-middle bg-transparent whitespace-nowrap">
@@ -170,7 +170,7 @@
                 <td class="px-4 text-end align-middle bg-transparent whitespace-nowrap">
                   <p class="mb-0 text-sm leading-normal">{{item.totalTransactionValue| formatNumber}}</p>
                 </td>
-                <td class="px-4 flex leading-normal text-center align-middle bg-transparent whitespace-nowrap">
+                <td class="px-4 flex justify-center leading-normal text-center align-middle bg-transparent whitespace-nowrap">
                   <button *ngIf="item.userId!=connectedUser.id" (click)="faireProposition(btnProposition,item)" class="cursor-pointer bg-red-600 px-2.5 text-xs rounded-lg py-1 my-0.5 inline-block whitespace-nowrap text-center align-middle font-semibold leading-none text-white">Faire <br> Proposition</button>
                   <button (click)="voirDetail(btnDetail,item)" class="cursor-pointer bg-blue-700 ml-2 px-2.5 text-xs rounded-lg py-1 my-0.5 inline-block whitespace-nowrap text-center align-middle font-semibold leading-none text-white">Voir <br> Detail</button>
                 </td>
@@ -224,8 +224,8 @@
               Résumé offre <span class="text-red-600">{{selectedCarnet.nature}}</span> N° {{selectedCarnet.transactionNumber}}
             </h3>
           </div>
-          <!-- OAT -->
-          <div *ngIf='selectedCarnet.nature == "OAT"' class="flex max-w-full justify-center">
+          
+          <div class="flex max-w-full justify-center">
             <div class="mx-auto mt-2" style="width: 31%;">
               <div class="w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Sens transaction :</p>
@@ -250,9 +250,9 @@
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Date d'échéance :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedCarnet.echeanceDate | date: 'dd/MM/yyyy' }}</p>
               </div>
-              <div *ngIf='selectedCarnet.nature == "OAT"' class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Prix de transaction :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.proposedPrice | formatNumber}}</p>
+              <div class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded"> {{ selectedCarnet.nature == "OAT" ? "Prix de transaction" : "Taux de transaction" }} </p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedCarnet.nature == "OAT" ? (selectedCarnet.proposedPrice | formatNumber) : (selectedCarnet.proposedRate | percentage) }}</p>
               </div>
             </div>
 
@@ -265,60 +265,13 @@
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Durée résiduelle :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.residualDuration}}</p>
               </div>
-              <div *ngIf="selectedCarnet.nature == 'OAT'" class="mt-2 w-full flex">
+              <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Redement estimé:</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.estimatedYield | percentage}}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{( selectedCarnet.nature == "BAT"? selectedCarnet.yieldRate : selectedCarnet.estimatedYield) | percentage}}</p>
               </div>
             </div>
           </div>
 
-          <!-- BAT -->
-          <div *ngIf='selectedCarnet.nature == "BAT"' class="flex max-w-full justify-center">
-            <div class="mx-auto mt-2" style="width: 31%;">
-              <div class="w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Sens transaction :</p>
-                <p [ngClass]="selectedCarnet.operationSens == 'VENTE'? 'text-red-600 !bg-red-300' :'text-green-500 !bg-green-300'" class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.operationSens}}</p>
-              </div>
-              <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Date d'échéance :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{ selectedCarnet.echeanceDate | date: 'dd/MM/yyyy' }}</p>
-              </div>
-              <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Quantité {{selectedCarnet.operationSens == "ACHAT" ? "à acheter" : "à vendre"}} :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.amount | formatNumber}}</p>
-              </div>
-            </div>
-
-            <div class="mx-auto mt-2" style="width: 31%;">
-              <div class="w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Emetteur :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.issuerCountry}}</p>
-              </div>
-               <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Durée résiduelle :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.residualDuration}}</p>
-              </div>
-              <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Intérêts courus :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.interet | formatNumber}}</p>
-              </div>
-            </div>
-
-            <div class="mx-auto mt-2" style="width: 31%;">
-              <div class="w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Code ISIN :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.codeIsin}}</p>
-              </div>
-              <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux de transaction :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.proposedRate | percentage}}</p>
-              </div>
-              <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Valeur totale :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.totalTransactionValue| formatNumber}}</p>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div class="mb-6  border border-gray-400 p-3 rounded-md">
@@ -390,11 +343,8 @@
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-1 px-4 rounded">Valeur nom. totale :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-1 px-4 rounded"> {{ totalNominalValue | formatNumber }} </p>
               </div>
+              
               <div *ngIf="selectedCarnet.nature == 'BAT'" class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-1 px-4 rounded">Rendement estimé :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-1 px-4 rounded"> {{ rendementEstime | percentage }} </p>
-              </div>
-              <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-1 px-4 rounded">Intérêts courus :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-1 px-4 rounded">{{ interet | formatNumber}}</p>
               </div>
@@ -406,21 +356,29 @@
                 <p [ngClass]="selectedCarnet.operationSens == 'ACHAT'? 'text-red-600 !bg-red-300' :'text-green-500 !bg-green-300'"  class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-1 px-4 rounded">{{selectedCarnet.operationSens == "ACHAT" ? "VENTE" : "ACHAT"}}</p>
               </div>
               <div *ngIf="selectedCarnet.nature == 'OAT'" class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-1 px-4 rounded">Intérêts courus :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-1 px-4 rounded">{{ interet | formatNumber}}</p>
+              </div>
+              <!--<div *ngIf="selectedCarnet.nature == 'OAT'" class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-1 px-4 rounded">Prix transaction (*) :</p>
                 <p class="w-1/2 ml-2 bg-yellow-100 text-black text-left font-bold py-1 px-4 rounded">{{ prix | formatNumber }}</p>
               </div>
               <div *ngIf="selectedCarnet.nature == 'BAT'" class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-1 px-4 rounded">Taux transaction (*) :</p>
                 <p class="w-1/2 ml-2 bg-yellow-100 text-black text-left font-bold py-1 px-4 rounded">{{ tauxTransaction | percentage }}</p>
-              </div>
+              </div>-->
               <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-1 px-4 rounded">Valeur totale :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-1 px-4 rounded">{{ total | formatNumber }}</p>
               </div>
+              <div *ngIf="selectedCarnet.nature == 'BAT'" class="mt-2 w-full flex">
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-1 px-4 rounded">Rendement estimé :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-1 px-4 rounded"> {{ rendementEstime | percentage }} </p>
+              </div>
             </div>
           </div>
-          <p *ngIf="selectedCarnet.nature == 'OAT'" class=" text-gray-900 mt-4">{{ selectedCarnet.operationSens == "ACHAT" ? "(*) Rappel : Le prix unitaire affiché est minoré des commissions de transaction" : "(*) Rappel : Le prix unitaire affiché est majoré des commissions de transaction" }}</p>
-          <p *ngIf="selectedCarnet.nature == 'BAT'" class=" text-gray-900 mt-4">{{ selectedCarnet.operationSens == "ACHAT" ? "(*) Rappel : Le taux de transaction est minoré des commissions de transaction" : "(*) Rappel : Le aux de transaction est majoré des commissions de transaction" }}</p>
+          <p *ngIf="selectedCarnet.nature == 'OAT'" class=" text-red-600 mt-4">Rappel : <b>{{ prix | formatNumber }}</b> ==> Prix de transaction affiché chez le Trader {{ selectedCarnet.operationSens == "ACHAT" ? "Acheteur" : "Vendeur" }} (Net des Commissions)</p>
+          <p *ngIf="selectedCarnet.nature == 'BAT'" class=" text-red-600 mt-4">Rappel : <b>{{ tauxTransaction | percentage }}</b> ==> Taux de transaction affiché chez le Trader {{ selectedCarnet.operationSens == "ACHAT" ? "Acheteur" : "Vendeur" }} (Net des Commissions)</p>
         </div> 
 
       </div>
@@ -488,8 +446,8 @@
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.proposedPrice | formatNumber}}</p>
               </div>
               <div *ngIf="selectedCarnet.nature == 'BAT'" class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Intérêts courus :</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.interet | formatNumber}}</p>
+                <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Taux de transaction :</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.proposedRate | percentage}}</p>
               </div>
             </div>
 
@@ -502,14 +460,14 @@
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Durée résiduelle :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.residualDuration}}</p>
               </div>
-              <div *ngIf="selectedCarnet.nature == 'OAT'" class="mt-2 w-full flex">
+              <div class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Redement estimé:</p>
-                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.estimatedYield | percentage}}</p>
+                <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{( selectedCarnet.nature == 'BAT' ? selectedCarnet.yieldRate : selectedCarnet.estimatedYield) | percentage}}</p>
               </div>
-              <div *ngIf="selectedCarnet.nature == 'BAT'" class="mt-2 w-full flex">
+              <!--<div *ngIf="selectedCarnet.nature == 'BAT'" class="mt-2 w-full flex">
                 <p class="w-1/2 bg-gray-300 text-black font-medium py-2 px-4 rounded">Valeur totale:</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{selectedCarnet.totalTransactionValue| formatNumber}}</p>
-              </div>
+              </div>-->
             </div>
           </div>
         </div>

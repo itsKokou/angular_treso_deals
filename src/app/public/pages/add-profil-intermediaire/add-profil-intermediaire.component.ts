@@ -216,6 +216,9 @@ export class AddProfilIntermediaireComponent implements OnInit {
     }
   }
 
+  abortSubmission(){
+    this.form.reset();
+  }
   
   ngOnInit(): void {
     initFlowbite();

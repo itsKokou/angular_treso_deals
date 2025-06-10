@@ -1,5 +1,4 @@
 import { OperationEnum } from "../enum/operation-enum";
-import { Proposal } from "./proposal";
 
 export interface AssetResponse { 
     id?: number;
@@ -26,6 +25,7 @@ export interface AssetResponse {
     interet?: number;
     estimatedYield?: number;
     fees?: number;
+    proposalCount?: number;
 
     // propositions?: Array<Proposal>;
     // transactionRate?: number;

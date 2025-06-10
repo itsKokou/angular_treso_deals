@@ -106,6 +106,25 @@
             </div>
           }
         }
+      </div>
+
+      <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 48%;">
+        <div class="flex w-full items-center">
+          <label for="date_offre" class="w-1/2 text-sm font-medium text-gray-900">Date offre :</label>
+          <input type="text" [value]="today.toLocaleDateString()" readonly id="date_offre" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+        </div>
+        <!-- <div class="mt-5 flex w-full items-center">
+          <label for="date_emission" class="w-1/2 text-sm font-medium text-gray-900">Date d'émission :</label>
+          <input type="date" formControlName="emissionDate" max="9999-12-31" id="date_emission" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
+        </div>
+        {# @if(emissionDate.errors && (emissionDate.dirty || emissionDate.touched)){
+          @if(emissionDate.getError("required")){
+            <div class="flex justify-end">
+              <p class="text-left text-sm " style="color: red;">Date d'émission est requise</p>
+            </div>
+          }
+        } #}-->
+
         <div class="mt-5 flex w-full items-center">
           <label for="qte" class="w-1/2 text-sm font-medium text-gray-900">Quantité titres {{sensLabel == "d'achat" ? "à acheter" : sensLabel == "de cession" ? "à vendre" :""}} :</label>
           <input formControlName="amount" (input)="onAmountChange($event)" [value]="amount.value | formatNumber" type="text" id="qte" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
@@ -122,24 +141,6 @@
             </div>
           }
         } 
-      </div>
-
-      <div class="border border-gray-300 px-4 py-6 rounded-lg h-fit" style="width: 48%;">
-        <div class="flex w-full items-center">
-          <label for="date_offre" class="w-1/2 text-sm font-medium text-gray-900">Date offre :</label>
-          <input type="text" [value]="today.toLocaleDateString()" readonly id="date_offre" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-        </div>
-        <div class="mt-5 flex w-full items-center">
-          <label for="date_emission" class="w-1/2 text-sm font-medium text-gray-900">Date d'émission :</label>
-          <input type="date" formControlName="emissionDate" max="9999-12-31" id="date_emission" class="w-1/2 border bg-slate-50 border-gray-300 text-gray-900 placeholder:text-gray-400 placeholder:font-medium text-base rounded-md focus:ring-blue-500 focus:border-blue-500 py-1.5 px-3">
-        </div>
-        <!--{# @if(emissionDate.errors && (emissionDate.dirty || emissionDate.touched)){
-          @if(emissionDate.getError("required")){
-            <div class="flex justify-end">
-              <p class="text-left text-sm " style="color: red;">Date d'émission est requise</p>
-            </div>
-          }
-        } #}-->
         
         <div class="mt-5 flex w-full items-center">
           <label for="code_sin" class="w-1/2 text-sm font-medium text-gray-900">Code ISIN :</label>
@@ -353,7 +354,7 @@
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.amount | formatNumber}}</p>
               </div>
                <div class="mt-2 w-full flex">
-                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Valeur nominale total :</p>
+                <p class="w-1/2 bg-gray-300 text-black font-medium text-left py-2 px-4 rounded">Valeur nominale totale :</p>
                 <p class="w-1/2 ml-2 bg-gray-300 text-black text-left font-bold py-2 px-4 rounded">{{resumeAsset?.totalNominalValue | formatNumber}}</p>
               </div>
               <div class="mt-2 w-full flex">

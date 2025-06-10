@@ -60,7 +60,7 @@
                   <p class="mb-0 text-sm leading-normal">{{item.amount|formatNumber}}</p>
                 </td>
                 <td class="px-4 align-middle bg-transparent whitespace-nowrap">
-                  <p class="mb-0 text-sm leading-normal">{{item.nature == "OAT" ? (item.transactionPrice|formatNumber) : (item.transactionPrice|percentage)}}</p>
+                  <p class="mb-0 text-sm leading-normal">{{item.nature == "OAT" ? (item.transactionPrice|formatNumber) : (item.transactionRate | percentage)}}</p>
                 </td>
                 <td class="px-4 align-middle text-left bg-transparent whitespace-nowrap">
                   <p class="mb-0 text-sm leading-normal">{{item.interet|formatNumber}}</p>

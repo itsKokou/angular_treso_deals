@@ -20,6 +20,7 @@ import { CountryDto } from '../../../../core/models/country/country-dto';
 import { CountryServiceImpl } from '../../../../core/services/impl/country.service.impl';
 import { PercentagePipe } from '../../../../core/pipes/percentage.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ResumeAssetResponse } from '../../../../core/models/carnet-ordre/resume-asset-response';
 
 @Component({
   standalone: true,
@@ -55,6 +56,9 @@ export class CarnetOrdreComponent implements AfterViewInit {
   isCouponFocused: boolean = false;
   isPriceFocused: boolean = false;
   isSearch: boolean = false;
+  resumeAsset?: ResumeAssetResponse; 
+  sensLabel : String = "";
+
 
   constructor(
     private matPaginatorIntl:MatPaginatorIntl,
@@ -72,6 +76,14 @@ export class CarnetOrdreComponent implements AfterViewInit {
       }else{
         this.label = "Prix"
         this.unitaryValueName.setValue(10000);
+      }
+    });
+
+    this.operationSens.valueChanges.subscribe((value)=>{
+      if (value=="ACHAT"){
+        this.sensLabel = "d'achat"
+      }else{
+        this.sensLabel = "de cession"
       }
     });
   }
@@ -441,12 +453,67 @@ export class CarnetOrdreComponent implements AfterViewInit {
       unitaryValueName: carnet.nature == "OAT" ? 10000 : 1000000,
       // emissionDate: carnet.valueDate?.toString()
     });
+
+    if (carnet.operationSens=="ACHAT"){
+      this.sensLabel = "d'achat"
+    }else{
+      this.sensLabel = "de cession"
+    }
     
     btnUpdate.click();
   }
 
-  abortUpdate(){
-    this.form.reset();
+
+  onSubmit(){
+    if (this.form.invalid) {
+      this.couponRate.markAsDirty();
+      this.form.markAllAsTouched();
+    }else{
+      const openSpinner = document.getElementById("openSpinner");
+      const closeSpinner = document.getElementById("closeSpinner");
+      openSpinner?.click();
+      var data = {
+        assetDate: this.selectedCarnet.date,
+        countryCode: this.issuerCountry.getRawValue(),
+        operationSens: this.operationSens.getRawValue(),
+        nature: this.nature.getRawValue(),
+        echeanceDate: this.echeanceDate.getRawValue(),
+        amount : Number.parseFloat(this.amount.getRawValue()),
+        codeIsin: this.codeIsin.getRawValue(),
+        unitaryNominalValue: Number.parseFloat(this.unitaryValueName.getRawValue()),
+        couponRate: this.couponRate.value != null ? Number.parseFloat(this.couponRate.getRawValue()) : 0.0 ,
+        proposedPrice: this.nature.getRawValue() == "OAT" ? Number.parseFloat(this.price.getRawValue()) : null,
+        proposedRate: this.nature.getRawValue() == "BAT" ? Number.parseFloat(this.price.getRawValue()) : null,
+      }
+      
+
+      this.transactionService.getResumeOrdre(data).subscribe((res : RestResponse<ResumeAssetResponse>) => {
+        closeSpinner?.click();
+        console.log(res);
+        
+        if (res.statusCode==200) {
+          this.resumeAsset = res.data!;
+          document.getElementById("close-update")?.click();
+          const btnAdd = document.getElementById("btnAdd");
+          btnAdd?.click();
+        } else {
+          this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+            duration: 5000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+        }
+      }, (error)=>{
+        closeSpinner?.click();
+        console.log(error);
+        this.snackBar.open("Une erreur s'est produite. Veuillez rééssayer !","Ok",{
+          duration: 5000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+        });
+      });
+      
+    }
   }
 
   updateCarnet(){
@@ -460,6 +527,7 @@ export class CarnetOrdreComponent implements AfterViewInit {
 
       var data = {
         id: this.selectedCarnet.id,
+        assetDate: this.selectedCarnet.date,
         transactionNumber: this.transactionNumber.getRawValue(),
         operationSens: this.operationSens.getRawValue(),
         nature: this.nature.getRawValue(),
@@ -482,7 +550,6 @@ export class CarnetOrdreComponent implements AfterViewInit {
       this.transactionService.updateCarnetOrdre(data).subscribe((res : any) => {
         closeSpinner?.click();
         console.log(res);
-        
         if (res.statusCode==200) {
           this.snackBar.open("Carnet d'ordre mis à jour avec succès","Ok",{
             duration: 5000,
